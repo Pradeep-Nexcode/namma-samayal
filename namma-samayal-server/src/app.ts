@@ -17,7 +17,13 @@ app.set("trust proxy", 1);
 app.use(helmet());
 app.use(
   cors({
-    origin: [config.frontendUrl, config.adminUrl],
+    origin: (origin, callback) => {
+      if (!origin || config.allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      logger.warn("Blocked CORS request", { origin });
+      return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    },
     credentials: true,
   }),
 );
