@@ -473,13 +473,12 @@ const Recipes = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
             {recipes.map((recipe) => {
               const diff = DIFFICULTY_CONFIG[recipe.difficulty];
-              const src  = SOURCE_CONFIG[recipe.source] || SOURCE_CONFIG.manual;
               const isApproving = actionLoading === recipe._id + "_approve";
               const isDeleting  = actionLoading === recipe._id + "_delete";
 
               // Use SEO title if available, else fall back to dishName
-              const displayTitleEn = (recipe as any).seo?.title?.en || recipe.dishName.en;
-              const displayTitleTa = (recipe as any).seo?.title?.ta || recipe.dishName.ta;
+              const displayTitleEn: string = (recipe as any).seo?.title?.en || recipe.dishName.en;
+              const displayTitleTa: string | undefined = (recipe as any).seo?.title?.ta || recipe.dishName.ta;
 
               return (
                 <div
@@ -513,7 +512,7 @@ const Recipes = () => {
                         {/* Initials — refined, smaller, brand-tinted */}
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="text-[36px] font-black tracking-[0.05em] text-white/15 select-none">
-                            {displayTitleEn.split(" ").slice(0, 2).map(w => w[0]?.toUpperCase()).join("")}
+                            {displayTitleEn.split(" ").slice(0, 2).map((w) => w[0]?.toUpperCase()).join("")}
                           </div>
                         </div>
                       </div>
