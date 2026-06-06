@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --input-type=module)",
+      "Bash(mongosh \"mongodb+srv://ai_editor:8fc2sQeljlkBkQUF@nammasamayalcluster.ilnrdjh.mongodb.net/namma-samayal?appName=NammaSamayalCluster\" --eval 'db.ingredients.find\\({name: /small onion/i}, {_id:1, name:1, nameTamil:1, categories:1, createdAt:1}\\).toArray\\(\\)' --tlsAllowInvalidCertificates)",
+      "Read(//usr/local/bin/**)",
+      "Read(//opt/homebrew/**)",
+      "Bash(node -e ' *)"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo \"admin_exit:$?\")",
+      "Bash(echo \"server_exit:$?\")"
+    ]
+  }
+}
