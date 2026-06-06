@@ -202,9 +202,9 @@ function CircleTable() {
 
       {/* Stone polish rings */}
       {woodGrainGeos.map((geo, i) => (
-        <line key={i} geometry={geo}>
+        <lineLoop key={i} geometry={geo}>
           <lineBasicMaterial color="#e0e5eb" opacity={0.3} transparent />
-        </line>
+        </lineLoop>
       ))}
 
       {/* Outer trim — polished light stone/silver */}
