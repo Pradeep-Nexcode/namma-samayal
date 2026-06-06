@@ -47,6 +47,13 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
   next();
 });
 
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Namma Samayal API is running",
+  });
+});
+
 app.get("/health", (_req: Request, res: Response) => {
   res.status(200).json({
     success: true,
