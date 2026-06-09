@@ -74,7 +74,7 @@ export function Hero() {
               show: { opacity: 1, y: 0 },
             }}
             transition={{ duration: 1, ease }}
-            className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.1] pb-2"
+            className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.1] pb-2"
           >
             Explore Food Through <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Recipes, Ingredients</span> & Regions
           </motion.h1>
@@ -102,7 +102,7 @@ export function Hero() {
           >
             <Link
               href="/recipes"
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-primary px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(231,76,60,0.6)]"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-xl bg-primary px-8 py-4 font-medium text-slate-900 dark:text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(231,76,60,0.6)]"
             >
               <span className="relative z-10 flex items-center gap-2">
                 Explore Recipes
@@ -114,7 +114,7 @@ export function Hero() {
             
             <Link
               href="/ingredients"
-              className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-8 py-4 font-medium text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:scale-105"
+              className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-8 py-4 font-medium text-slate-900 dark:text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:scale-105"
             >
               Discover Ingredients
             </Link>
@@ -139,7 +139,7 @@ export function Hero() {
                 <div className="absolute inset-0 bg-primary/20 mix-blend-overlay"></div>
                 <Image src="/images/main-hero.png" alt="Recipe" fill className="object-cover opacity-60 mix-blend-luminosity" />
               </div>
-              <h3 className="text-white font-medium text-lg">Traditional Sambar</h3>
+              <h3 className="text-slate-900 dark:text-white font-medium text-lg">Traditional Sambar</h3>
               <p className="text-textSecondary text-sm mt-1 mb-3">Authentic Kongu style preparation</p>
               <div className="flex gap-2">
                 <span className="text-xs px-2 py-1 rounded bg-secondary/10 text-secondary border border-secondary/20">Recipe</span>
@@ -204,7 +204,7 @@ export function Hero() {
               </div>
               <div>
                 <p className="text-secondary text-xs uppercase tracking-wider font-semibold">Region</p>
-                <p className="text-white text-sm font-medium">Kongu Nadu</p>
+                <p className="text-slate-900 dark:text-white text-sm font-medium">Kongu Nadu</p>
               </div>
             </div>
           </motion.div>
@@ -226,7 +226,7 @@ export function Hero() {
               </div>
               <div>
                 <p className="text-secondary text-[10px] sm:text-xs uppercase tracking-wider font-semibold group-hover:text-primary transition-colors">Ingredient</p>
-                <p className="text-white text-sm font-medium leading-tight">Small Onions</p>
+                <p className="text-slate-900 dark:text-white text-sm font-medium leading-tight">Small Onions</p>
               </div>
             </div>
           </motion.div>
@@ -247,7 +247,7 @@ export function Hero() {
               </div>
               <div>
                 <p className="text-secondary text-[10px] sm:text-xs uppercase tracking-wider font-semibold group-hover:text-primary transition-colors">Ingredient</p>
-                <p className="text-white text-sm font-medium leading-tight">Byadgi Chilli</p>
+                <p className="text-slate-900 dark:text-white text-sm font-medium leading-tight">Byadgi Chilli</p>
               </div>
             </div>
           </motion.div>

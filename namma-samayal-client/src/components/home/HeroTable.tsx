@@ -377,7 +377,7 @@ export function HeroTable() {
   };
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-white">
+    <section className="relative w-full h-screen overflow-hidden bg-white dark:bg-[var(--color-card)]">
 
       {/* 3D Scene */}
       <Canvas
@@ -406,11 +406,11 @@ export function HeroTable() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-8"
             >
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-800 leading-[1.1]">
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-800 dark:text-gray-100 leading-[1.1]">
                 {active.heading}
               </h1>
 
-              <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg md:text-xl text-slate-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
                 {active.subtext}
               </p>
 

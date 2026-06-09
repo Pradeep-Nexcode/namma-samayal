@@ -1,13 +1,49 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* Tailwind v4: enable .dark class as a custom variant */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================
+   LIGHT THEME (default) - applied to :root
+   ============================================ */
 :root {
+  --color-bg: #f7f7f5;
+  --color-card: #ffffff;
+  --color-elevated: #ffffff;
+  --color-surface: rgb(15 23 42 / 0.04);
+  --color-surface-hover: rgb(15 23 42 / 0.08);
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-text-soft: #94a3b8;
+  --color-border: rgb(15 23 42 / 0.10);
+  --color-border-strong: rgb(15 23 42 / 0.18);
+  --color-primary: #e74c3c;
+  --color-primary-hover: #c0392b;
+  --color-secondary: #f4c430;
+  --color-scrollbar-thumb: #cbd5e1;
+  --color-scrollbar-thumb-hover: #94a3b8;
+}
+
+/* ============================================
+   DARK THEME - applied when <html class="dark">
+   ============================================ */
+.dark {
   --color-bg: #0b0b0b;
   --color-card: #121212;
-  --color-primary: #e74c3c;
-  --color-secondary: #f4c430;
+  --color-elevated: #1a1a1a;
+  --color-surface: rgb(255 255 255 / 0.04);
+  --color-surface-hover: rgb(255 255 255 / 0.08);
   --color-text: #ffffff;
   --color-text-muted: #b0b0b0;
+  --color-text-soft: #6b7280;
+  --color-border: rgb(255 255 255 / 0.10);
+  --color-border-strong: rgb(255 255 255 / 0.18);
+  --color-primary: #e74c3c;
+  --color-primary-hover: #c0392b;
+  --color-secondary: #f4c430;
+  --color-scrollbar-thumb: #2a2a2a;
+  --color-scrollbar-thumb-hover: #3a3a3a;
 }
 
 @theme inline {
@@ -31,15 +67,20 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.55;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 }
 
 @layer components {
   .card {
-    border: 1px solid rgb(255 255 255 / 0.1);
+    border: 1px solid var(--color-border);
     border-radius: 0.75rem;
     background: var(--color-card);
     padding: 1rem;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  }
+
+  .dark .card {
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.35);
   }
 
@@ -49,7 +90,7 @@
     justify-content: center;
     border-radius: 0.5rem;
     background: var(--color-primary);
-    color: var(--color-text);
+    color: #ffffff;
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
     font-weight: 500;
@@ -80,7 +121,7 @@
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #2a2a2a var(--color-bg);
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-bg);
 }
 
 *::-webkit-scrollbar {
@@ -93,11 +134,11 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
+  background: var(--color-scrollbar-thumb);
   border-radius: 9999px;
   border: 2px solid var(--color-bg);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3a;
+  background: var(--color-scrollbar-thumb-hover);
 }

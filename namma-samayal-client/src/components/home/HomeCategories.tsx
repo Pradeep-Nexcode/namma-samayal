@@ -45,14 +45,14 @@ export function HomeCategories() {
     <section className="relative mx-auto w-full max-w-7xl px-6 py-16 lg:px-12 z-10">
       <div className="mb-12 flex items-end justify-between">
         <div className="max-w-xl space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#f3efe6]/80 px-4 py-2 text-xs font-bold text-slate-600 tracking-widest uppercase">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#f3efe6]/80 px-4 py-2 text-xs font-bold text-slate-600 dark:text-gray-300 tracking-widest uppercase">
             <Grid className="h-3.5 w-3.5 text-[#e74c3c]" />
             {t("home.browseCategories")}
           </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             {t("home.flavorProfiles")}
           </h2>
-          <p className="text-lg text-slate-500 font-medium">
+          <p className="text-lg text-slate-500 dark:text-gray-400 font-medium">
             {t("home.findCraving")}
           </p>
         </div>
@@ -78,13 +78,13 @@ export function HomeCategories() {
             <Link
               key={category._id}
               href={`/recipes?category=${category._id}`}
-              className="group relative flex flex-col items-center justify-center gap-4 rounded-3xl bg-slate-50 border border-slate-100 p-8 text-center transition-all duration-300 hover:bg-white hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05),0_0_20px_rgba(231,76,60,0.05)] hover:-translate-y-1 hover:border-[#e74c3c]/30"
+              className="group relative flex flex-col items-center justify-center gap-4 rounded-3xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 p-8 text-center transition-all duration-300 hover:bg-white hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05),0_0_20px_rgba(231,76,60,0.05)] hover:-translate-y-1 hover:border-[#e74c3c]/30"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-[#fcedeb] group-hover:text-[#e74c3c]">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white dark:bg-[var(--color-card)] text-slate-400 dark:text-gray-500 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-[#fcedeb] dark:bg-[#e74c3c]/15 group-hover:text-[#e74c3c]">
                 {getCategoryIcon(category.name.en)}
               </div>
               <div>
-                <h3 className="font-bold text-slate-800 transition-colors group-hover:text-[#e74c3c]">
+                <h3 className="font-bold text-slate-800 dark:text-gray-100 transition-colors group-hover:text-[#e74c3c]">
                   {lf(category.name)}
                 </h3>
               </div>

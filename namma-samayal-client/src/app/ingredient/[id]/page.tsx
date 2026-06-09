@@ -59,23 +59,23 @@ export default function IngredientDetailPage() {
   if (!ingredient) return null;
 
   return (
-    <main className="min-h-screen bg-[#0b0b0b] pt-28 pb-20 overflow-x-hidden">
+    <main className="min-h-screen bg-[var(--color-bg)] pt-28 pb-20 overflow-x-hidden">
       <div className="mx-auto w-full max-w-5xl px-4 lg:px-6">
         {/* Navigation / Breadcrumb */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="mb-8 flex items-center gap-2 text-sm text-gray-400"
+          className="mb-8 flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500"
         >
           <Link 
             href="/ingredients" 
-            className="flex items-center gap-1.5 hover:text-white transition-colors group"
+            className="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white transition-colors group"
           >
             <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
             Back to Ingredients
           </Link>
           <ChevronRight className="h-3 w-3 opacity-20" />
-          <span className="text-gray-500 font-medium">{ingredient.name.en}</span>
+          <span className="text-gray-500 dark:text-gray-400 font-medium">{ingredient.name.en}</span>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -86,7 +86,7 @@ export default function IngredientDetailPage() {
             className="lg:col-span-8 flex flex-col gap-6"
           >
             {/* Hero Card */}
-            <div className="relative overflow-hidden rounded-3xl bg-[#121212] border border-white/5 shadow-2xl">
+            <div className="relative overflow-hidden rounded-3xl bg-[var(--color-card)] border border-white/5 shadow-2xl">
               {/* Image OR Background Glow */}
               {ingredient.imageUrl ? (
                 <div className="absolute inset-0 z-0">
@@ -95,7 +95,7 @@ export default function IngredientDetailPage() {
                     alt={ingredient.name.en}
                     className="h-full w-full object-cover opacity-30"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/80 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-card)] via-[#121212]/80 to-transparent" />
                 </div>
               ) : (
                 <>
@@ -116,7 +116,7 @@ export default function IngredientDetailPage() {
                     PREMIUM INGREDIENT
                   </motion.div>
 
-                  <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                  <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
                     {ingredient.name.en}
                   </h1>
 
@@ -126,7 +126,7 @@ export default function IngredientDetailPage() {
                         <Layers className="h-5 w-5" />
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Category</p>
+                        <p className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold">Category</p>
                         <p className="text-sm font-medium text-gray-200">{ingredient.category?.name?.en || "General"}</p>
                       </div>
                     </div>
@@ -138,7 +138,7 @@ export default function IngredientDetailPage() {
                         <Leaf className="h-5 w-5" />
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Status</p>
+                        <p className="text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold">Status</p>
                         <p className="text-sm font-medium text-gray-200">
                           {ingredient.isActive ? "Fresh & Available" : "Inactive"}
                         </p>
@@ -148,7 +148,7 @@ export default function IngredientDetailPage() {
                 </div>
 
                 <div className="mt-12">
-                  <h3 className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">
+                  <h3 className="flex items-center gap-2 text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">
                     <Info className="h-4 w-4" />
                     About this ingredient
                   </h3>
@@ -167,7 +167,7 @@ export default function IngredientDetailPage() {
                       key={idx}
                       className="inline-flex items-center gap-1.5 rounded-lg bg-white/5 border border-white/10 px-3 py-1.5 text-xs font-medium text-gray-300 hover:bg-white/10 transition-colors cursor-default"
                     >
-                      <Tag className="h-3 w-3 text-gray-500" />
+                      <Tag className="h-3 w-3 text-gray-500 dark:text-gray-400" />
                       {tag}
                     </span>
                   ))}
@@ -181,9 +181,9 @@ export default function IngredientDetailPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="rounded-3xl bg-[#121212] border border-white/5 p-8 shadow-xl"
+                className="rounded-3xl bg-[var(--color-card)] border border-white/5 p-8 shadow-xl"
               >
-                <h3 className="flex items-center gap-2 text-lg font-bold text-white mb-6">
+                <h3 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white mb-6">
                   <Activity className="h-5 w-5 text-[#e74c3c]" />
                   Nutritional Insights
                 </h3>
@@ -195,10 +195,10 @@ export default function IngredientDetailPage() {
                     { label: "Fat", value: ingredient.nutrition.fat, unit: "g" },
                   ].map((item, i) => (
                     <div key={i} className="rounded-2xl bg-white/[0.03] border border-white/5 p-4 text-center">
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{item.label}</p>
-                      <p className="text-xl font-bold text-white">
+                      <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">{item.label}</p>
+                      <p className="text-xl font-bold text-slate-900 dark:text-white">
                         {item.value ?? 0}
-                        <span className="ml-0.5 text-xs font-normal text-gray-500">{item.unit}</span>
+                        <span className="ml-0.5 text-xs font-normal text-gray-500 dark:text-gray-400">{item.unit}</span>
                       </p>
                     </div>
                   ))}
@@ -213,8 +213,8 @@ export default function IngredientDetailPage() {
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-4 flex flex-col gap-6"
           >
-            <div className="rounded-3xl bg-[#121212] border border-white/5 p-6 shadow-xl h-fit">
-              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">
+            <div className="rounded-3xl bg-[var(--color-card)] border border-white/5 p-6 shadow-xl h-fit">
+              <h3 className="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-6">
                 Quick Actions
               </h3>
               <div className="flex flex-col gap-3">
@@ -232,7 +232,7 @@ export default function IngredientDetailPage() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e74c3c] text-white shadow-lg">
                   <Sparkles className="h-5 w-5" />
                 </div>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                   Chef's Tip
                 </h3>
               </div>

@@ -22,6 +22,27 @@ export const metadata: Metadata = {
     "Authentic Tamil and South Indian recipes, ingredients, and traditional Kongu kitchen techniques — in English and Tamil.",
 };
 
+// Runs BEFORE React hydrates so theme is applied before any paint — prevents flash.
+const themeInitScript = `
+(function() {
+  try {
+    var stored = localStorage.getItem('ns_theme');
+    var pref = stored === 'dark' || stored === 'light' || stored === 'system' ? stored : 'system';
+    var resolved = pref === 'system'
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : pref;
+    var root = document.documentElement;
+    if (resolved === 'dark') {
+      root.classList.add('dark');
+      root.style.colorScheme = 'dark';
+    } else {
+      root.style.colorScheme = 'light';
+    }
+    root.setAttribute('data-theme', resolved);
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({
   children,
   modal,
@@ -30,7 +51,10 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${montserrat.variable} h-full antialiased`}>
+    <html lang="en" className={`${montserrat.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] flex flex-col">
         <ClientProviders>
           <Navbar />

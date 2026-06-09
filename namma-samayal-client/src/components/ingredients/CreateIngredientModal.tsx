@@ -218,7 +218,7 @@ export function CreateIngredientModal({
       onClick={onClose}
     >
       <section
-        className="max-h-[92vh] w-full max-w-[980px] overflow-y-auto rounded-2xl border border-white/15 bg-[#121212] p-6 text-white shadow-[0_24px_70px_rgba(0,0,0,0.6)] sm:p-7"
+        className="max-h-[92vh] w-full max-w-[980px] overflow-y-auto rounded-2xl border border-white/15 bg-[var(--color-card)] p-6 text-slate-900 dark:text-white shadow-[0_24px_70px_rgba(0,0,0,0.6)] sm:p-7"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="mb-5 flex items-start justify-between gap-4">
@@ -251,7 +251,7 @@ export function CreateIngredientModal({
                     slug: slugEdited ? prev.slug : slugify(value),
                   }));
                 }}
-                className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
+                className="w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
                 placeholder="Turmeric Powder"
               />
             </label>
@@ -263,7 +263,7 @@ export function CreateIngredientModal({
                 onChange={(event) =>
                   setForm((prev) => ({ ...prev, nameTa: event.target.value }))
                 }
-                className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
+                className="w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
                 placeholder="மஞ்சள் தூள்"
               />
             </label>
@@ -278,7 +278,7 @@ export function CreateIngredientModal({
                   setSlugEdited(true);
                   setForm((prev) => ({ ...prev, slug: slugify(event.target.value) }));
                 }}
-                className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
+                className="w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
                 placeholder="turmeric-powder"
               />
               <p className="text-xs text-zinc-500">Preview: {previewSlug || "-"}</p>
@@ -290,7 +290,7 @@ export function CreateIngredientModal({
                 type="file"
                 accept="image/*"
                 onChange={(event) => setImageFile(event.target.files?.[0] ?? null)}
-                className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none file:mr-3 file:rounded-md file:border-0 file:bg-[#2a2a2a] file:px-3 file:py-1.5 file:text-xs file:text-zinc-200"
+                className="w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none file:mr-3 file:rounded-md file:border-0 file:bg-[#2a2a2a] file:px-3 file:py-1.5 file:text-xs file:text-zinc-200"
               />
             </label>
           </div>
@@ -303,7 +303,7 @@ export function CreateIngredientModal({
                 onChange={(event) =>
                   setForm((prev) => ({ ...prev, categoryId: event.target.value }))
                 }
-                className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none"
+                className="w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none"
               >
                 <option value="">
                   {isCategoriesLoading ? "Loading categories..." : "Select category"}
@@ -326,7 +326,7 @@ export function CreateIngredientModal({
                     subCategoryId: event.target.value,
                   }))
                 }
-                className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none"
+                className="w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none"
               >
                 <option value="">
                   {isSubCategoriesLoading
@@ -357,7 +357,7 @@ export function CreateIngredientModal({
                     descriptionEn: event.target.value,
                   }))
                 }
-                className="h-24 w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
+                className="h-24 w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
                 placeholder="Short ingredient description"
               />
             </label>
@@ -372,7 +372,7 @@ export function CreateIngredientModal({
                     descriptionTa: event.target.value,
                   }))
                 }
-                className="h-24 w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
+                className="h-24 w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
                 placeholder="தமிழில் குறுகிய விளக்கம்"
               />
             </label>
@@ -386,7 +386,7 @@ export function CreateIngredientModal({
                 onChange={(event) =>
                   setForm((prev) => ({ ...prev, imageUrl: event.target.value }))
                 }
-                className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
+                className="w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
                 placeholder="https://..."
               />
             </label>
@@ -398,7 +398,7 @@ export function CreateIngredientModal({
                 onChange={(event) =>
                   setForm((prev) => ({ ...prev, tagsInput: event.target.value }))
                 }
-                className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
+                className="w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
                 placeholder="spicy, healthy, quick"
               />
             </label>
@@ -430,7 +430,7 @@ export function CreateIngredientModal({
                     }
                     type="number"
                     min="0"
-                    className="w-full rounded-lg border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
+                    className="w-full rounded-lg border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] focus:ring-2 focus:ring-[#E74C3C]/35"
                     placeholder="0"
                   />
                 </label>
@@ -463,7 +463,7 @@ export function CreateIngredientModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="rounded-lg bg-[#E74C3C] px-5 py-2 text-sm font-medium text-white hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-lg bg-[#E74C3C] px-5 py-2 text-sm font-medium text-slate-900 dark:text-white hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? "Creating..." : "Create Ingredient"}
             </button>

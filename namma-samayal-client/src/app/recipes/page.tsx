@@ -55,7 +55,7 @@ function Pagination({ pagination, onPageChange }: PaginationProps) {
 
   return (
     <div className="mt-16 flex flex-col items-center gap-5">
-      <p className="text-sm font-medium text-gray-500">
+      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
         Showing{" "}
         <span className="font-bold text-gray-300">{from}–{to}</span> of{" "}
         <span className="font-bold text-gray-300">{total}</span> recipes
@@ -66,7 +66,7 @@ function Pagination({ pagination, onPageChange }: PaginationProps) {
           type="button"
           disabled={!hasPrev}
           onClick={() => onPageChange(currentPage - 1)}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-400 transition-all hover:border-[#e74c3c]/40 hover:bg-[#e74c3c]/10 hover:text-[#e74c3c] disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/10 disabled:hover:bg-white/5 disabled:hover:text-gray-400"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-400 dark:text-gray-500 transition-all hover:border-[#e74c3c]/40 hover:bg-[#e74c3c]/10 hover:text-[#e74c3c] disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/10 disabled:hover:bg-white/5 disabled:hover:text-gray-400"
           aria-label="Previous page"
         >
           <ChevronLeft className="h-4 w-4" />
@@ -76,7 +76,7 @@ function Pagination({ pagination, onPageChange }: PaginationProps) {
           p === "..." ? (
             <span
               key={`ellipsis-${idx}`}
-              className="flex h-10 w-10 items-center justify-center text-sm text-gray-600"
+              className="flex h-10 w-10 items-center justify-center text-sm text-gray-600 dark:text-gray-300"
             >
               …
             </span>
@@ -100,7 +100,7 @@ function Pagination({ pagination, onPageChange }: PaginationProps) {
           type="button"
           disabled={!hasNext}
           onClick={() => onPageChange(currentPage + 1)}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-400 transition-all hover:border-[#e74c3c]/40 hover:bg-[#e74c3c]/10 hover:text-[#e74c3c] disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/10 disabled:hover:bg-white/5 disabled:hover:text-gray-400"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-400 dark:text-gray-500 transition-all hover:border-[#e74c3c]/40 hover:bg-[#e74c3c]/10 hover:text-[#e74c3c] disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-white/10 disabled:hover:bg-white/5 disabled:hover:text-gray-400"
           aria-label="Next page"
         >
           <ChevronRight className="h-4 w-4" />
@@ -187,7 +187,9 @@ function RecipesPageContent() {
   // Client-side tab filters applied on top of the current page
   const filteredRecipes = useMemo(() => {
     if (activeFilter === "with-description") {
-      return recipes.filter((r) => Boolean(r.description?.en?.trim()));
+      return recipes.filter((r) =>
+        Boolean(r.seo?.description?.en?.trim() || r.description?.en?.trim()),
+      );
     }
     if (activeFilter === "quick") {
       return recipes.filter((r) => (r.ingredients?.length ?? 0) <= 6);
@@ -201,7 +203,7 @@ function RecipesPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0b0b] font-sans text-white pt-28 pb-20">
+    <div className="min-h-screen bg-[var(--color-bg)] font-sans text-slate-900 dark:text-white pt-28 pb-20">
       {/* Background orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-[#e74c3c]/10 blur-[120px]" />
@@ -224,7 +226,7 @@ function RecipesPageContent() {
               Discover Your <br />
               Next <span className="text-[#e74c3c]">Masterpiece</span>
             </h1>
-            <p className="text-lg text-gray-400 max-w-xl font-medium">
+            <p className="text-lg text-gray-400 dark:text-gray-500 max-w-xl font-medium">
               Explore a curated collection of authentic recipes, from traditional family secrets to modern culinary innovations.
             </p>
           </div>
@@ -242,7 +244,7 @@ function RecipesPageContent() {
         <section className="mb-12">
           <div className="flex flex-col lg:flex-row gap-6 items-center">
             <div className="relative w-full lg:max-w-md group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 group-focus-within:text-[#e74c3c] transition-colors" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 dark:text-gray-400 group-focus-within:text-[#e74c3c] transition-colors" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -253,7 +255,7 @@ function RecipesPageContent() {
                 <button
                   type="button"
                   onClick={() => setQuery("")}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#e74c3c] transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-[#e74c3c] transition-colors"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                     <path d="M18 6 6 18M6 6l12 12" />
@@ -273,8 +275,8 @@ function RecipesPageContent() {
                   onClick={() => updateUrl({ filter: item.id === "all" ? null : item.id, page: 1 })}
                   className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition-all ${
                     activeFilter === item.id
-                      ? "bg-white/10 text-white border border-white/20 shadow-lg"
-                      : "text-gray-500 hover:text-gray-300 hover:bg-white/5"
+                      ? "bg-white/10 text-slate-900 dark:text-white border border-white/20 shadow-lg"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-300 hover:bg-white/5"
                   }`}
                 >
                   <item.icon className="h-3.5 w-3.5" />
@@ -288,13 +290,13 @@ function RecipesPageContent() {
         {/* Status bar */}
         {!loading && !error && pagination && (
           <div className="mb-8 flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-500">
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
               {urlQuery
                 ? `${pagination.total} result${pagination.total !== 1 ? "s" : ""} for "${urlQuery}"`
                 : `${pagination.total} recipe${pagination.total !== 1 ? "s" : ""} in collection`}
             </p>
             {pagination.pages > 1 && (
-              <p className="text-sm font-medium text-gray-600">
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
                 Page {pagination.page} of {pagination.pages}
               </p>
             )}
@@ -306,7 +308,7 @@ function RecipesPageContent() {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-                <div key={i} className="rounded-[32px] bg-[#121212] border border-white/5 overflow-hidden animate-pulse">
+                <div key={i} className="rounded-[32px] bg-[var(--color-card)] border border-white/5 overflow-hidden animate-pulse">
                   <div className="aspect-[4/3] bg-white/5" />
                   <div className="p-6 space-y-3">
                     <div className="h-5 w-3/4 rounded-full bg-white/5" />
@@ -335,7 +337,7 @@ function RecipesPageContent() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.05 }}
-                      className="group relative flex flex-col rounded-[32px] bg-[#121212] border border-white/5 overflow-hidden transition-all duration-500 hover:border-[#e74c3c]/30 hover:shadow-2xl hover:shadow-[#e74c3c]/10"
+                      className="group relative flex flex-col rounded-[32px] bg-[var(--color-card)] border border-white/5 overflow-hidden transition-all duration-500 hover:border-[#e74c3c]/30 hover:shadow-2xl hover:shadow-[#e74c3c]/10"
                     >
                       <Link href={`/recipe/${recipe._id}`} className="relative aspect-[4/3] overflow-hidden">
                         {recipe.imageUrl ? (
@@ -349,7 +351,7 @@ function RecipesPageContent() {
                             <ChefHat className="h-16 w-16 text-white/5 group-hover:text-[#e74c3c]/20 transition-colors duration-500" />
                           </div>
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent opacity-60" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-card)] via-transparent to-transparent opacity-60" />
                         <div className="absolute top-4 right-4">
                           <div className="rounded-full bg-black/40 backdrop-blur-md px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white border border-white/10">
                             {recipe.difficulty}
@@ -363,17 +365,17 @@ function RecipesPageContent() {
                             {recipe.seo?.title?.en || recipe.title || recipe.dishName.en}
                           </h2>
                           {(recipe.seo?.title?.ta || recipe.dishName.ta) && (
-                            <p className="text-sm font-bold text-gray-600 line-clamp-1">
+                            <p className="text-sm font-bold text-gray-600 dark:text-gray-300 line-clamp-1">
                               {recipe.seo?.title?.ta || recipe.dishName.ta}
                             </p>
                           )}
                         </div>
 
-                        <p className="text-sm text-gray-400 font-medium line-clamp-2 leading-relaxed h-10">
-                          {recipe.description.en}
+                        <p className="text-sm text-gray-400 dark:text-gray-500 font-medium line-clamp-2 leading-relaxed h-10">
+                          {recipe.seo?.description?.en || recipe.description.en}
                         </p>
 
-                        <div className="flex items-center gap-4 text-[11px] font-bold text-gray-500 uppercase tracking-widest mt-auto pt-4 border-t border-white/5">
+                        <div className="flex items-center gap-4 text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mt-auto pt-4 border-t border-white/5">
                           <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/5">
                             <Clock className="h-3.5 w-3.5" />
                             {recipe.cookingTime || "--"}m
@@ -388,7 +390,7 @@ function RecipesPageContent() {
                           href={`/recipe/${recipe._id}`}
                           className="mt-2 flex items-center justify-between group/link h-12 rounded-2xl bg-white/5 group-hover:bg-[#e74c3c] transition-all px-5"
                         >
-                          <span className="text-sm font-black uppercase tracking-wider group-hover:text-white transition-colors">View Recipe</span>
+                          <span className="text-sm font-black uppercase tracking-wider group-hover:text-slate-900 dark:hover:text-white transition-colors">View Recipe</span>
                           <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
                         </Link>
                       </div>
@@ -400,10 +402,10 @@ function RecipesPageContent() {
               {filteredRecipes.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-24 text-center">
                   <div className="h-20 w-20 rounded-full bg-white/5 flex items-center justify-center mb-6">
-                    <Search className="h-8 w-8 text-gray-600" />
+                    <Search className="h-8 w-8 text-gray-600 dark:text-gray-300" />
                   </div>
                   <h3 className="text-xl font-bold mb-2">No recipes found</h3>
-                  <p className="text-gray-500 max-w-xs">
+                  <p className="text-gray-500 dark:text-gray-400 max-w-xs">
                     Try adjusting your search query or filters.
                   </p>
                 </div>
@@ -426,7 +428,7 @@ export default function RecipesPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#0b0b0b] flex items-center justify-center">
+        <div className="min-h-screen bg-[var(--color-bg)] flex items-center justify-center">
           <Loader />
         </div>
       }

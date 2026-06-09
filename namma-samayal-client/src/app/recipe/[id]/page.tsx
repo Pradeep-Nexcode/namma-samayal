@@ -55,7 +55,7 @@ function SpecialityCard({ en, ta, label }: { en: string; ta?: string; label: str
   const isLong = text.length > 160 || bullets.length > 1;
 
   return (
-    <div className="rounded-2xl bg-[#121212] border border-white/8 overflow-hidden">
+    <div className="rounded-2xl bg-[var(--color-card)] border border-white/8 overflow-hidden">
       <div className="flex items-center gap-2.5 px-5 pt-5 pb-3">
         <Sparkles className="h-3.5 w-3.5 text-[#e74c3c] shrink-0" />
         <span className="text-[10px] font-black text-[#e74c3c] uppercase tracking-widest">{label}</span>
@@ -82,7 +82,7 @@ function SpecialityCard({ en, ta, label }: { en: string; ta?: string; label: str
         <button
           type="button"
           onClick={() => setExpanded(!expanded)}
-          className="flex w-full items-center justify-center gap-1.5 px-5 py-3 text-xs font-semibold text-gray-500 hover:text-gray-300 transition-colors border-t border-white/5 mt-3"
+          className="flex w-full items-center justify-center gap-1.5 px-5 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-gray-300 transition-colors border-t border-white/5 mt-3"
         >
           {expanded ? (
             <>{t("recipe.showLess")} <ChevronUp className="h-3.5 w-3.5" /></>
@@ -133,7 +133,7 @@ export default function RecipeDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center bg-[#0b0b0b]">
+      <div className="flex min-h-[60vh] items-center justify-center bg-[var(--color-bg)]">
         <Loader />
       </div>
     );
@@ -141,7 +141,7 @@ export default function RecipeDetailPage() {
 
   if (error) {
     return (
-      <main className="mx-auto w-full max-w-7xl px-4 pt-32 pb-12 bg-[#0b0b0b] min-h-screen">
+      <main className="mx-auto w-full max-w-7xl px-4 pt-32 pb-12 bg-[var(--color-bg)] min-h-screen">
         <ErrorMessage message={error} />
       </main>
     );
@@ -155,31 +155,31 @@ export default function RecipeDetailPage() {
     : recipe.steps?.length ?? 0;
 
   return (
-    <main className="min-h-screen bg-[#0b0b0b] pt-28 pb-24 overflow-x-hidden">
+    <main className="min-h-screen bg-[var(--color-bg)] pt-28 pb-24 overflow-x-hidden">
       <div className="mx-auto w-full max-w-6xl px-4 lg:px-8">
 
         {/* Breadcrumb */}
         <motion.div
           initial={{ opacity: 0, x: -16 }}
           animate={{ opacity: 1, x: 0 }}
-          className="mb-8 flex items-center gap-2 text-sm text-gray-500"
+          className="mb-8 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400"
         >
           <Link
             href="/recipes"
-            className="flex items-center gap-1.5 hover:text-white transition-colors group"
+            className="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white transition-colors group"
           >
             <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
             {t("recipe.allRecipes")}
           </Link>
           <ChevronRight className="h-3 w-3 opacity-30" />
-          <span className="text-gray-400 truncate max-w-xs">{lf(recipe.seo?.title) || recipe.title || lf(recipe.dishName)}</span>
+          <span className="text-gray-400 dark:text-gray-500 truncate max-w-xs">{lf(recipe.seo?.title) || recipe.title || lf(recipe.dishName)}</span>
         </motion.div>
 
         {/* ── HERO ────────────────────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-[40px] bg-[#121212] border border-white/5 shadow-2xl mb-10"
+          className="relative overflow-hidden rounded-[40px] bg-[var(--color-card)] border border-white/5 shadow-2xl mb-10"
         >
           {recipe.imageUrl ? (
             <div className="absolute inset-0 z-0">
@@ -188,7 +188,7 @@ export default function RecipeDetailPage() {
                 alt={recipe.seo?.title?.en || recipe.title || recipe.dishName.en}
                 className="h-full w-full object-cover opacity-35 brightness-75 scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/75 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-card)] via-[#121212]/75 to-transparent" />
             </div>
           ) : (
             <>
@@ -215,7 +215,7 @@ export default function RecipeDetailPage() {
                     </div>
                   ) : null}
                   {recipe.category && (
-                    <div className="flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3.5 py-1.5 text-[11px] font-medium text-gray-400">
+                    <div className="flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3.5 py-1.5 text-[11px] font-medium text-gray-400 dark:text-gray-500">
                       {lf(recipe.category.name)}
                     </div>
                   )}
@@ -224,7 +224,7 @@ export default function RecipeDetailPage() {
 
                 {/* Name */}
                 <div>
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.08]">
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.08]">
                     {lf(recipe.seo?.title) || recipe.title || lf(recipe.dishName)}
                   </h1>
                 </div>
@@ -232,7 +232,7 @@ export default function RecipeDetailPage() {
                 {/* Description */}
                 <div className="pt-1">
                   <p className="text-base md:text-lg text-gray-300 max-w-3xl leading-relaxed font-normal">
-                    {lf(recipe.description)}
+                    {lf(recipe.seo?.description) || lf(recipe.description)}
                   </p>
                 </div>
 
@@ -243,11 +243,11 @@ export default function RecipeDetailPage() {
                       {recipe.createdBy.firstName?.[0]}{recipe.createdBy.lastName?.[0]}
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-widest text-gray-600">{t("recipe.recipeBy")}</p>
-                      <p className="text-sm font-semibold text-gray-400">
+                      <p className="text-[11px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-300">{t("recipe.recipeBy")}</p>
+                      <p className="text-sm font-semibold text-gray-400 dark:text-gray-500">
                         {recipe.createdBy.firstName} {recipe.createdBy.lastName}
                         {recipe.createdBy.username && (
-                          <span className="text-gray-600 ml-1">@{recipe.createdBy.username}</span>
+                          <span className="text-gray-600 dark:text-gray-300 ml-1">@{recipe.createdBy.username}</span>
                         )}
                       </p>
                     </div>
@@ -263,8 +263,8 @@ export default function RecipeDetailPage() {
                       <Clock className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-600">{t("recipe.cookTime")}</p>
-                      <p className="text-base font-bold text-white">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300">{t("recipe.cookTime")}</p>
+                      <p className="text-base font-bold text-slate-900 dark:text-white">
                         {recipe.totalTime
                           ? `${recipe.totalTime} min`
                           : recipe.cookingTime
@@ -281,8 +281,8 @@ export default function RecipeDetailPage() {
                       <Timer className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-600">{t("recipe.prepTime")}</p>
-                      <p className="text-base font-bold text-white">{recipe.prepTime} min</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300">{t("recipe.prepTime")}</p>
+                      <p className="text-base font-bold text-slate-900 dark:text-white">{recipe.prepTime} min</p>
                     </div>
                   </div>
                 )}
@@ -292,8 +292,8 @@ export default function RecipeDetailPage() {
                     <BarChart3 className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-600">{t("recipe.difficulty")}</p>
-                    <p className="text-base font-bold text-white capitalize">{t(`difficulty.${recipe.difficulty}`)}</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300">{t("recipe.difficulty")}</p>
+                    <p className="text-base font-bold text-slate-900 dark:text-white capitalize">{t(`difficulty.${recipe.difficulty}`)}</p>
                   </div>
                 </div>
 
@@ -303,8 +303,8 @@ export default function RecipeDetailPage() {
                       <Users className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-600">{t("recipe.serves")}</p>
-                      <p className="text-base font-bold text-white">{recipe.servings} {t("recipe.people")}</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300">{t("recipe.serves")}</p>
+                      <p className="text-base font-bold text-slate-900 dark:text-white">{recipe.servings} {t("recipe.people")}</p>
                     </div>
                   </div>
                 )}
@@ -315,8 +315,8 @@ export default function RecipeDetailPage() {
                       <Star className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-600">{t("recipe.rating")}</p>
-                      <p className="text-base font-bold text-white">{recipe.averageRating.toFixed(1)} / 5</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300">{t("recipe.rating")}</p>
+                      <p className="text-base font-bold text-slate-900 dark:text-white">{recipe.averageRating.toFixed(1)} / 5</p>
                     </div>
                   </div>
                 )}
@@ -343,13 +343,13 @@ export default function RecipeDetailPage() {
               )}
 
               {/* Ingredients */}
-              <div className="rounded-[28px] bg-[#121212] border border-white/5 p-6 md:p-8 shadow-xl">
+              <div className="rounded-[28px] bg-[var(--color-card)] border border-white/5 p-6 md:p-8 shadow-xl">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="flex items-center gap-2.5 text-xl font-black text-white">
+                  <h2 className="flex items-center gap-2.5 text-xl font-black text-slate-900 dark:text-white">
                     <UtensilsCrossed className="h-5 w-5 text-[#e74c3c]" />
                     {t("recipe.ingredients")}
                   </h2>
-                  <span className="rounded-full bg-white/5 border border-white/8 px-3 py-1 text-xs font-bold text-gray-500">
+                  <span className="rounded-full bg-white/5 border border-white/8 px-3 py-1 text-xs font-bold text-gray-500 dark:text-gray-400">
                     {recipe.ingredients?.length || 0} {t("recipe.items")}
                   </span>
                 </div>
@@ -365,11 +365,11 @@ export default function RecipeDetailPage() {
                       >
                         <div className="flex items-center gap-3">
                           <div className="h-1.5 w-1.5 rounded-full bg-[#e74c3c]/40 group-hover:bg-[#e74c3c] transition-colors shrink-0" />
-                          <span className="text-sm md:text-[15px] font-medium text-gray-300 group-hover:text-white transition-colors">
+                          <span className="text-sm md:text-[15px] font-medium text-gray-300 group-hover:text-slate-900 dark:hover:text-white transition-colors">
                             {lf(item.ingredient?.name)}
                           </span>
                         </div>
-                        <span className="text-sm font-bold text-gray-500 group-hover:text-[#F4C430] transition-colors tabular-nums shrink-0 ml-2">
+                        <span className="text-sm font-bold text-gray-500 dark:text-gray-400 group-hover:text-[#F4C430] transition-colors tabular-nums shrink-0 ml-2">
                           {[item.quantity, item.unit].filter(Boolean).join(" ") || "—"}
                         </span>
                       </Link>
@@ -379,16 +379,16 @@ export default function RecipeDetailPage() {
 
               {/* Tags */}
               {recipe.tags && recipe.tags.length > 0 && (
-                <div className="rounded-[28px] bg-[#121212] border border-white/5 p-6 shadow-xl">
+                <div className="rounded-[28px] bg-[var(--color-card)] border border-white/5 p-6 shadow-xl">
                   <div className="flex items-center gap-2.5 mb-4">
-                    <Tag className="h-4 w-4 text-gray-500" />
-                    <h3 className="text-[11px] font-black text-gray-500 uppercase tracking-widest">{t("recipe.tags")}</h3>
+                    <Tag className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                    <h3 className="text-[11px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">{t("recipe.tags")}</h3>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {recipe.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full bg-white/5 border border-white/8 px-3 py-1.5 text-xs font-medium text-gray-400"
+                        className="rounded-full bg-white/5 border border-white/8 px-3 py-1.5 text-xs font-medium text-gray-400 dark:text-gray-500"
                       >
                         #{tag}
                       </span>
@@ -403,12 +403,12 @@ export default function RecipeDetailPage() {
                   href={recipe.recipeSource.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 rounded-[28px] bg-[#121212] border border-white/5 p-5 hover:border-white/15 transition-all group"
+                  className="flex items-center gap-3 rounded-[28px] bg-[var(--color-card)] border border-white/5 p-5 hover:border-white/15 transition-all group"
                 >
-                  <ExternalLink className="h-4 w-4 text-gray-500 group-hover:text-white transition-colors" />
+                  <ExternalLink className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-slate-900 dark:hover:text-white transition-colors" />
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-600">{t("recipe.originalSource")}</p>
-                    <p className="text-sm font-semibold text-gray-400 group-hover:text-white transition-colors capitalize">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300">{t("recipe.originalSource")}</p>
+                    <p className="text-sm font-semibold text-gray-400 dark:text-gray-500 group-hover:text-slate-900 dark:hover:text-white transition-colors capitalize">
                       {recipe.recipeSource.type} {t("recipe.sourceLabel")}
                     </p>
                   </div>
@@ -425,15 +425,15 @@ export default function RecipeDetailPage() {
             transition={{ delay: 0.2 }}
             className="lg:col-span-8"
           >
-            <div className="rounded-[28px] bg-[#121212] border border-white/5 p-6 md:p-10 shadow-xl">
+            <div className="rounded-[28px] bg-[var(--color-card)] border border-white/5 p-6 md:p-10 shadow-xl">
 
               {/* Steps header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-8 border-b border-white/5">
-                <h2 className="flex items-center gap-3.5 text-2xl md:text-3xl font-black text-white">
+                <h2 className="flex items-center gap-3.5 text-2xl md:text-3xl font-black text-slate-900 dark:text-white">
                   <PlayCircle className="h-7 w-7 text-[#e74c3c]" />
                   {t("recipe.cookingProcess")}
                 </h2>
-                <div className="flex items-center gap-2 text-xs font-bold text-gray-600 uppercase tracking-widest">
+                <div className="flex items-center gap-2 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-widest">
                   <CheckCircle2 className="h-3.5 w-3.5" />
                   {totalSteps} {t("recipe.steps")}
                   {hasSection && ` · ${recipe.sections!.length} ${t("recipe.sections")}`}
@@ -459,7 +459,7 @@ export default function RecipeDetailPage() {
                           <div className="absolute left-[22px] top-8 bottom-8 w-px bg-white/4 hidden md:block" />
                           {section.steps?.map((step, index) => (
                             <div key={index} className="relative flex gap-5 md:gap-7 group">
-                              <div className="hidden md:flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#0b0b0b] border-2 border-white/8 text-sm font-black text-gray-400 z-10 group-hover:border-[#e74c3c] group-hover:text-white group-hover:bg-[#e74c3c] transition-all">
+                              <div className="hidden md:flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-bg)] border-2 border-white/8 text-sm font-black text-gray-400 dark:text-gray-500 z-10 group-hover:border-[#e74c3c] group-hover:text-white group-hover:bg-[#e74c3c] transition-all">
                                 {step.step || index + 1}
                               </div>
                               <div className="flex-1">
@@ -485,7 +485,7 @@ export default function RecipeDetailPage() {
                   <div className="absolute left-[22px] top-8 bottom-8 w-px bg-white/4 hidden md:block" />
                   {recipe.steps?.map((step, index) => (
                     <div key={index} className="relative flex gap-5 md:gap-7 group">
-                      <div className="hidden md:flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#0b0b0b] border-2 border-white/8 text-sm font-black text-gray-400 z-10 group-hover:border-[#e74c3c] group-hover:text-white group-hover:bg-[#e74c3c] transition-all">
+                      <div className="hidden md:flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-bg)] border-2 border-white/8 text-sm font-black text-gray-400 dark:text-gray-500 z-10 group-hover:border-[#e74c3c] group-hover:text-white group-hover:bg-[#e74c3c] transition-all">
                         {step.step || index + 1}
                       </div>
                       <div className="flex-1">
@@ -505,39 +505,39 @@ export default function RecipeDetailPage() {
 
               {/* Done card */}
               <div className="mt-12 rounded-2xl bg-white/[0.03] border border-dashed border-white/8 p-8 text-center">
-                <ChefHat className="h-9 w-9 text-gray-600 mx-auto mb-3" />
-                <h4 className="text-white font-bold text-base mb-1.5">{t("recipe.readyToServe")}</h4>
-                <p className="text-gray-600 text-sm max-w-sm mx-auto leading-relaxed">
+                <ChefHat className="h-9 w-9 text-gray-600 dark:text-gray-300 mx-auto mb-3" />
+                <h4 className="text-slate-900 dark:text-white font-bold text-base mb-1.5">{t("recipe.readyToServe")}</h4>
+                <p className="text-gray-600 dark:text-gray-300 text-sm max-w-sm mx-auto leading-relaxed">
                   {t("recipe.readyToServeMsg")}
                 </p>
               </div>
             </div>
 
             {/* Recipe meta footer */}
-            <div className="mt-6 rounded-[28px] bg-[#121212] border border-white/5 p-6 grid grid-cols-2 sm:grid-cols-3 gap-5">
+            <div className="mt-6 rounded-[28px] bg-[var(--color-card)] border border-white/5 p-6 grid grid-cols-2 sm:grid-cols-3 gap-5">
               {recipe.category && (
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 mb-1">{t("recipe.category")}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300 mb-1">{t("recipe.category")}</p>
                   <p className="text-sm font-semibold text-gray-300">{lf(recipe.category.name)}</p>
                 </div>
               )}
               {recipe.subCategory && (
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 mb-1">{t("recipe.subCategory")}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300 mb-1">{t("recipe.subCategory")}</p>
                   <p className="text-sm font-semibold text-gray-300">{lf(recipe.subCategory.name)}</p>
                 </div>
               )}
               {recipe.location.region && (
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 mb-1">{t("recipe.region")}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300 mb-1">{t("recipe.region")}</p>
                   <p className="text-sm font-semibold text-gray-300">{recipe.location.region}</p>
                 </div>
               )}
               {recipe.createdBy && (
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 mb-1">{t("recipe.addedBy")}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300 mb-1">{t("recipe.addedBy")}</p>
                   <div className="flex items-center gap-2">
-                    <User className="h-3.5 w-3.5 text-gray-500" />
+                    <User className="h-3.5 w-3.5 text-gray-500 dark:text-gray-400" />
                     <p className="text-sm font-semibold text-gray-300">
                       {recipe.createdBy.firstName} {recipe.createdBy.lastName}
                     </p>
@@ -546,7 +546,7 @@ export default function RecipeDetailPage() {
               )}
               {recipe.aiGenerated && (
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 mb-1">{t("recipe.aiCrafted")}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300 mb-1">{t("recipe.aiCrafted")}</p>
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 text-xs font-bold text-purple-400">
                     {t("recipe.aiGenerated")}
                   </span>

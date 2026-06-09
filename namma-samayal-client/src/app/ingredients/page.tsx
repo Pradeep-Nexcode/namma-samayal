@@ -75,7 +75,7 @@ function Pagination({ pagination, onPageChange }: PaginationProps) {
           type="button"
           disabled={!hasPrev}
           onClick={() => onPageChange(currentPage - 1)}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#EAE5DC] bg-white text-[#6b7280] shadow-sm transition-all hover:border-[#e74c3c]/40 hover:text-[#e74c3c] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-[#EAE5DC] disabled:hover:text-[#6b7280]"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#EAE5DC] bg-white dark:bg-[var(--color-card)] text-[#6b7280] shadow-sm transition-all hover:border-[#e74c3c]/40 hover:text-[#e74c3c] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-[#EAE5DC] disabled:hover:text-[#6b7280]"
           aria-label="Previous page"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -100,7 +100,7 @@ function Pagination({ pagination, onPageChange }: PaginationProps) {
               className={`flex h-10 min-w-10 items-center justify-center rounded-xl border px-3 text-sm font-semibold shadow-sm transition-all ${
                 p === currentPage
                   ? "border-[#e74c3c] bg-[#e74c3c] text-white shadow-[0_4px_14px_rgba(231,76,60,0.3)]"
-                  : "border-[#EAE5DC] bg-white text-[#374151] hover:border-[#e74c3c]/40 hover:text-[#e74c3c]"
+                  : "border-[#EAE5DC] bg-white dark:bg-[var(--color-card)] text-[#374151] hover:border-[#e74c3c]/40 hover:text-[#e74c3c]"
               }`}
             >
               {p}
@@ -113,7 +113,7 @@ function Pagination({ pagination, onPageChange }: PaginationProps) {
           type="button"
           disabled={!hasNext}
           onClick={() => onPageChange(currentPage + 1)}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#EAE5DC] bg-white text-[#6b7280] shadow-sm transition-all hover:border-[#e74c3c]/40 hover:text-[#e74c3c] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-[#EAE5DC] disabled:hover:text-[#6b7280]"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#EAE5DC] bg-white dark:bg-[var(--color-card)] text-[#6b7280] shadow-sm transition-all hover:border-[#e74c3c]/40 hover:text-[#e74c3c] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-[#EAE5DC] disabled:hover:text-[#6b7280]"
           aria-label="Next page"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -243,7 +243,7 @@ export default function IngredientsPage() {
   return (
     <div className="min-h-screen bg-[#F7F6F2] font-sans text-[#1f2937]">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-white pt-32 pb-16 sm:pt-40 sm:pb-24">
+      <section className="relative overflow-hidden bg-white dark:bg-[var(--color-card)] pt-32 pb-16 sm:pt-40 sm:pb-24">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(231,76,60,0.05),transparent_50%),radial-gradient(circle_at_bottom_left,rgba(244,196,48,0.03),transparent_50%)]" />
         <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-[#e74c3c]/5 blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-[#fde6d4]/20 blur-3xl" />
@@ -259,10 +259,10 @@ export default function IngredientsPage() {
                 </span>
                 Ingredient Library
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-7xl">
+              <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl lg:text-7xl">
                 The Chef's <span className="text-[#e74c3c]">Pantry</span>
               </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-600 max-w-xl">
+              <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300 max-w-xl">
                 Explore our curated collection of high-quality ingredients. From mountain-grown spices to locally sourced vegetables, find the building blocks for your next culinary adventure.
               </p>
             </div>
@@ -295,7 +295,7 @@ export default function IngredientsPage() {
         <section className="relative -mt-20 z-10 rounded-3xl border border-[#EAE5DC] bg-white/90 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.08)] backdrop-blur-md sm:p-8">
           <div className="grid gap-6 md:grid-cols-[1.5fr_1fr_1fr]">
             <div className="relative">
-              <label className="flex items-center gap-3 rounded-2xl border-2 border-[#E6DFD3]/50 bg-[#FCFAF6] px-4 py-3.5 transition-all focus-within:border-[#e74c3c]/30 focus-within:bg-white focus-within:shadow-inner">
+              <label className="flex items-center gap-3 rounded-2xl border-2 border-[#E6DFD3]/50 bg-[#FCFAF6] px-4 py-3.5 transition-all focus-within:border-[#e74c3c]/30 focus-within:bg-white dark:bg-[var(--color-card)] focus-within:shadow-inner">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-5 w-5 shrink-0 text-[#9ca3af]">
                   <circle cx="11" cy="11" r="8" />
                   <path d="m21 21-4.3-4.3" />
@@ -327,7 +327,7 @@ export default function IngredientsPage() {
                   <option key={c._id} value={c._id}>{c.name.en}</option>
                 ))}
               </select>
-              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                 </svg>
@@ -346,7 +346,7 @@ export default function IngredientsPage() {
                   <option key={c._id} value={c._id}>{c.name.en}</option>
                 ))}
               </select>
-              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                 </svg>
@@ -393,7 +393,7 @@ export default function IngredientsPage() {
           </div>
 
           {error && (
-            <p className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            <p className="mb-6 rounded-xl border border-red-200 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-600">
               {error}
             </p>
           )}
@@ -402,7 +402,7 @@ export default function IngredientsPage() {
           {isLoading && (
             <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
               {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-                <div key={i} className="flex flex-col items-center rounded-3xl border border-[#E7E1D5]/50 bg-white p-5">
+                <div key={i} className="flex flex-col items-center rounded-3xl border border-[#E7E1D5]/50 bg-white dark:bg-[var(--color-card)] p-5">
                   <div className="mb-5 h-20 w-20 rounded-2xl bg-[#f3efe6] animate-pulse" />
                   <div className="mb-2 h-4 w-3/4 rounded-full bg-[#f3efe6] animate-pulse" />
                   <div className="h-3 w-1/2 rounded-full bg-[#f3efe6] animate-pulse" />
@@ -428,7 +428,7 @@ export default function IngredientsPage() {
                     <Link
                       key={item._id}
                       href={`/ingredient/${item._id}`}
-                      className="group relative flex flex-col items-center rounded-3xl border border-[#E7E1D5]/50 bg-white p-5 shadow-[0_10px_25px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#e74c3c]/30 hover:shadow-[0_20px_40px_rgba(231,76,60,0.1)]"
+                      className="group relative flex flex-col items-center rounded-3xl border border-[#E7E1D5]/50 bg-white dark:bg-[var(--color-card)] p-5 shadow-[0_10px_25px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#e74c3c]/30 hover:shadow-[0_20px_40px_rgba(231,76,60,0.1)]"
                     >
                       <div className="relative mb-5">
                         <div className="absolute inset-0 scale-110 rounded-full bg-[#fde6d4]/50 blur-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -448,7 +448,7 @@ export default function IngredientsPage() {
                         </p>
                       </div>
 
-                      <div className="mt-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-50 opacity-0 transition-all duration-300 group-hover:bg-[#e74c3c]/10 group-hover:opacity-100">
+                      <div className="mt-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-50 dark:bg-white/5 opacity-0 transition-all duration-300 group-hover:bg-[#e74c3c]/10 group-hover:opacity-100">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" className="text-[#e74c3c]">
                           <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>

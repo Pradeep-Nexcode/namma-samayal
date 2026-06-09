@@ -36,40 +36,40 @@ export function Footer() {
   const { t } = useLang();
 
   return (
-    <footer className="w-full bg-white mt-auto px-4 lg:px-6 pb-4 lg:p-6">
-      <div className="mx-auto w-full max-w-7xl rounded-2xl bg-white shadow-sm border border-slate-200 px-6 py-16 lg:px-12 lg:py-20">
+    <footer className="w-full bg-white dark:bg-[var(--color-card)] mt-auto px-4 lg:px-6 pb-4 lg:p-6">
+      <div className="mx-auto w-full max-w-7xl rounded-2xl bg-white dark:bg-[var(--color-card)] shadow-sm border border-slate-200 dark:border-white/10 px-6 py-16 lg:px-12 lg:py-20">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-4 xl:gap-24">
 
           {/* Logo and About */}
           <div className="flex flex-col gap-6 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 shrink-0">
-              <span className="text-2xl font-bold tracking-tight text-gray-900">
+              <span className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Namma <span className="text-[#e74c3c]">Samayal</span>
               </span>
             </Link>
-            <p className="text-[15px] leading-relaxed text-slate-500 font-medium">
+            <p className="text-[15px] leading-relaxed text-slate-500 dark:text-gray-400 font-medium">
               {t("footer.tagline")}
             </p>
 
             {/* Language switcher */}
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500 mb-2">
                 {t("footer.language")}
               </p>
               <LanguageSwitcher variant="light" />
             </div>
 
             <div className="flex items-center gap-4 mt-1">
-              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-all hover:bg-[#fcedeb] hover:text-[#e74c3c]">
+              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-gray-500 transition-all hover:bg-[#fcedeb] dark:bg-[#e74c3c]/15 hover:text-[#e74c3c]">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-all hover:bg-[#fcedeb] hover:text-[#e74c3c]">
+              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-gray-500 transition-all hover:bg-[#fcedeb] dark:bg-[#e74c3c]/15 hover:text-[#e74c3c]">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-all hover:bg-[#fcedeb] hover:text-[#e74c3c]">
+              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-gray-500 transition-all hover:bg-[#fcedeb] dark:bg-[#e74c3c]/15 hover:text-[#e74c3c]">
                 <Youtube className="h-5 w-5" />
               </a>
-              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-all hover:bg-[#fcedeb] hover:text-[#e74c3c]">
+              <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-gray-500 transition-all hover:bg-[#fcedeb] dark:bg-[#e74c3c]/15 hover:text-[#e74c3c]">
                 <Twitter className="h-5 w-5" />
               </a>
             </div>
@@ -78,37 +78,37 @@ export function Footer() {
           {/* Nav Links Grid */}
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-3">
             <div className="flex flex-col gap-6">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-slate-900">{t("footer.homeExplore")}</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-slate-900 dark:text-white">{t("footer.homeExplore")}</h3>
               <nav className="flex flex-col gap-4">
-                <Link href="/" className="text-slate-500 transition-colors hover:text-[#e74c3c] font-medium">{t("nav.home")}</Link>
-                <Link href="/recipes" className="text-slate-500 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.allRecipes")}</Link>
-                <Link href="/ingredients" className="text-slate-500 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.ingredientLibrary")}</Link>
-                <Link href="/explore" className="text-slate-500 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.exploreCuisines")}</Link>
+                <Link href="/" className="text-slate-500 dark:text-gray-400 transition-colors hover:text-[#e74c3c] font-medium">{t("nav.home")}</Link>
+                <Link href="/recipes" className="text-slate-500 dark:text-gray-400 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.allRecipes")}</Link>
+                <Link href="/ingredients" className="text-slate-500 dark:text-gray-400 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.ingredientLibrary")}</Link>
+                <Link href="/explore" className="text-slate-500 dark:text-gray-400 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.exploreCuisines")}</Link>
               </nav>
             </div>
 
             <div className="flex flex-col gap-6">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-slate-900">{t("footer.community")}</h3>
+              <h3 className="text-sm font-bold uppercase tracking-widest text-slate-900 dark:text-white">{t("footer.community")}</h3>
               <nav className="flex flex-col gap-4">
-                <Link href="/recipes/create" className="text-slate-500 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.submitRecipe")}</Link>
-                <Link href="/profile" className="text-slate-500 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.myProfile")}</Link>
-                <Link href="#" className="text-slate-500 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.topAuthors")}</Link>
-                <Link href="#" className="text-slate-500 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.communityRules")}</Link>
+                <Link href="/recipes/create" className="text-slate-500 dark:text-gray-400 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.submitRecipe")}</Link>
+                <Link href="/profile" className="text-slate-500 dark:text-gray-400 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.myProfile")}</Link>
+                <Link href="#" className="text-slate-500 dark:text-gray-400 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.topAuthors")}</Link>
+                <Link href="#" className="text-slate-500 dark:text-gray-400 transition-colors hover:text-[#e74c3c] font-medium">{t("footer.communityRules")}</Link>
               </nav>
             </div>
 
             <div className="flex flex-col gap-6 sm:col-span-1 col-span-2">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-slate-900">{t("footer.stayUpdated")}</h3>
-              <p className="text-sm text-slate-500 font-medium leading-relaxed">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-slate-900 dark:text-white">{t("footer.stayUpdated")}</h3>
+              <p className="text-sm text-slate-500 dark:text-gray-400 font-medium leading-relaxed">
                 {t("footer.newsletterDesc")}
               </p>
               <form className="relative mt-2">
                 <div className="relative flex items-center">
-                  <Mail className="absolute left-4 h-5 w-5 text-slate-400" />
+                  <Mail className="absolute left-4 h-5 w-5 text-slate-400 dark:text-gray-500" />
                   <input
                     type="email"
                     placeholder={t("footer.emailPlaceholder")}
-                    className="w-full rounded-2xl border-2 border-slate-100 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-medium text-slate-900 outline-none transition-all focus:border-[#e74c3c]/30 focus:bg-white"
+                    className="w-full rounded-2xl border-2 border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/5 py-3.5 pl-12 pr-4 text-sm font-medium text-white outline-none transition-all focus:border-[#e74c3c]/30 focus:bg-white"
                   />
                   <button
                     type="button"
@@ -122,14 +122,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-slate-100 pt-8 sm:flex-row">
-          <p className="text-sm font-medium text-slate-400">
+        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-slate-100 dark:border-white/10 pt-8 sm:flex-row">
+          <p className="text-sm font-medium text-slate-400 dark:text-gray-500">
             © {new Date().getFullYear()} Namma Samayal. {t("footer.allRights")}
           </p>
           <div className="flex items-center gap-6">
-            <Link href="#" className="text-sm font-medium text-slate-400 hover:text-slate-900 transition-colors">{t("footer.privacy")}</Link>
-            <Link href="#" className="text-sm font-medium text-slate-400 hover:text-slate-900 transition-colors">{t("footer.terms")}</Link>
-            <Link href="#" className="text-sm font-medium text-slate-400 hover:text-slate-900 transition-colors">{t("footer.cookies")}</Link>
+            <Link href="#" className="text-sm font-medium text-slate-400 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white transition-colors">{t("footer.privacy")}</Link>
+            <Link href="#" className="text-sm font-medium text-slate-400 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white transition-colors">{t("footer.terms")}</Link>
+            <Link href="#" className="text-sm font-medium text-slate-400 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white transition-colors">{t("footer.cookies")}</Link>
           </div>
         </div>
       </div>

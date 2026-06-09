@@ -40,7 +40,7 @@ export function LanguageSwitcher({ variant = "light" }: LanguageSwitcherProps) {
         onClick={() => setOpen(!open)}
         className={`flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
           isLight
-            ? "border border-gray-200 text-gray-600 hover:border-gray-300 hover:text-gray-900 bg-white"
+            ? "border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-white/20 hover:text-gray-900 dark:hover:text-white bg-white dark:bg-transparent"
             : "border border-white/10 text-gray-400 hover:border-white/20 hover:text-gray-200 bg-transparent"
         }`}
       >
@@ -52,7 +52,7 @@ export function LanguageSwitcher({ variant = "light" }: LanguageSwitcherProps) {
       {open && (
         <div className={`absolute right-0 top-full mt-2 w-44 rounded-2xl border shadow-xl py-1.5 z-50 ${
           isLight
-            ? "bg-white border-gray-100"
+            ? "bg-white dark:bg-[#1a1a1a] border-gray-100 dark:border-white/10"
             : "bg-[#1a1a1a] border-white/10"
         }`}>
           {LANGUAGES.map((language) => (
@@ -63,14 +63,14 @@ export function LanguageSwitcher({ variant = "light" }: LanguageSwitcherProps) {
               className={`flex w-full items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors ${
                 isLight
                   ? lang === language.code
-                    ? "bg-gray-50 text-gray-900"
-                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                    ? "bg-gray-50 dark:bg-white/10 text-gray-900 dark:text-white"
+                    : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
                   : lang === language.code
                     ? "bg-white/8 text-white"
                     : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
               }`}
             >
-              <span className="w-8 text-xs font-black text-gray-400 shrink-0">{language.short}</span>
+              <span className="w-8 text-xs font-black text-gray-400 dark:text-gray-500 shrink-0">{language.short}</span>
               <span>{language.label}</span>
               {lang === language.code && (
                 <Check className="h-3.5 w-3.5 ml-auto text-[#e74c3c] shrink-0" />

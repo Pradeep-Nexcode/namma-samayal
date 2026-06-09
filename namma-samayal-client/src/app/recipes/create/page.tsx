@@ -316,7 +316,7 @@ export default function CreateRecipePage() {
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 lg:py-10">
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white sm:text-3xl">
           Create Recipe
         </h1>
         <Link
@@ -329,7 +329,7 @@ export default function CreateRecipePage() {
 
       <form
         onSubmit={onSubmit}
-        className="space-y-6 rounded-3xl border border-white/10 bg-[#121212] p-5 text-white shadow-[0_18px_50px_rgba(0,0,0,0.45)] sm:p-6"
+        className="space-y-6 rounded-3xl border border-white/10 bg-[var(--color-card)] p-5 text-slate-900 dark:text-white shadow-[0_18px_50px_rgba(0,0,0,0.45)] sm:p-6"
       >
         {error ? (
           <p className="rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300">
@@ -344,19 +344,19 @@ export default function CreateRecipePage() {
               value={dishNameEn}
               onChange={(event) => setDishNameEn(event.target.value)}
               placeholder="Dish name (English) *"
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
             <input
               value={dishNameTa}
               onChange={(event) => setDishNameTa(event.target.value)}
               placeholder="Dish name (Tamil)"
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
             <input
               value={title}
               onChange={(event) => setTitle(event.target.value)}
               placeholder="Title (optional)"
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] sm:col-span-2"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C] sm:col-span-2"
             />
           </div>
         </section>
@@ -368,25 +368,25 @@ export default function CreateRecipePage() {
               value={country}
               onChange={(event) => setCountry(event.target.value)}
               placeholder="Country *"
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
             <input
               value={stateName}
               onChange={(event) => setStateName(event.target.value)}
               placeholder="State"
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
             <input
               value={region}
               onChange={(event) => setRegion(event.target.value)}
               placeholder="Region"
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
             <input
               value={city}
               onChange={(event) => setCity(event.target.value)}
               placeholder="City"
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
           </div>
         </section>
@@ -399,14 +399,14 @@ export default function CreateRecipePage() {
               onChange={(event) => setDescriptionEn(event.target.value)}
               placeholder="Description (English) *"
               rows={4}
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
             <textarea
               value={descriptionTa}
               onChange={(event) => setDescriptionTa(event.target.value)}
               placeholder="Description (Tamil)"
               rows={4}
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -414,13 +414,13 @@ export default function CreateRecipePage() {
               value={specialityEn}
               onChange={(event) => setSpecialityEn(event.target.value)}
               placeholder="Speciality (English)"
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
             <input
               value={specialityTa}
               onChange={(event) => setSpecialityTa(event.target.value)}
               placeholder="Speciality (Tamil)"
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
           </div>
         </section>
@@ -447,7 +447,7 @@ export default function CreateRecipePage() {
                 onChange={(event) =>
                   updateIngredientRow(index, "ingredient", event.target.value)
                 }
-                className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+                className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
                 disabled={loadingOptions}
               >
                 <option value="">
@@ -468,7 +468,7 @@ export default function CreateRecipePage() {
                   updateIngredientRow(index, "quantity", event.target.value)
                 }
                 placeholder="Quantity"
-                className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+                className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
               />
 
               <input
@@ -477,7 +477,7 @@ export default function CreateRecipePage() {
                   updateIngredientRow(index, "unit", event.target.value)
                 }
                 placeholder="Unit"
-                className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+                className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
               />
 
               <button
@@ -507,7 +507,7 @@ export default function CreateRecipePage() {
           {steps.map((step, index) => (
             <div
               key={`step-row-${index}`}
-              className="rounded-xl border border-white/10 bg-[#171717] p-3"
+              className="rounded-xl border border-white/10 bg-[var(--color-card)] p-3"
             >
               <div className="mb-2 flex items-center justify-between">
                 <p className="text-sm font-medium">Step {index + 1}</p>
@@ -529,7 +529,7 @@ export default function CreateRecipePage() {
                   }
                   placeholder="Step description (English) *"
                   rows={3}
-                  className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+                  className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
                 />
                 <textarea
                   value={step.ta}
@@ -538,7 +538,7 @@ export default function CreateRecipePage() {
                   }
                   placeholder="Step description (Tamil)"
                   rows={3}
-                  className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+                  className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
                 />
               </div>
             </div>
@@ -553,7 +553,7 @@ export default function CreateRecipePage() {
               onChange={(event) =>
                 setDifficulty(event.target.value as RecipeDifficulty)
               }
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             >
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>
@@ -565,7 +565,7 @@ export default function CreateRecipePage() {
               onChange={(event) =>
                 setSource(event.target.value as RecipeSource)
               }
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             >
               <option value="manual">Manual</option>
               <option value="youtube">YouTube</option>
@@ -579,7 +579,7 @@ export default function CreateRecipePage() {
               placeholder="Cooking time (mins)"
               type="number"
               min={1}
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
 
             <input
@@ -588,7 +588,7 @@ export default function CreateRecipePage() {
               placeholder="Servings"
               type="number"
               min={1}
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
           </div>
 
@@ -599,7 +599,7 @@ export default function CreateRecipePage() {
                 setCategoryId(event.target.value);
                 setSubCategoryId("");
               }}
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
               disabled={loadingOptions}
             >
               <option value="">Select category</option>
@@ -613,7 +613,7 @@ export default function CreateRecipePage() {
             <select
               value={subCategoryId}
               onChange={(event) => setSubCategoryId(event.target.value)}
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
               disabled={!categoryId || subCategoriesLoading}
             >
               <option value="">
@@ -633,7 +633,7 @@ export default function CreateRecipePage() {
             value={tags}
             onChange={(event) => setTags(event.target.value)}
             placeholder="Tags (comma separated)"
-            className="w-full rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+            className="w-full rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
           />
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -641,7 +641,7 @@ export default function CreateRecipePage() {
               value={imageUrl}
               onChange={(event) => setImageUrl(event.target.value)}
               placeholder="Image URL (optional)"
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2.5 text-sm outline-none focus:border-[#E74C3C]"
             />
             <input
               type="file"
@@ -649,7 +649,7 @@ export default function CreateRecipePage() {
               onChange={(event) =>
                 setImageFile(event.target.files?.[0] || null)
               }
-              className="rounded-xl border border-white/10 bg-[#1a1a1a] px-3 py-2 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[#E74C3C] file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-white"
+              className="rounded-xl border border-white/10 bg-[var(--color-elevated)] px-3 py-2 text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[#E74C3C] file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-slate-900 dark:text-white"
             />
           </div>
 
@@ -675,7 +675,7 @@ export default function CreateRecipePage() {
           <button
             type="submit"
             disabled={isSubmitting || loadingOptions}
-            className="rounded-xl bg-[#E74C3C] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(231,76,60,0.35)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-xl bg-[#E74C3C] px-5 py-2.5 text-sm font-semibold text-slate-900 dark:text-white shadow-[0_10px_25px_rgba(231,76,60,0.35)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isSubmitting ? "Creating..." : "Create Recipe"}
           </button>
