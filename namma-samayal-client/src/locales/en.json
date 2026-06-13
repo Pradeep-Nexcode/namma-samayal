@@ -42,7 +42,11 @@
     "readyToServe": "Ready to Serve!",
     "readyToServeMsg": "Plate your dish with care and serve fresh for the best experience.",
     "cookNow": "Cook Now",
-    "new": "New"
+    "new": "New",
+    "save": "Save Recipe",
+    "saved": "Saved",
+    "print": "Print",
+    "share": "Share"
   },
   "difficulty": {
     "easy": "Easy",

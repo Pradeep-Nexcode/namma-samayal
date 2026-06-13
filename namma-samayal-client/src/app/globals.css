@@ -1,5 +1,10 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+/* Fonts are now loaded via next/font in src/app/layout.tsx:
+     --font-montserrat   (legacy default body)
+     --font-poppins      → --font-ui
+     --font-nunito       → --font-body
+     --font-patrick-hand → --font-title-hw
+     --font-kalam        → --font-note-hw */
 
 /* Tailwind v4: enable .dark class as a custom variant */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -142,3 +147,166 @@
 *::-webkit-scrollbar-thumb:hover {
   background: var(--color-scrollbar-thumb-hover);
 }
+
+
+/* ============================================
+   NOTEBOOK / SCRAPBOOK UTILITIES
+   ============================================ */
+
+/* Font system — 4 Google Fonts loaded via next/font in layout.tsx.
+   Each font exposes a CSS variable on the <html> element. We map them to
+   semantic role tokens below so the rest of the app can pick the right voice. */
+:root {
+  --font-ui: var(--font-poppins), "Poppins", "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: var(--font-nunito), "Nunito", "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-title-hw: var(--font-patrick-hand), "Patrick Hand", "Caveat", "Comic Sans MS", cursive;
+  --font-note-hw: var(--font-kalam), "Kalam", "Caveat", "Patrick Hand", "Comic Sans MS", cursive;
+}
+
+/* Utility classes — apply per element to choose voice. */
+.font-ui { font-family: var(--font-ui); }
+.font-body { font-family: var(--font-body); }
+.font-title-hw { font-family: var(--font-title-hw); letter-spacing: 0.01em; }
+.font-note-hw { font-family: var(--font-note-hw); letter-spacing: 0.005em; }
+
+/* Legacy alias — old code used `.handwritten` for titles. Map it to Patrick Hand
+   (the title voice) so existing usages still render correctly. New code should
+   prefer the explicit `.font-title-hw` / `.font-note-hw` classes. */
+.handwritten {
+  font-family: var(--font-title-hw);
+  letter-spacing: 0.01em;
+}
+
+/* Cream parchment background — built from stacked radial gradients + a dot grain.
+   Graceful dark variant keeps the metaphor without losing legibility. */
+.paper-bg {
+  background-color: #fbf6ec;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(232, 200, 140, 0.22), transparent 55%),
+    radial-gradient(circle at 82% 78%, rgba(200, 170, 120, 0.18), transparent 60%),
+    radial-gradient(rgba(120, 90, 40, 0.06) 1px, transparent 1px);
+  background-size: auto, auto, 3px 3px;
+}
+.dark .paper-bg {
+  background-color: #15140f;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(120, 90, 40, 0.18), transparent 55%),
+    radial-gradient(circle at 82% 78%, rgba(80, 60, 30, 0.18), transparent 60%),
+    radial-gradient(rgba(255, 240, 200, 0.04) 1px, transparent 1px);
+  background-size: auto, auto, 3px 3px;
+}
+
+/* Crisp paper card surface used for hero, ingredients, steps, footer tiles */
+.paper-card {
+  background-color: #fffdf6;
+}
+.dark .paper-card {
+  background-color: #1f1d17;
+}
+
+/* Navbar paper surface — exposed as a CSS variable so it can be referenced
+   with an inline `var(--ns-nav-bg)` in tailwind utilities. */
+:root { --ns-nav-bg: #fffdf6; }
+.dark { --ns-nav-bg: #1f1d17; }
+
+/* Faint horizontal ruling for ingredient list — light + dark */
+.paper-ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 38px,
+    rgba(120, 90, 40, 0.12) 38px,
+    rgba(120, 90, 40, 0.12) 39px
+  );
+  background-position: 0 4px;
+}
+.dark .paper-ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 38px,
+    rgba(255, 240, 200, 0.08) 38px,
+    rgba(255, 240, 200, 0.08) 39px
+  );
+}
+
+/* Print: drop decorative chrome for a clean recipe card output */
+@media print {
+  body { background: #ffffff !important; }
+  .paper-bg, .paper-card { background: #ffffff !important; }
+  .paper-ruled { background-image: none !important; }
+}
+
+@media print {
+  .paper-bg {
+    background: white !important;
+  }
+  .paper-card {
+    box-shadow: none !important;
+    border-color: #e7e5e4 !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+}
+
+/* ============================================
+   PAPER NOISE — subtle SVG turbulence atop .paper-bg
+   Adds tactile grain (~22% opacity, lower freq for less moiré)
+   on top of the cream gradient + dot grain.
+   ============================================ */
+.paper-bg {
+  background-color: #fbf6ec;
+  background-image:
+    url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.45  0 0 0 0 0.32  0 0 0 0 0.15  0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 18% 22%, rgba(232, 200, 140, 0.22), transparent 55%),
+    radial-gradient(circle at 82% 78%, rgba(200, 170, 120, 0.18), transparent 60%),
+    radial-gradient(rgba(120, 90, 40, 0.06) 1px, transparent 1px);
+  background-size: 220px 220px, auto, auto, 3px 3px;
+  background-repeat: repeat, no-repeat, no-repeat, repeat;
+}
+.dark .paper-bg {
+  background-color: #15140f;
+  background-image:
+    url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 0.95  0 0 0 0 0.85  0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.24'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 18% 22%, rgba(120, 90, 40, 0.18), transparent 55%),
+    radial-gradient(circle at 82% 78%, rgba(80, 60, 30, 0.18), transparent 60%),
+    radial-gradient(rgba(255, 240, 200, 0.04) 1px, transparent 1px);
+  background-size: 220px 220px, auto, auto, 3px 3px;
+  background-repeat: repeat, no-repeat, no-repeat, repeat;
+}
+
+/* Reduce noise repaint cost on touch / coarse-pointer devices */
+@media (hover: none) and (pointer: coarse) {
+  .paper-bg {
+    background-image:
+      radial-gradient(circle at 18% 22%, rgba(232, 200, 140, 0.22), transparent 55%),
+      radial-gradient(circle at 82% 78%, rgba(200, 170, 120, 0.18), transparent 60%),
+      radial-gradient(rgba(120, 90, 40, 0.06) 1px, transparent 1px);
+    background-size: auto, auto, 3px 3px;
+    background-repeat: no-repeat, no-repeat, repeat;
+  }
+}
+
+/* Print: drop the noise layer for a clean print */
+@media print {
+  .paper-bg {
+    background-image: none !important;
+    background-color: #ffffff !important;
+  }
+}
+
+/* ============================================
+   Dotted-leader helper utility
+   ============================================ */
+.dotted-leader {
+  background-image: radial-gradient(currentColor 1px, transparent 1.5px);
+  background-size: 6px 8px;
+  background-position: 0 100%;
+  background-repeat: repeat-x;
+}
+

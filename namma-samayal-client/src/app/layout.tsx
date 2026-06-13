@@ -2,12 +2,44 @@ import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ClientProviders } from "@/components/providers/ClientProviders";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Poppins, Nunito, Patrick_Hand, Kalam } from "next/font/google";
 import "./globals.css";
 
+// Legacy default — body still falls back to Montserrat in globals.css for now.
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
+  display: "swap",
+});
+
+// Notebook font system (4 fonts, exposed as CSS variables):
+//   --font-ui        → Poppins       (navbar, buttons, chips, stats, numbers)
+//   --font-body      → Nunito        (paragraph body, ingredient list, descriptions)
+//   --font-title-hw  → Patrick Hand  (recipe title, section headings)
+//   --font-note-hw   → Kalam         (sticky notes, step text, handwritten accents)
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+const nunito = Nunito({
+  variable: "--font-nunito",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
+});
+const patrickHand = Patrick_Hand({
+  variable: "--font-patrick-hand",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+const kalam = Kalam({
+  variable: "--font-kalam",
+  subsets: ["latin"],
+  weight: ["300", "400", "700"],
+  display: "swap",
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -51,7 +83,11 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${montserrat.variable} h-full antialiased`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${montserrat.variable} ${poppins.variable} ${nunito.variable} ${patrickHand.variable} ${kalam.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>

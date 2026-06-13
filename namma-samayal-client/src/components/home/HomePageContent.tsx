@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ErrorMessage } from "@/components/common/ErrorMessage";
 import { Loader } from "@/components/common/Loader";
-import { HeroTable } from "@/components/home/HeroTable";
+import { HeroNotebook } from "@/components/home/HeroNotebook";
 import { HomeCategories } from "@/components/home/HomeCategories";
 import { HomeLatestRecipes } from "@/components/home/HomeLatestRecipes";
 import { HomeCTA } from "@/components/home/HomeCTA";
@@ -35,7 +35,7 @@ export function HomePageContent() {
 
   return (
     <div className="bg-white dark:bg-[var(--color-card)] min-h-screen text-slate-800 dark:text-gray-100">
-      <HeroTable />
+      <HeroNotebook />
 
       <HomeCategories />
 
