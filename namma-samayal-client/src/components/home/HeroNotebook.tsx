@@ -870,9 +870,9 @@ export function HeroNotebook() {
                 }}
               />
               <div className="flex items-center justify-center gap-1.5 mb-3 pt-1">
-                <h3 className="font-title-hw text-[18px] font-bold text-stone-800 dark:text-stone-100">
+                <h2 className="font-title-hw text-[18px] font-bold text-stone-800 dark:text-stone-100">
                   {ts("home.ourPromise", "Our Promise")}
-                </h3>
+                </h2>
                 <span className="text-[#e74c3c] h-4 w-4">
                   <HeartDoodle className="h-full w-full" />
                 </span>
@@ -899,13 +899,13 @@ export function HeroNotebook() {
         <div className="mt-10 md:mt-14 flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Find by Category teaser */}
           <div className="flex items-center gap-3 min-w-0">
-            <h3 className="relative font-title-hw text-[24px] md:text-[28px] font-bold text-stone-900 dark:text-stone-50 inline-block">
+            <h2 className="relative font-title-hw text-[24px] md:text-[28px] font-bold text-stone-900 dark:text-stone-50 inline-block">
               {ts("home.findByCategory", "Find Recipes by Category")}
               <span
                 className="absolute left-0 right-4 -bottom-1 h-1 bg-[#e74c3c] rounded-full opacity-80"
                 aria-hidden
               />
-            </h3>
+            </h2>
           </div>
 
           {/* Stats card */}
