@@ -323,7 +323,7 @@ export function AuthFormLayout({ mode }: AuthFormLayoutProps) {
               <div className="relative w-full aspect-[4/5] max-w-[340px] md:max-w-[380px] overflow-hidden bg-stone-200">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/main-hero.png"
+                  src="/images/main-hero.webp"
                   alt="Tamil meal"
                   className="h-full w-full object-cover"
                   onError={(e) => {

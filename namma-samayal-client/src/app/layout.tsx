@@ -93,9 +93,11 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-        {/* Preconnect to googletagmanager.com so the lazy-loaded GTM script
-            doesn't pay full TCP+TLS round-trip cost when it eventually fires.
-            Saves ~150-300ms on the first analytics event. */}
+        {/* Preconnect to Cloudinary — every recipe / ingredient image is served
+            from there. Saves the TCP+TLS round-trip when the first image loads. */}
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        {/* Same idea for GTM's lazy-loaded script. */}
         {GTM_ID && (
           <>
             <link rel="preconnect" href="https://www.googletagmanager.com" />

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Clock, Sparkles, ChefHat, ArrowRight } from "lucide-react";
 import type { Recipe } from "@/types/recipe";
 import { useLang } from "@/contexts/LanguageContext";
@@ -16,10 +17,12 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
     <article className="group relative flex flex-col rounded-3xl bg-white dark:bg-[var(--color-card)] border border-slate-200/60 overflow-hidden transition-all duration-300 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05),0_0_20px_rgba(231,76,60,0.05)] hover:-translate-y-1">
       <Link href={`/recipe/${recipe.slug ?? recipe._id}`} className="relative aspect-[4/3] overflow-hidden bg-slate-50 dark:bg-white/5">
         {recipe.imageUrl ? (
-          <img
+          <Image
             src={recipe.imageUrl}
             alt={recipe.seo?.title?.en || recipe.title || recipe.dishName.en}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center">

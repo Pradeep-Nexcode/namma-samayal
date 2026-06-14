@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Clock, ArrowRight, Sparkles } from "lucide-react";
 import type { Recipe } from "@/types/recipe";
 import { useLang } from "@/contexts/LanguageContext";
@@ -44,10 +45,12 @@ export function HomeLatestRecipes({ recipes }: HomeLatestRecipesProps) {
             className="group lg:col-span-7 relative flex flex-col justify-end overflow-hidden rounded-[2.5rem] bg-slate-900 aspect-[4/3] sm:aspect-auto sm:min-h-[500px]"
           >
             {featured.imageUrl ? (
-              <img
+              <Image
                 src={featured.imageUrl}
                 alt={featured.seo?.title?.en || featured.title || featured.dishName.en}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                fill
+                sizes="(min-width: 1024px) 60vw, 100vw"
+                className="object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
               />
             ) : (
               <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900" />
@@ -96,10 +99,12 @@ export function HomeLatestRecipes({ recipes }: HomeLatestRecipesProps) {
             >
               <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl bg-slate-100 dark:bg-white/5">
                 {recipe.imageUrl ? (
-                  <img
+                  <Image
                     src={recipe.imageUrl}
                     alt={recipe.seo?.title?.en || recipe.title || recipe.dishName.en}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    sizes="112px"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 ) : (
                   <div className="h-full w-full flex items-center justify-center bg-slate-200 dark:bg-white/10">

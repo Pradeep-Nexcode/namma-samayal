@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChefHat,
@@ -307,12 +308,13 @@ function FeaturedPolaroid({
       >
         <div className="relative w-full aspect-[4/3] overflow-hidden bg-stone-200">
           {recipe?.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={recipe.imageUrl}
               alt={title}
-              loading="lazy"
-              className="h-full w-full object-cover"
+              fill
+              priority
+              sizes="(min-width: 1024px) 480px, (min-width: 768px) 50vw, 90vw"
+              className="object-cover"
             />
           ) : (
             <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-amber-100 to-rose-100">
