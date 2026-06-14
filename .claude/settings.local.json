@@ -18,10 +18,22 @@
       "Bash(echo \"EXIT: $?\")",
       "Bash(git mv *)",
       "Bash(grep -rnE '\\\\`/\\(recipe|ingredient\\)/\\\\$\\\\{[^}]*_id\\\\}' src/)",
-      "Bash(echo \"Server TSC: $?\")"
+      "Bash(echo \"Server TSC: $?\")",
+      "Bash(curl -s http://localhost:4000/api/recipes?limit=2)",
+      "Bash(curl -s 'http://localhost:4000/api/recipes?limit=2')",
+      "Bash(curl -s 'http://localhost:3000/sitemap.xml')",
+      "Bash(curl -s 'http://localhost:4000/api/recipes?limit=10000')",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('success:',d.get\\('success'\\)\\); print\\('data count:', len\\(d.get\\('data',[]\\)\\)\\); print\\('first slug:', d['data'][0].get\\('slug'\\) if d.get\\('data'\\) else 'n/a'\\)\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s -H 'Cache-Control: no-cache' 'http://localhost:3000/sitemap.xml?_=v2')",
+      "Bash(curl -s 'http://localhost:4000/api/recipes?page=1&limit=500')",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('success:',d.get\\('success'\\),'recipes:',len\\(d.get\\('data',[]\\)\\),'pagination:',d.get\\('pagination'\\)\\)\")",
+      "Bash(rm -f .next/server/app/sitemap.xml.* && curl -s 'http://localhost:3000/sitemap.xml' 2>&1 | grep -c '<url>' *)",
+      "Bash(ps -p 10155 -o command=)"
     ],
     "additionalDirectories": [
-      "/private/tmp"
+      "/private/tmp",
+      "/Users/pradeep/Documents/Webs/namma-samayal/namma-samayal-client/.next/server/app"
     ]
   }
 }
