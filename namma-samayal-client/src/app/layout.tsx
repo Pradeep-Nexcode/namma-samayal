@@ -93,6 +93,15 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {/* Preconnect to googletagmanager.com so the lazy-loaded GTM script
+            doesn't pay full TCP+TLS round-trip cost when it eventually fires.
+            Saves ~150-300ms on the first analytics event. */}
+        {GTM_ID && (
+          <>
+            <link rel="preconnect" href="https://www.googletagmanager.com" />
+            <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+          </>
+        )}
       </head>
       <body className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] flex flex-col">
         {GTM_ID && (

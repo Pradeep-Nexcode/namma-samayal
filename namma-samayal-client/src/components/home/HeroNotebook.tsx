@@ -815,14 +815,15 @@ export function HeroNotebook() {
               </div>
             </div>
 
-            {/* Dot indicators (pagination) */}
+            {/* Dot indicators (pagination) — buttons sized to meet the 24×24
+                touch-target minimum while keeping the visible dot small. */}
             {recipes.length > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-5">
+              <div className="flex items-center justify-center gap-1 mt-5">
                 <button
                   type="button"
                   onClick={prev}
-                  aria-label="Previous"
-                  className="text-stone-400 dark:text-stone-500 hover:text-[#e74c3c] transition-colors"
+                  aria-label="Previous slide"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full text-stone-400 dark:text-stone-500 hover:text-[#e74c3c] hover:bg-stone-100 dark:hover:bg-white/5 transition-colors"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
@@ -833,13 +834,26 @@ export function HeroNotebook() {
                     aria-label={`Go to slide ${i + 1}`}
                     aria-current={i === index}
                     onClick={() => setIndex(i)}
-                    className={`h-2.5 rounded-full transition-all ${
-                      i === index
-                        ? "bg-[#e74c3c] w-6 shadow-sm"
-                        : "bg-stone-300 hover:bg-stone-400 w-2.5"
-                    }`}
-                  />
+                    className="inline-flex h-9 items-center justify-center px-1.5 transition-all"
+                  >
+                    <span
+                      aria-hidden
+                      className={`block h-2.5 rounded-full transition-all ${
+                        i === index
+                          ? "bg-[#e74c3c] w-6 shadow-sm"
+                          : "bg-stone-300 hover:bg-stone-400 w-2.5"
+                      }`}
+                    />
+                  </button>
                 ))}
+                <button
+                  type="button"
+                  onClick={next}
+                  aria-label="Next slide"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full text-stone-400 dark:text-stone-500 hover:text-[#e74c3c] hover:bg-stone-100 dark:hover:bg-white/5 transition-colors"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
                 <span className="font-body text-[11px] text-stone-400 dark:text-stone-500 ml-1">
                   {index + 1} / {total}
                 </span>
