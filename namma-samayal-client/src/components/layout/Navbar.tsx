@@ -137,7 +137,7 @@ export function Navbar() {
 
           {/* Main navbar paper card */}
           <div
-            className="relative flex items-center justify-between rounded-2xl px-5 md:pl-10 md:pr-6 py-3 shadow-[0_4px_18px_-8px_rgba(120,90,40,0.18)] dark:shadow-[0_4px_18px_-8px_rgba(0,0,0,0.5)] border border-stone-200/80 dark:border-stone-700/60"
+            className="relative flex items-center justify-between rounded-2xl px-5 md:pl-10 md:pr-6 py-3 shadow-[0_4px_18px_-8px_rgba(120,90,40,0.18)] dark:shadow-[0_4px_18px_-8px_rgba(0,0,0,0.5)] border border-stone-200/80"
             style={{
               backgroundColor: "var(--ns-nav-bg, #fffdf6)",
               backgroundImage:
@@ -149,7 +149,7 @@ export function Navbar() {
               {[0, 1, 2].map((i) => (
                 <span
                   key={i}
-                  className="block h-1.5 w-1.5 rounded-full bg-stone-300 dark:bg-stone-600 ring-1 ring-stone-400/60 dark:ring-stone-500/60 shadow-inner"
+                  className="block h-1.5 w-1.5 rounded-full bg-stone-300 ring-1 ring-stone-400/60 dark:ring-stone-500/60 shadow-inner"
                 />
               ))}
             </div>
@@ -184,7 +184,7 @@ export function Navbar() {
                     className={`relative font-title-hw text-[17px] font-bold transition-colors py-1 ${
                       isActive
                         ? "text-stone-900 dark:text-white"
-                        : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white"
+                        : "text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white"
                     }`}
                   >
                     {t(link.key)}
@@ -237,22 +237,22 @@ export function Navbar() {
                       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#e74c3c] to-[#c0392b] text-xs font-bold text-white ring-2 ring-transparent group-hover:ring-amber-200 dark:group-hover:ring-amber-400/40 transition-all shadow-sm">
                         {initials}
                       </div>
-                      <span className="hidden lg:block font-title-hw text-[15px] text-stone-700 dark:text-stone-300 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
+                      <span className="hidden lg:block font-title-hw text-[15px] text-stone-700 dark:text-stone-200 group-hover:text-stone-900 dark:group-hover:text-white transition-colors">
                         {authUser?.firstName ?? ""}
                       </span>
                     </button>
 
                     {dropdownOpen && (
-                      <div className="absolute right-0 top-full mt-2 w-48 rounded-xl bg-[var(--ns-nav-bg,#fffdf6)] dark:bg-[#1f1d17] border border-stone-200 dark:border-stone-700 shadow-xl py-2 z-50">
+                      <div className="absolute right-0 top-full mt-2 w-48 rounded-xl bg-[var(--ns-nav-bg,#fffdf6)] dark:bg-[#1f1d17] border border-stone-200 dark:border-white/[0.06] shadow-xl py-2 z-50">
                         <Link
                           href="/profile"
                           onClick={() => setDropdownOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2.5 font-body text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-white/5 hover:text-stone-900 dark:hover:text-white transition-colors"
+                          className="flex items-center gap-3 px-4 py-2.5 font-body text-sm font-medium text-stone-700 dark:text-stone-200 hover:bg-amber-50 dark:hover:bg-white/5 hover:text-stone-900 dark:hover:text-white transition-colors"
                         >
                           <User className="h-4 w-4" />
                           {t("nav.viewProfile")}
                         </Link>
-                        <hr className="my-1 border-dashed border-stone-200 dark:border-stone-700" />
+                        <hr className="my-1 border-dashed border-stone-200 dark:border-white/[0.06]" />
                         <button
                           type="button"
                           onClick={handleLogout}
@@ -269,10 +269,10 @@ export function Navbar() {
                     href="/auth/login"
                     className="flex items-center gap-2 group cursor-pointer"
                   >
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50 dark:bg-white/5 border border-amber-200 dark:border-white/10 text-stone-500 dark:text-stone-400 transition-all group-hover:border-[#e74c3c] group-hover:text-[#e74c3c]">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50 dark:bg-white/5 border border-amber-200 dark:border-white/[0.06] text-stone-500 dark:text-stone-400 transition-all group-hover:border-[#e74c3c] group-hover:text-[#e74c3c]">
                       <User className="h-4 w-4" />
                     </div>
-                    <span className="hidden lg:block font-title-hw text-[15px] text-stone-700 dark:text-stone-300 group-hover:text-[#e74c3c] transition-colors">
+                    <span className="hidden lg:block font-title-hw text-[15px] text-stone-700 dark:text-stone-200 group-hover:text-[#e74c3c] transition-colors">
                       {t("nav.login")}
                     </span>
                   </Link>
@@ -302,20 +302,20 @@ export function Navbar() {
       {/* Mobile Drawer */}
       {mobileOpen && (
         <div
-          className="fixed top-[88px] left-4 right-4 z-40 rounded-2xl shadow-xl md:hidden overflow-hidden border border-stone-200 dark:border-stone-700 animate-in slide-in-from-top-4 duration-300"
+          className="fixed top-[88px] left-4 right-4 z-40 rounded-2xl shadow-xl md:hidden overflow-hidden border border-stone-200 dark:border-white/[0.06] animate-in slide-in-from-top-4 duration-300"
           style={{
             backgroundColor: "var(--ns-nav-bg, #fffdf6)",
             backgroundImage:
               "repeating-linear-gradient(to bottom, transparent 0, transparent 28px, rgba(120,90,40,0.06) 28px, rgba(120,90,40,0.06) 29px)",
           }}
         >
-          <div className="p-4 border-b border-dashed border-stone-200 dark:border-stone-700">
+          <div className="p-4 border-b border-dashed border-stone-200 dark:border-white/[0.06]">
             <div className="relative flex items-center">
               <Search className="absolute left-3.5 h-4 w-4 text-stone-400 dark:text-stone-500 pointer-events-none" />
               <input
                 type="text"
                 placeholder={t("nav.searchPlaceholder") || "Search recipes…"}
-                className="w-full rounded-xl bg-amber-50/60 dark:bg-white/5 border border-stone-200 dark:border-white/10 py-2.5 pl-10 pr-4 font-body text-sm font-medium text-stone-900 dark:text-white placeholder-stone-400 dark:placeholder-stone-500 outline-none focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-amber-200 dark:focus:ring-white/20 focus:border-transparent transition-all"
+                className="w-full rounded-xl bg-amber-50/60 dark:bg-white/5 border border-stone-200 dark:border-white/[0.06] py-2.5 pl-10 pr-4 font-body text-sm font-medium text-stone-900 dark:text-white placeholder-stone-400 outline-none focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-amber-200 dark:focus:ring-white/20 focus:border-transparent transition-all"
               />
             </div>
           </div>
@@ -332,7 +332,7 @@ export function Navbar() {
                   className={`flex items-center gap-3 rounded-xl px-4 py-3 font-title-hw text-[17px] font-bold transition-all duration-200 ${
                     isActive
                       ? "bg-amber-50 dark:bg-white/5 text-stone-900 dark:text-white"
-                      : "text-stone-600 dark:text-stone-400 hover:bg-amber-50 dark:hover:bg-white/5 hover:text-stone-900 dark:hover:text-white"
+                      : "text-stone-600 dark:text-stone-300 hover:bg-amber-50 dark:hover:bg-white/5 hover:text-stone-900 dark:hover:text-white"
                   }`}
                 >
                   <Icon className="h-5 w-5" strokeWidth={isActive ? 2.5 : 2} />
@@ -348,13 +348,13 @@ export function Navbar() {
             </div>
           </div>
 
-          <div className="p-4 pt-2 border-t border-dashed border-stone-200 dark:border-stone-700 flex flex-col gap-3">
+          <div className="p-4 pt-2 border-t border-dashed border-stone-200 dark:border-white/[0.06] flex flex-col gap-3">
             {isLoggedIn ? (
               <>
                 <Link
                   href="/profile"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-between rounded-xl bg-amber-50/60 dark:bg-white/5 px-4 py-3 font-body text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-amber-100/70 dark:hover:bg-white/10 transition-colors"
+                  className="flex items-center justify-between rounded-xl bg-amber-50/60 dark:bg-white/5 px-4 py-3 font-body text-sm font-medium text-stone-700 dark:text-stone-200 hover:bg-amber-100/70 dark:hover:bg-white/10 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#e74c3c] to-[#c0392b] text-[10px] font-bold text-white shadow-sm">
@@ -376,7 +376,7 @@ export function Navbar() {
               <Link
                 href="/auth/login"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 rounded-xl bg-amber-50/60 dark:bg-white/5 px-4 py-3 font-body text-sm font-medium text-stone-700 dark:text-stone-300 hover:bg-amber-100/70 dark:hover:bg-white/10 transition-colors"
+                className="flex items-center gap-3 rounded-xl bg-amber-50/60 dark:bg-white/5 px-4 py-3 font-body text-sm font-medium text-stone-700 dark:text-stone-200 hover:bg-amber-100/70 dark:hover:bg-white/10 transition-colors"
               >
                 <User className="h-4 w-4" />
                 {t("nav.login")}

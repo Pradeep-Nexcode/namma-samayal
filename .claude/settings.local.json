@@ -5,7 +5,23 @@
       "Bash(mongosh \"mongodb+srv://ai_editor:8fc2sQeljlkBkQUF@nammasamayalcluster.ilnrdjh.mongodb.net/namma-samayal?appName=NammaSamayalCluster\" --eval 'db.ingredients.find\\({name: /small onion/i}, {_id:1, name:1, nameTamil:1, categories:1, createdAt:1}\\).toArray\\(\\)' --tlsAllowInvalidCertificates)",
       "Read(//usr/local/bin/**)",
       "Read(//opt/homebrew/**)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(npm run *)",
+      "Bash(echo \"TSC EXIT: $?\")",
+      "Bash(grep -nA 4 'backgroundColor: \"#fefcf5\"\\\\|backgroundColor: \"#fffdf6\"\\\\|backgroundColor: \"#f3ecda\"' src/app/recipes/create/page.tsx src/app/recipes/page.tsx 'src/app/recipe/[id]/page.tsx' 'src/app/ingredient/[id]/page.tsx' src/app/ingredients/page.tsx)",
+      "Bash(node --loader ts-node/esm --experimental-specifier-resolution=node import-dindigul-veg-dum-biryani.ts)",
+      "Bash(node --loader ts-node/esm --experimental-specifier-resolution=node check-jaffer.ts)",
+      "Bash(node --loader ts-node/esm --experimental-specifier-resolution=node diagnose-leak.ts)",
+      "Bash(rm -f scan-attributions.ts scrub-attributions.ts scrub-attributions-v2.ts scrub-attributions-v3.ts check-jaffer.ts diagnose-leak.ts inspect-one.ts inspect-leaks.ts inspect-deep.ts inspect-last.ts dump-recipe.ts final-patch.ts *)",
+      "Bash(grep -rn '/recipe/${\\\\|/recipe/${recipe\\\\|/ingredient/${' src/)",
+      "Bash(grep -rnE \"\\\\`/\\(recipe|ingredient\\)/\" src/)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(git mv *)",
+      "Bash(grep -rnE '\\\\`/\\(recipe|ingredient\\)/\\\\$\\\\{[^}]*_id\\\\}' src/)",
+      "Bash(echo \"Server TSC: $?\")"
+    ],
+    "additionalDirectories": [
+      "/private/tmp"
     ]
   }
 }

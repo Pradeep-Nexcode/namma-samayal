@@ -357,12 +357,12 @@ function StickyCategoryCard({
           </div>
 
           {/* Category name */}
-          <h3 className="font-title-hw text-[20px] md:text-[22px] font-bold text-stone-900 text-center leading-tight">
+          <h3 className="font-title-hw text-[20px] md:text-[22px] font-bold text-stone-900 dark:text-stone-50 text-center leading-tight">
             {lf(category.name)}
           </h3>
 
           {/* Recipe count */}
-          <p className="font-body text-[12.5px] text-stone-700 mt-1.5">
+          <p className="font-body text-[12.5px] text-stone-700 dark:text-stone-200 mt-1.5">
             {recipeCount} {recipeCount === 1 ? "Recipe" : "Recipes"}
           </p>
 
@@ -446,7 +446,7 @@ export function HomeCategories() {
             <h2 className="font-title-hw text-[40px] md:text-[52px] lg:text-[58px] font-bold leading-tight text-stone-900 dark:text-stone-50">
               {ts("home.flavorProfiles", "Flavor Profiles")}
             </h2>
-            <p className="font-body text-[15px] md:text-[16px] text-stone-700 dark:text-stone-300 leading-relaxed">
+            <p className="font-body text-[15px] md:text-[16px] text-stone-700 dark:text-stone-200 leading-relaxed">
               {ts(
                 "home.findCraving",
                 "Find exactly what you're craving. Sorted for your convenience."
@@ -479,7 +479,7 @@ export function HomeCategories() {
             <ErrorMessage message={error} />
           </div>
         ) : categories.length === 0 ? (
-          <div className="py-12 text-center font-note-hw text-stone-500">
+          <div className="py-12 text-center font-note-hw text-stone-500 dark:text-stone-400">
             {ts("home.noCategories", "No categories yet — check back soon!")}
           </div>
         ) : (
@@ -509,7 +509,7 @@ export function HomeCategories() {
             {[
               {
                 icon: <ChefHat className="h-5 w-5" />,
-                tint: "bg-rose-100 text-rose-600",
+                tint: "bg-rose-100 text-rose-600 dark:text-rose-400",
                 title: ts("home.featCuratedTitle", "Curated with Love"),
                 sub: ts("home.featCuratedSub", "Every recipe is handpicked"),
               },
@@ -540,10 +540,10 @@ export function HomeCategories() {
                   {f.icon}
                 </span>
                 <div className="min-w-0">
-                  <p className="font-title-hw text-[16px] md:text-[17px] font-bold leading-tight text-stone-900 dark:text-stone-100 truncate">
+                  <p className="font-title-hw text-[16px] md:text-[17px] font-bold leading-tight text-stone-900 dark:text-stone-50 truncate">
                     {f.title}
                   </p>
-                  <p className="font-body text-[12px] text-stone-600 dark:text-stone-400 truncate mt-0.5">
+                  <p className="font-body text-[12px] text-stone-600 dark:text-stone-300 truncate mt-0.5">
                     {f.sub}
                   </p>
                 </div>

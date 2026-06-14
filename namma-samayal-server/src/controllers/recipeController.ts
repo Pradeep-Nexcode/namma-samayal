@@ -22,6 +22,10 @@ interface RecipeQuery {
   state?: string;
   region?: string;
   search?: string;
+  /** Filter recipes that use this ingredient (matches against
+   *  the populated `ingredients.ingredient` ref). Can be a single id
+   *  or a comma-separated list (all must be present). */
+  ingredient?: string;
 }
 
 interface RateRecipeBody {
@@ -186,6 +190,17 @@ export const getAllRecipes = catchAsync(async (req: Request, res: Response) => {
   if (queryParams.country) query["location.country"] = queryParams.country;
   if (queryParams.state) query["location.state"] = queryParams.state;
   if (queryParams.region) query["location.region"] = queryParams.region;
+  if (queryParams.ingredient) {
+    const ids = queryParams.ingredient
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean);
+    if (ids.length === 1) {
+      query["ingredients.ingredient"] = ids[0];
+    } else if (ids.length > 1) {
+      query["ingredients.ingredient"] = { $all: ids };
+    }
+  }
   if (queryParams.search) {
     const searchRegex = { $regex: queryParams.search, $options: "i" };
     query.$or = [
@@ -217,7 +232,14 @@ export const getAllRecipes = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getRecipeById = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const recipe = await Recipe.findById(req.params.id)
+  // Accept either a Mongo ObjectId or a slug in the same :id param,
+  // so /recipes/:slug and /recipes/:id both resolve to the same handler.
+  const idOrSlug = String(req.params.id);
+  const query = Types.ObjectId.isValid(idOrSlug)
+    ? Recipe.findOne({ $or: [{ _id: idOrSlug }, { slug: idOrSlug }] })
+    : Recipe.findOne({ slug: idOrSlug });
+
+  const recipe = await query
     .populate("createdBy", "username firstName lastName")
     .populate(recipeCategoryPopulate)
     .populate(recipeIngredientPopulate)

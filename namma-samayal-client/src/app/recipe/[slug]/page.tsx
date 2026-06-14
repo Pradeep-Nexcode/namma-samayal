@@ -343,10 +343,10 @@ function PaperTag({
 }) {
   return (
     <div
-      className="relative inline-flex items-center gap-1.5 rounded-md border border-dashed border-stone-400/70 dark:border-stone-600 bg-stone-50 dark:bg-stone-800/60 pl-4 pr-3 py-1 text-[11.5px] font-semibold text-stone-700 dark:text-stone-200 shadow-[1px_2px_0_rgba(120,90,40,0.12)] dark:shadow-[1px_2px_0_rgba(0,0,0,0.35)]"
+      className="relative inline-flex items-center gap-1.5 rounded-md border border-dashed border-stone-400/70 bg-stone-50 dark:bg-white/5 pl-4 pr-3 py-1 text-[11.5px] font-semibold text-stone-700 dark:text-stone-200 shadow-[1px_2px_0_rgba(120,90,40,0.12)] dark:shadow-[1px_2px_0_rgba(0,0,0,0.35)]"
       style={{ transform: `rotate(${rotation}deg)` }}
     >
-      <span className="absolute left-1.5 top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-stone-300 dark:bg-stone-600" />
+      <span className="absolute left-1.5 top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-stone-300" />
       {icon}
       {children}
     </div>
@@ -505,8 +505,11 @@ function ExtraSticky({
   );
 }
 
-/* ───────────────────────── Dotted leader ingredient row ───────────────────────── */
-function DottedLeaderRow({
+/* ───────────────────────── Ingredient row (clean) ─────────────────────────
+   Plain two-column row: name on the left, quantity right-aligned with tabular
+   numbers. No dotted leaders, no ruled background — just a faint dashed divider
+   between rows so the list breathes. */
+function IngredientRow({
   name,
   qty,
   href,
@@ -516,32 +519,25 @@ function DottedLeaderRow({
   href?: string;
 }) {
   const content = (
-    <span className="flex items-baseline gap-2 py-2 px-1 group">
-      <span className="font-note-hw text-[17.5px] font-semibold text-stone-800 dark:text-stone-200 group-hover:text-[var(--color-primary)] transition-colors whitespace-nowrap">
-        {name}
+    <span className="group flex items-baseline justify-between gap-4 py-2.5 px-2 rounded-md transition-colors hover:bg-amber-50/60 dark:hover:bg-stone-800/40">
+      {/* Small red dot bullet — quiet, scannable */}
+      <span className="flex items-baseline gap-2.5 min-w-0">
+        <span
+          className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[var(--color-primary)]/70 shrink-0 self-center"
+          aria-hidden
+        />
+        <span className="font-note-hw text-[17px] md:text-[17.5px] font-semibold text-stone-800 dark:text-stone-100 group-hover:text-[var(--color-primary)] transition-colors leading-snug">
+          {name}
+        </span>
       </span>
-      <span
-        aria-hidden
-        className="flex-1 self-end h-[8px] text-stone-400 dark:text-stone-600 translate-y-[-3px]"
-        style={{
-          backgroundImage:
-            "radial-gradient(currentColor 1px, transparent 1.5px)",
-          backgroundSize: "6px 8px",
-          backgroundPosition: "0 100%",
-          backgroundRepeat: "repeat-x",
-        }}
-      />
-      <span className="font-body text-[14px] font-bold text-stone-600 dark:text-stone-400 tabular-nums whitespace-nowrap">
+      <span className="font-body text-[14px] font-bold text-stone-600 dark:text-stone-300 tabular-nums whitespace-nowrap shrink-0">
         {qty}
       </span>
     </span>
   );
   if (href) {
     return (
-      <Link
-        href={href}
-        className="block rounded-md hover:bg-amber-50/60 dark:hover:bg-stone-800/40 transition-colors"
-      >
+      <Link href={href} className="block">
         {content}
       </Link>
     );
@@ -1018,7 +1014,7 @@ function LearnRecipeModal({
 
           {/* Notebook surface — full-screen on mobile, padded on desktop */}
           <motion.div
-            className="absolute inset-1 md:inset-4 lg:inset-6 rounded-[20px] paper-card border border-stone-300 dark:border-stone-700 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden"
+            className="absolute inset-1 md:inset-4 lg:inset-6 rounded-[20px] paper-card border border-stone-300 dark:border-white/10 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden"
             initial={{ y: 24, scale: 0.96, opacity: 0 }}
             animate={{ y: 0, scale: 1, opacity: 1 }}
             exit={{ y: 16, scale: 0.98, opacity: 0 }}
@@ -1029,13 +1025,13 @@ function LearnRecipeModal({
               type="button"
               onClick={onClose}
               aria-label={t("recipe.close", "Close")}
-              className="absolute top-3 right-3 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-200 border border-stone-300 dark:border-stone-600 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors shadow-sm"
+              className="absolute top-3 right-3 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-stone-200 border border-stone-300 dark:border-white/10 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors shadow-sm"
             >
               <X className="h-4 w-4" />
             </button>
 
             {/* Header bar */}
-            <div className="px-4 md:px-8 pt-5 pb-4 border-b border-dashed border-stone-300 dark:border-stone-700 shrink-0 flex flex-wrap items-start justify-between gap-4">
+            <div className="px-4 md:px-8 pt-5 pb-4 border-b border-dashed border-stone-300 dark:border-white/10 shrink-0 flex flex-wrap items-start justify-between gap-4">
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 mb-0.5">
                   <Sparkles className="h-4 w-4 text-amber-500" />
@@ -1045,17 +1041,17 @@ function LearnRecipeModal({
                 </div>
                 <h2
                   id="learn-modal-title"
-                  className="font-title-hw text-[26px] md:text-[34px] leading-tight text-stone-900 dark:text-stone-100"
+                  className="font-title-hw text-[26px] md:text-[34px] leading-tight text-stone-900 dark:text-stone-50"
                 >
                   {t("recipe.arrangeSteps", "Arrange the steps in the correct order")}
                 </h2>
-                <p className="font-body text-[13px] text-stone-600 dark:text-stone-400 mt-1 truncate">
+                <p className="font-body text-[13px] text-stone-600 dark:text-stone-300 mt-1 truncate">
                   {recipeTitle}
                 </p>
               </div>
 
               {/* Stats card */}
-              <div className="hidden sm:flex items-stretch gap-5 px-5 py-2 rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50/60 dark:bg-stone-800/40 shadow-sm mr-12">
+              <div className="hidden sm:flex items-stretch gap-5 px-5 py-2 rounded-xl border border-stone-200 dark:border-white/[0.06] bg-stone-50/60 shadow-sm mr-12">
                 <div className="flex flex-col justify-center">
                   <p className="font-body text-[11px] text-stone-500 dark:text-stone-400 uppercase tracking-wider">
                     {t("recipe.stepsToArrange", "Steps to arrange")}
@@ -1064,7 +1060,7 @@ function LearnRecipeModal({
                     {N} {t("recipe.stepsShort", "steps")}
                   </p>
                 </div>
-                <div className="w-px bg-stone-200 dark:bg-stone-700" />
+                <div className="w-px bg-stone-200" />
                 <div className="flex flex-col justify-center">
                   <p className="font-body text-[11px] text-stone-500 dark:text-stone-400 uppercase tracking-wider">
                     {t("recipe.yourProgress", "Your progress")}
@@ -1080,7 +1076,7 @@ function LearnRecipeModal({
             <div className="flex-1 overflow-y-auto">
               {/* ─── TOP: Messy notes deck ─── */}
               <div
-                className="relative px-4 md:px-8 pt-4 pb-6 border-b border-dashed border-stone-300 dark:border-stone-700 bg-[radial-gradient(rgba(120,90,40,0.04)_1px,transparent_1px)] [background-size:8px_8px]"
+                className="relative px-4 md:px-8 pt-4 pb-6 border-b border-dashed border-stone-300 dark:border-white/10 bg-[radial-gradient(rgba(120,90,40,0.04)_1px,transparent_1px)] [background-size:8px_8px]"
                 onDragOver={onDeckDragOver}
                 onDrop={onDeckDrop}
               >
@@ -1093,7 +1089,7 @@ function LearnRecipeModal({
                   >
                     {t("recipe.howToPlay", "How to Play")}
                   </button>
-                  <p className="font-body text-[13px] text-stone-700 dark:text-stone-300 max-w-2xl leading-snug">
+                  <p className="font-body text-[13px] text-stone-700 dark:text-stone-200 max-w-2xl leading-snug">
                     {t(
                       "recipe.dragHintFree",
                       "Drag the sticky notes and place them in the correct order on the board below. You can place them anywhere you like!"
@@ -1193,13 +1189,13 @@ function LearnRecipeModal({
               </div>
 
               {/* ─── BOTTOM: Recipe board (free drop area) ─── */}
-              <div className="relative bg-stone-50/60 dark:bg-stone-900/30">
+              <div className="relative bg-stone-50/60">
                 {/* Spiral binding column on left */}
                 <div className="absolute top-0 bottom-0 left-2 md:left-4 w-6 flex flex-col items-center justify-evenly py-6 pointer-events-none">
                   {Array.from({ length: 16 }).map((_, i) => (
                     <span
                       key={i}
-                      className="block h-3 w-3 rounded-full bg-stone-200 dark:bg-stone-700 ring-2 ring-stone-300/70 dark:ring-stone-600/70 shadow-inner"
+                      className="block h-3 w-3 rounded-full bg-stone-200 ring-2 ring-stone-300/70 dark:ring-stone-600/70 shadow-inner"
                     />
                   ))}
                 </div>
@@ -1207,12 +1203,12 @@ function LearnRecipeModal({
                 <div className="pl-12 md:pl-16 pr-4 md:pr-8 pt-5 pb-6">
                   {/* Section heading */}
                   <div className="flex items-start gap-2 mb-1">
-                    <h3 className="relative font-title-hw text-[24px] md:text-[28px] text-stone-900 dark:text-stone-100 inline-block">
+                    <h3 className="relative font-title-hw text-[24px] md:text-[28px] text-stone-900 dark:text-stone-50 inline-block">
                       {t("recipe.yourRecipeBoard", "Your Recipe Board")}
                       <span className="absolute left-0 right-2 -bottom-1 h-1 bg-[var(--color-primary)] rounded-full opacity-80" />
                     </h3>
                   </div>
-                  <p className="font-body text-[12.5px] text-stone-600 dark:text-stone-400 mb-4">
+                  <p className="font-body text-[12.5px] text-stone-600 dark:text-stone-300 mb-4">
                     {t(
                       "recipe.placeStepsHere",
                       "Place the steps here in the correct order"
@@ -1225,7 +1221,7 @@ function LearnRecipeModal({
                     onDragOver={onBoardDragOver}
                     onDrop={onBoardDrop}
                     onClick={handleBoardTap}
-                    className="relative paper-ruled rounded-lg border border-stone-200 dark:border-stone-700 min-h-[340px] md:min-h-[400px] overflow-hidden"
+                    className="relative paper-ruled rounded-lg border border-stone-200 dark:border-white/[0.06] min-h-[340px] md:min-h-[400px] overflow-hidden"
                     style={{
                       backgroundColor: "rgba(255, 253, 246, 0.85)",
                     }}
@@ -1246,13 +1242,13 @@ function LearnRecipeModal({
                             {cells.map((n, i) => (
                               <div key={n} className="flex items-center gap-2">
                                 <span
-                                  className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-stone-300 dark:border-stone-600 font-body text-[11px] font-bold text-stone-400 dark:text-stone-500 bg-white/50 dark:bg-stone-800/50"
+                                  className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-stone-300 dark:border-white/10 font-body text-[11px] font-bold text-stone-400 dark:text-stone-500 bg-white/50"
                                 >
                                   {n}
                                 </span>
                                 {i < cells.length - 1 && (
                                   <span
-                                    className="inline-block h-px w-8 md:w-12 border-t-2 border-dashed border-stone-300 dark:border-stone-700"
+                                    className="inline-block h-px w-8 md:w-12 border-t-2 border-dashed border-stone-300 dark:border-white/10"
                                     aria-hidden
                                   />
                                 )}
@@ -1335,11 +1331,11 @@ function LearnRecipeModal({
             </div>
 
             {/* Footer actions */}
-            <div className="px-4 md:px-8 py-3 border-t border-dashed border-stone-300 dark:border-stone-700 flex flex-wrap items-center justify-between gap-3 bg-stone-50/50 dark:bg-stone-900/30 shrink-0">
+            <div className="px-4 md:px-8 py-3 border-t border-dashed border-stone-300 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 bg-stone-50/50 shrink-0">
               <button
                 type="button"
                 onClick={reshuffle}
-                className="inline-flex items-center gap-1.5 rounded-lg paper-card text-stone-800 dark:text-stone-100 border-2 border-dashed border-stone-400 dark:border-stone-600 px-3 py-1.5 text-sm font-bold hover:border-stone-700 dark:hover:border-stone-400 transition-all shadow-[1px_2px_0_rgba(120,90,40,0.18)] active:translate-y-px active:shadow-none"
+                className="inline-flex items-center gap-1.5 rounded-lg paper-card text-stone-800 dark:text-stone-100 border-2 border-dashed border-stone-400 dark:border-white/10 px-3 py-1.5 text-sm font-bold hover:border-stone-700 dark:hover:border-stone-400 transition-all shadow-[1px_2px_0_rgba(120,90,40,0.18)] active:translate-y-px active:shadow-none"
               >
                 <Shuffle className="h-3.5 w-3.5" />
                 {t("recipe.shuffleNotes", "Shuffle Notes")}
@@ -1354,7 +1350,7 @@ function LearnRecipeModal({
                   type="button"
                   onClick={resetBoard}
                   disabled={board.length === 0}
-                  className="inline-flex items-center gap-1.5 rounded-lg paper-card text-stone-800 dark:text-stone-100 border-2 border-solid border-stone-300 dark:border-stone-600 px-3 py-1.5 text-sm font-bold hover:border-stone-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-1.5 rounded-lg paper-card text-stone-800 dark:text-stone-100 border-2 border-solid border-stone-300 dark:border-white/10 px-3 py-1.5 text-sm font-bold hover:border-stone-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
                   {t("recipe.resetBoard", "Reset Board")}
@@ -1445,7 +1441,7 @@ function LearnRecipeModal({
 
 /* ───────────────────────── Page ───────────────────────── */
 export default function RecipeDetailPage() {
-  const params = useParams<{ id: string }>();
+  const params = useParams<{ slug: string }>();
   const { t, lf } = useTSafe();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
@@ -1456,22 +1452,22 @@ export default function RecipeDetailPage() {
   const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !params?.id) return;
+    if (typeof window === "undefined" || !params?.slug) return;
     try {
       const key = "ns_saved_recipes";
       const raw = window.localStorage.getItem(key);
       const list: string[] = raw ? JSON.parse(raw) : [];
-      setSaved(list.includes(params.id));
+      setSaved(list.includes(params.slug));
     } catch {
       /* ignore */
     }
-  }, [params?.id]);
+  }, [params?.slug]);
 
   useEffect(() => {
-    if (!params?.id) return;
+    if (!params?.slug) return;
     const loadRecipe = async () => {
       try {
-        const data = await getRecipeById(params.id);
+        const data = await getRecipeById(params.slug);
         setRecipe(data);
       } catch {
         setError("Failed to load recipe details. Please try again later.");
@@ -1480,18 +1476,18 @@ export default function RecipeDetailPage() {
       }
     };
     loadRecipe();
-  }, [params?.id]);
+  }, [params?.slug]);
 
   const toggleSaved = () => {
     setSaved((prev) => {
       const next = !prev;
       try {
-        if (typeof window !== "undefined" && params?.id) {
+        if (typeof window !== "undefined" && params?.slug) {
           const key = "ns_saved_recipes";
           const raw = window.localStorage.getItem(key);
           const list: string[] = raw ? JSON.parse(raw) : [];
-          const filtered = list.filter((id) => id !== params.id);
-          if (next) filtered.push(params.id);
+          const filtered = list.filter((id) => id !== params.slug);
+          if (next) filtered.push(params.slug);
           window.localStorage.setItem(key, JSON.stringify(filtered));
         }
       } catch {
@@ -1611,7 +1607,7 @@ export default function RecipeDetailPage() {
         <motion.div
           initial={{ opacity: 0, x: -16 }}
           animate={{ opacity: 1, x: 0 }}
-          className="mb-8 flex items-center gap-2 text-sm text-stone-600 dark:text-stone-400 print:hidden"
+          className="mb-8 flex items-center gap-2 text-sm text-stone-600 dark:text-stone-300 print:hidden"
         >
           <Link
             href="/recipes"
@@ -1621,7 +1617,7 @@ export default function RecipeDetailPage() {
             {t("recipe.allRecipes", "All Recipes")}
           </Link>
           <ChevronRight className="h-3 w-3 opacity-40" />
-          <span className="text-stone-500 dark:text-stone-500 truncate max-w-xs">
+          <span className="text-stone-500 dark:text-stone-400 truncate max-w-xs">
             {heroTitle}
           </span>
         </motion.div>
@@ -1631,7 +1627,7 @@ export default function RecipeDetailPage() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
-          className="relative mb-10 rounded-[28px] paper-card border border-stone-200 dark:border-stone-700/60 shadow-[0_10px_40px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_10px_40px_-12px_rgba(0,0,0,0.7)] p-6 md:p-10 overflow-visible"
+          className="relative mb-12 md:mb-16 rounded-[28px] paper-card border border-stone-200 dark:border-white/[0.06] shadow-[0_10px_40px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_10px_40px_-12px_rgba(0,0,0,0.7)] p-6 md:p-10 overflow-visible"
         >
           {/* Heart doodle top-right corner (hidden on mobile) */}
           <div className="pointer-events-none absolute -top-6 right-12 h-14 w-14 text-[var(--color-primary)] z-10 hidden md:block print:hidden">
@@ -1702,7 +1698,7 @@ export default function RecipeDetailPage() {
                 />
 
                 <div
-                  className="relative bg-white dark:bg-stone-100 p-3 pb-10 rounded-sm shadow-[0_14px_34px_-10px_rgba(0,0,0,0.35)] dark:shadow-[0_14px_34px_-10px_rgba(0,0,0,0.8)] z-20"
+                  className="relative bg-white p-3 pb-10 rounded-sm shadow-[0_14px_34px_-10px_rgba(0,0,0,0.35)] dark:shadow-[0_14px_34px_-10px_rgba(0,0,0,0.8)] z-20"
                   style={{ transform: "rotate(-2deg)" }}
                 >
                   <div className="relative w-full aspect-square max-w-[320px] overflow-hidden bg-stone-200">
@@ -1719,12 +1715,12 @@ export default function RecipeDetailPage() {
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-100 to-rose-100">
-                        <ChefHat className="h-16 w-16 text-stone-400" />
+                        <ChefHat className="h-16 w-16 text-stone-400 dark:text-stone-500" />
                       </div>
                     )}
                   </div>
                   <p
-                    className="font-note-hw text-center text-stone-700 text-xl leading-tight mt-3 px-2 line-clamp-2"
+                    className="font-note-hw text-center text-stone-700 dark:text-stone-200 text-xl leading-tight mt-3 px-2 line-clamp-2"
                     title={polaroidCaption}
                   >
                     {polaroidCaption}
@@ -1751,7 +1747,7 @@ export default function RecipeDetailPage() {
                   <PaperTag rotation={-1}>{lf(recipe.category.name)}</PaperTag>
                 )}
                 {visibleTags.length > 0 && (
-                  <span className="font-note-hw text-stone-400 dark:text-stone-600 mx-0.5">
+                  <span className="font-note-hw text-stone-400 dark:text-stone-500 mx-0.5">
                     ·
                   </span>
                 )}
@@ -1772,7 +1768,7 @@ export default function RecipeDetailPage() {
 
               {/* Description — darker for readability */}
               {heroDescription && (
-                <p className="font-body text-[15px] md:text-[16px] text-stone-800 dark:text-stone-200 max-w-2xl leading-relaxed pt-3">
+                <p className="font-body text-[15px] md:text-[16px] text-stone-800 dark:text-stone-100 max-w-2xl leading-relaxed pt-3">
                   {heroDescription}
                 </p>
               )}
@@ -1830,7 +1826,7 @@ export default function RecipeDetailPage() {
                 ].map((s) => (
                   <div
                     key={s.label}
-                    className="rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-dashed border-stone-300 dark:border-stone-700 px-3 py-2.5 shadow-[1px_2px_0_rgba(120,90,40,0.08)]"
+                    className="rounded-xl bg-stone-50 dark:bg-white/5 border border-dashed border-stone-300 dark:border-white/10 px-3 py-2.5 shadow-[1px_2px_0_rgba(120,90,40,0.08)]"
                   >
                     <p className="text-[9px] font-black uppercase tracking-[0.14em] text-stone-500 dark:text-stone-400 leading-none mb-2">
                       {s.label}
@@ -1842,7 +1838,7 @@ export default function RecipeDetailPage() {
                         {s.icon}
                       </div>
                       <span
-                        className="text-[14px] font-bold text-stone-900 dark:text-stone-100 leading-tight truncate capitalize"
+                        className="text-[14px] font-bold text-stone-900 dark:text-stone-50 leading-tight truncate capitalize"
                         title={s.title}
                       >
                         {s.value}
@@ -1868,7 +1864,7 @@ export default function RecipeDetailPage() {
                 <button
                   type="button"
                   onClick={handlePrint}
-                  className="inline-flex items-center gap-2 rounded-lg paper-card text-stone-800 dark:text-stone-100 border-2 border-dashed border-stone-400 dark:border-stone-600 px-4 py-2 text-sm font-bold hover:border-stone-700 dark:hover:border-stone-400 transition-all shadow-[1px_2px_0_rgba(120,90,40,0.18)] dark:shadow-[1px_2px_0_rgba(0,0,0,0.4)] active:translate-y-px active:shadow-none"
+                  className="inline-flex items-center gap-2 rounded-lg paper-card text-stone-800 dark:text-stone-100 border-2 border-dashed border-stone-400 dark:border-white/10 px-4 py-2 text-sm font-bold hover:border-stone-700 dark:hover:border-stone-400 transition-all shadow-[1px_2px_0_rgba(120,90,40,0.18)] dark:shadow-[1px_2px_0_rgba(0,0,0,0.4)] active:translate-y-px active:shadow-none"
                 >
                   <Printer className="h-4 w-4" />
                   {t("recipe.print", "Print")}
@@ -1876,7 +1872,7 @@ export default function RecipeDetailPage() {
                 <button
                   type="button"
                   onClick={handleShare}
-                  className="inline-flex items-center gap-2 rounded-lg paper-card text-stone-800 dark:text-stone-100 border-2 border-dashed border-stone-400 dark:border-stone-600 px-4 py-2 text-sm font-bold hover:border-stone-700 dark:hover:border-stone-400 transition-all shadow-[1px_2px_0_rgba(120,90,40,0.18)] dark:shadow-[1px_2px_0_rgba(0,0,0,0.4)] active:translate-y-px active:shadow-none"
+                  className="inline-flex items-center gap-2 rounded-lg paper-card text-stone-800 dark:text-stone-100 border-2 border-dashed border-stone-400 dark:border-white/10 px-4 py-2 text-sm font-bold hover:border-stone-700 dark:hover:border-stone-400 transition-all shadow-[1px_2px_0_rgba(120,90,40,0.18)] dark:shadow-[1px_2px_0_rgba(0,0,0,0.4)] active:translate-y-px active:shadow-none"
                 >
                   <Share2 className="h-4 w-4" />
                   {t("recipe.share", "Share")}
@@ -1903,7 +1899,7 @@ export default function RecipeDetailPage() {
         </motion.section>
 
         {/* ─────────────────────────── BODY: Ingredients + How to Make ─────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 relative">
           {/* YELLOW "Chef Note" sticky — floats between columns, top, visible from md up */}
           <div className="hidden md:block absolute -top-2 left-[42%] z-30 pointer-events-none print:hidden">
             <ExtraSticky
@@ -1934,9 +1930,9 @@ export default function RecipeDetailPage() {
                   color="pink"
                   width="w-28"
                 />
-                <div className="rounded-[20px] paper-card border border-stone-200 dark:border-stone-700/60 shadow-[0_8px_24px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)] overflow-hidden">
+                <div className="rounded-[20px] paper-card border border-stone-200 dark:border-white/[0.06] shadow-[0_8px_24px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)] overflow-hidden">
                   <div className="flex items-center justify-between px-6 pt-6 pb-3">
-                    <h2 className="font-title-hw text-[32px] leading-none font-bold text-stone-900 dark:text-stone-100">
+                    <h2 className="font-title-hw text-[32px] leading-none font-bold text-stone-900 dark:text-stone-50">
                       {t("recipe.ingredients", "Ingredients")}
                     </h2>
                     <span
@@ -1959,7 +1955,7 @@ export default function RecipeDetailPage() {
                       className={`inline-flex items-center rounded-full text-[10px] font-bold uppercase tracking-wider px-3 py-1 transition-colors ${
                         unitSystem === "metric"
                           ? "bg-[var(--color-primary)] text-white"
-                          : "bg-transparent text-stone-600 dark:text-stone-400 border-2 border-dashed border-stone-300 dark:border-stone-700"
+                          : "bg-transparent text-stone-600 dark:text-stone-300 border-2 border-dashed border-stone-300 dark:border-white/10"
                       }`}
                     >
                       {t("recipe.metric", "Metric")}
@@ -1970,16 +1966,16 @@ export default function RecipeDetailPage() {
                       className={`inline-flex items-center rounded-full text-[10px] font-bold uppercase tracking-wider px-3 py-1 transition-colors ${
                         unitSystem === "us"
                           ? "bg-[var(--color-primary)] text-white"
-                          : "bg-transparent text-stone-600 dark:text-stone-400 border-2 border-dashed border-stone-300 dark:border-stone-700"
+                          : "bg-transparent text-stone-600 dark:text-stone-300 border-2 border-dashed border-stone-300 dark:border-white/10"
                       }`}
                     >
                       {t("recipe.usCustomary", "US Customary")}
                     </button>
                   </div>
 
-                  {/* Dotted-leader ingredient list on ruled paper */}
-                  <div className="paper-ruled px-6 pb-6 pt-1">
-                    <ul>
+                  {/* Clean ingredient list — name left, quantity right, faint divider */}
+                  <div className="px-6 pb-6 pt-1">
+                    <ul className="divide-y divide-dashed divide-stone-200/70 dark:divide-stone-700/40">
                       {recipe.ingredients
                         ?.filter((item) => item.ingredient)
                         .map((item, index) => {
@@ -1990,10 +1986,10 @@ export default function RecipeDetailPage() {
                               .join(" ") || "—";
                           return (
                             <li key={`${item.ingredient?._id ?? "i"}-${index}`}>
-                              <DottedLeaderRow
+                              <IngredientRow
                                 name={name}
                                 qty={qty}
-                                href={`/ingredient/${item.ingredient?._id}`}
+                                href={`/ingredient/${item.ingredient?.slug ?? item.ingredient?._id}`}
                               />
                             </li>
                           );
@@ -2034,14 +2030,14 @@ export default function RecipeDetailPage() {
                   href={recipe.recipeSource.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 rounded-[20px] paper-card border border-stone-200 dark:border-stone-700/60 p-4 hover:border-[var(--color-primary)] transition-all group print:hidden"
+                  className="flex items-center gap-3 rounded-[20px] paper-card border border-stone-200 dark:border-white/[0.06] p-4 hover:border-[var(--color-primary)] transition-all group print:hidden"
                 >
                   <ExternalLink className="h-4 w-4 text-stone-500 dark:text-stone-400 group-hover:text-[var(--color-primary)] transition-colors" />
                   <div className="min-w-0">
                     <p className="text-[9px] font-black uppercase tracking-widest text-stone-500 dark:text-stone-400">
                       {t("recipe.originalSource", "Original Source")}
                     </p>
-                    <p className="text-sm font-semibold text-stone-800 dark:text-stone-200 group-hover:text-[var(--color-primary)] transition-colors capitalize truncate">
+                    <p className="text-sm font-semibold text-stone-800 dark:text-stone-100 group-hover:text-[var(--color-primary)] transition-colors capitalize truncate">
                       {recipe.recipeSource.type}{" "}
                       {t("recipe.sourceLabel", "Source")}
                     </p>
@@ -2051,7 +2047,7 @@ export default function RecipeDetailPage() {
 
               {/* Tags card */}
               {recipe.tags && recipe.tags.length > 0 && (
-                <div className="rounded-[20px] paper-card border border-stone-200 dark:border-stone-700/60 p-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.6)]">
+                <div className="rounded-[20px] paper-card border border-stone-200 dark:border-white/[0.06] p-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.6)]">
                   <div className="flex items-center gap-2 mb-3">
                     <Tag className="h-3.5 w-3.5 text-stone-500 dark:text-stone-400" />
                     <h3 className="text-[10px] font-black text-stone-500 dark:text-stone-400 uppercase tracking-widest">
@@ -2086,10 +2082,10 @@ export default function RecipeDetailPage() {
                 color="blue"
                 width="w-32"
               />
-              <div className="rounded-[24px] paper-card border border-stone-200 dark:border-stone-700/60 p-6 md:p-9 shadow-[0_10px_30px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)]">
+              <div className="rounded-[24px] paper-card border border-stone-200 dark:border-white/[0.06] p-6 md:p-9 shadow-[0_10px_30px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)]">
                 {/* Header */}
-                <div className="flex items-center justify-between gap-4 mb-7 pb-5 border-b border-dashed border-stone-300 dark:border-stone-700">
-                  <h2 className="font-title-hw text-[32px] leading-none font-bold text-stone-900 dark:text-stone-100">
+                <div className="flex items-center justify-between gap-4 mb-7 pb-5 border-b border-dashed border-stone-300 dark:border-white/10">
+                  <h2 className="font-title-hw text-[32px] leading-none font-bold text-stone-900 dark:text-stone-50">
                     {t("recipe.howToMake", "How to Make")}
                   </h2>
                   <span
@@ -2134,7 +2130,7 @@ export default function RecipeDetailPage() {
                                   key={index}
                                   className={`group relative py-5 md:py-6 ${
                                     !isLast
-                                      ? "border-b border-dashed border-stone-300/60 dark:border-stone-700/60"
+                                      ? "border-b border-dashed border-stone-300/60"
                                       : ""
                                   }`}
                                 >
@@ -2150,7 +2146,7 @@ export default function RecipeDetailPage() {
                                       {t("recipe.step", "Step")} {stepNum}
                                     </span>
                                   </div>
-                                  <p className="font-note-hw text-[17.5px] md:text-[18.5px] text-stone-800 dark:text-stone-200 leading-relaxed pl-[52px]">
+                                  <p className="font-note-hw text-[17.5px] md:text-[18.5px] text-stone-800 dark:text-stone-100 leading-relaxed pl-[52px]">
                                     {lf(step.description)}
                                   </p>
                                 </li>
@@ -2171,7 +2167,7 @@ export default function RecipeDetailPage() {
                           key={index}
                           className={`group relative py-5 md:py-6 ${
                             !isLast
-                              ? "border-b border-dashed border-stone-300/60 dark:border-stone-700/60"
+                              ? "border-b border-dashed border-stone-300/60"
                               : ""
                           }`}
                         >
@@ -2183,7 +2179,7 @@ export default function RecipeDetailPage() {
                               {t("recipe.step", "Step")} {stepNum}
                             </span>
                           </div>
-                          <p className="font-note-hw text-[17.5px] md:text-[18.5px] text-stone-800 dark:text-stone-200 leading-relaxed pl-[52px]">
+                          <p className="font-note-hw text-[17.5px] md:text-[18.5px] text-stone-800 dark:text-stone-100 leading-relaxed pl-[52px]">
                             {lf(step.description)}
                           </p>
                         </li>
@@ -2193,7 +2189,7 @@ export default function RecipeDetailPage() {
                 )}
 
                 {/* PINK sticky note at bottom with paperclip + smiley */}
-                <div className="mt-10 flex justify-center">
+                <div className="mt-12 flex justify-center">
                   <div className="relative">
                     <div className="absolute -top-4 right-2 h-9 w-5 text-stone-500 dark:text-stone-400 z-20 rotate-12">
                       <Paperclip className="h-full w-full" />
@@ -2211,7 +2207,7 @@ export default function RecipeDetailPage() {
                           "Serve hot with Appalam, Pickle & Thayir!"
                         )}
                       </p>
-                      <div className="flex justify-center mt-2 text-rose-700">
+                      <div className="flex justify-center mt-2 text-rose-700 dark:text-rose-300">
                         <SmileyDoodle className="h-5 w-5" />
                       </div>
                     </div>
@@ -2227,7 +2223,7 @@ export default function RecipeDetailPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.45 }}
-          className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative"
+          className="mt-14 md:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 relative"
         >
           {/* PINK floating "Best Served With" sticky — visible from md up */}
           <div className="hidden md:block absolute -top-10 right-2 z-20 pointer-events-none print:hidden">
@@ -2244,49 +2240,58 @@ export default function RecipeDetailPage() {
           </div>
 
           {/* Nutrition */}
-          <div className="rounded-2xl paper-card border border-stone-200 dark:border-stone-700/60 p-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.5)]">
-            <div className="flex items-center gap-2 mb-2">
-              <Salad className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-              <h3 className="text-[10px] font-black uppercase tracking-widest text-stone-700 dark:text-stone-300">
-                {t("recipe.nutrition", "Nutrition")}
-              </h3>
+          <div className="rounded-2xl paper-card border border-stone-200 dark:border-white/[0.06] p-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.5)]">
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 shadow-sm">
+                <Salad className="h-5 w-5" strokeWidth={2.2} />
+              </span>
+              <div>
+                <h3 className="font-title-hw text-[18px] font-bold text-stone-900 dark:text-stone-50 leading-tight">
+                  {t("recipe.nutrition", "Nutrition")}
+                </h3>
+                <p className="font-body text-[11px] text-stone-500 dark:text-stone-400 leading-tight">
+                  ({t("recipe.perServing", "per serving")})
+                </p>
+              </div>
             </div>
-            <p className="text-[11px] text-stone-500 dark:text-stone-500 mb-3">
-              {t("recipe.perServing", "per serving")}
-            </p>
-            <ul className="space-y-1.5 text-sm">
-              <li className="flex justify-between text-stone-700 dark:text-stone-300">
-                <span>{t("recipe.calories", "Calories")}</span>
-                <span className="font-bold tabular-nums">~ 420 kcal</span>
-              </li>
-              <li className="flex justify-between text-stone-700 dark:text-stone-300">
-                <span>{t("recipe.carbs", "Carbs")}</span>
-                <span className="font-bold tabular-nums">65 g</span>
-              </li>
-              <li className="flex justify-between text-stone-700 dark:text-stone-300">
-                <span>{t("recipe.protein", "Protein")}</span>
-                <span className="font-bold tabular-nums">12 g</span>
-              </li>
-              <li className="flex justify-between text-stone-700 dark:text-stone-300">
-                <span>{t("recipe.fat", "Fat")}</span>
-                <span className="font-bold tabular-nums">12 g</span>
-              </li>
-              <li className="flex justify-between text-stone-700 dark:text-stone-300">
-                <span>{t("recipe.fiber", "Fiber")}</span>
-                <span className="font-bold tabular-nums">4 g</span>
-              </li>
+            <ul className="font-body text-[13.5px] divide-y divide-dashed divide-stone-200/70 dark:divide-stone-700/40">
+              {[
+                { label: t("recipe.calories", "Calories"), value: "420 kcal" },
+                { label: t("recipe.carbs", "Carbs"), value: "65 g" },
+                { label: t("recipe.protein", "Protein"), value: "12 g" },
+                { label: t("recipe.fat", "Fat"), value: "12 g" },
+                { label: t("recipe.fiber", "Fiber"), value: "4 g" },
+              ].map((row) => (
+                <li
+                  key={row.label}
+                  className="flex justify-between py-1.5 text-stone-700 dark:text-stone-200"
+                >
+                  <span>{row.label}</span>
+                  <span className="font-bold text-stone-900 dark:text-stone-50 tabular-nums">
+                    {row.value}
+                  </span>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Best served with */}
-          <div className="rounded-2xl paper-card border border-stone-200 dark:border-stone-700/60 p-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.5)]">
-            <div className="flex items-center gap-2 mb-3">
-              <UtensilsCrossed className="h-4 w-4 text-rose-600 dark:text-rose-400" />
-              <h3 className="text-[10px] font-black uppercase tracking-widest text-stone-700 dark:text-stone-300">
+          <div className="rounded-2xl paper-card border border-stone-200 dark:border-white/[0.06] p-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.5)]">
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 shadow-sm">
+                {/* Smiley cup / chef-face cartoon (inline SVG) */}
+                <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
+                  <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                  <circle cx="9.2" cy="10.5" r="1" fill="currentColor" />
+                  <circle cx="14.8" cy="10.5" r="1" fill="currentColor" />
+                  <path d="M8.5 14.5 Q 12 17.5, 15.5 14.5" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+                </svg>
+              </span>
+              <h3 className="font-title-hw text-[18px] font-bold text-stone-900 dark:text-stone-50 leading-tight">
                 {t("recipe.bestServedWith", "Best Served With")}
               </h3>
             </div>
-            <ul className="space-y-1.5 text-sm text-stone-700 dark:text-stone-300">
+            <ul className="font-body text-[13.5px] space-y-1.5 text-stone-800 dark:text-stone-100">
               {[
                 "Appalam",
                 "Pickle",
@@ -2295,7 +2300,10 @@ export default function RecipeDetailPage() {
                 "Roasted Papad",
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-primary)] shrink-0" />
+                  <Check
+                    className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0"
+                    strokeWidth={3}
+                  />
                   {item}
                 </li>
               ))}
@@ -2303,14 +2311,16 @@ export default function RecipeDetailPage() {
           </div>
 
           {/* Storage tips */}
-          <div className="rounded-2xl paper-card border border-stone-200 dark:border-stone-700/60 p-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.5)]">
-            <div className="flex items-center gap-2 mb-3">
-              <Archive className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-              <h3 className="text-[10px] font-black uppercase tracking-widest text-stone-700 dark:text-stone-300">
+          <div className="rounded-2xl paper-card border border-stone-200 dark:border-white/[0.06] p-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.5)]">
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-100 dark:bg-sky-500/20 text-sky-700 dark:text-sky-300 shadow-sm">
+                <Archive className="h-5 w-5" strokeWidth={2.2} />
+              </span>
+              <h3 className="font-title-hw text-[18px] font-bold text-stone-900 dark:text-stone-50 leading-tight">
                 {t("recipe.storageTips", "Storage Tips")}
               </h3>
             </div>
-            <p className="text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
+            <p className="font-body text-[13.5px] text-stone-700 dark:text-stone-200 leading-relaxed">
               {t(
                 "recipe.storageTipsBody",
                 "Store in an airtight container in the refrigerator for up to 2 days. Reheat with a splash of water."
@@ -2319,70 +2329,102 @@ export default function RecipeDetailPage() {
           </div>
 
           {/* Recipe by */}
-          <div className="rounded-2xl paper-card border border-stone-200 dark:border-stone-700/60 p-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.5)]">
-            <div className="flex items-center gap-2 mb-3">
-              <BookOpen className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-              <h3 className="text-[10px] font-black uppercase tracking-widest text-stone-700 dark:text-stone-300">
-                {t("recipe.recipeBy", "Recipe By")}
+          <div className="rounded-2xl paper-card border border-stone-200 dark:border-white/[0.06] p-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_6px_20px_-12px_rgba(0,0,0,0.5)]">
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 shadow-sm">
+                <ChefHat className="h-5 w-5" strokeWidth={2.2} />
+              </span>
+              <h3 className="font-title-hw text-[18px] font-bold text-stone-900 dark:text-stone-50 leading-tight">
+                {t("recipe.recipeBy", "Recipe by")}
               </h3>
             </div>
-            {recipe.createdBy ? (
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[12px] font-bold text-white shadow-sm shrink-0">
-                    {recipe.createdBy.firstName?.[0]}
-                    {recipe.createdBy.lastName?.[0]}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-bold text-stone-900 dark:text-stone-100 truncate">
-                      {recipe.createdBy.firstName} {recipe.createdBy.lastName}
-                    </p>
-                    <p className="text-[11px] text-stone-500 dark:text-stone-400 truncate">
-                      {t("recipe.traditionalRecipes", "Traditional Recipes")}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5 pt-1">
-                  <div className="flex items-center gap-0.5 text-amber-500">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-3 w-3 ${
-                          i < Math.round(avgRating)
-                            ? "fill-current"
-                            : "opacity-30"
-                        }`}
+
+            {(() => {
+              const name = recipe.createdBy
+                ? `${recipe.createdBy.firstName ?? ""} ${recipe.createdBy.lastName ?? ""}`.trim() ||
+                  t("recipe.nammaSamayalTeam", "Namma Samayal Team")
+                : t("recipe.nammaSamayalTeam", "Namma Samayal Team");
+              const initials =
+                (recipe.createdBy?.firstName?.[0] ?? "N") +
+                (recipe.createdBy?.lastName?.[0] ?? "S");
+
+              return (
+                <>
+                  <div className="flex items-center gap-3 mb-2">
+                    {/* Cartoon-style avatar circle */}
+                    <div
+                      className="relative h-11 w-11 shrink-0 rounded-full overflow-hidden border-2 border-amber-200 dark:border-amber-400/40 shadow-sm"
+                      style={{
+                        backgroundColor: "#fde4c0",
+                      }}
+                    >
+                      {/* Hair top */}
+                      <div className="absolute inset-x-1.5 top-1.5 h-3 rounded-full bg-stone-800/80" />
+                      {/* Face */}
+                      <div className="absolute inset-x-2 top-3 h-5 rounded-full bg-amber-200/90" />
+                      {/* Eyes */}
+                      <span className="absolute top-[18px] left-[14px] h-1 w-1 rounded-full bg-stone-900" />
+                      <span className="absolute top-[18px] right-[14px] h-1 w-1 rounded-full bg-stone-900" />
+                      {/* Smile */}
+                      <span
+                        className="absolute top-[22px] left-1/2 -translate-x-1/2 h-1 w-2 border-b-[1.5px] border-stone-800 rounded-b-full"
+                        style={{ borderColor: "rgba(28,25,23,0.85)" }}
                       />
-                    ))}
+                      {/* Initials fallback (sr-only for screen readers) */}
+                      <span className="sr-only">{initials}</span>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-body text-[13.5px] font-bold text-stone-900 dark:text-stone-50 truncate">
+                        {name}
+                      </p>
+                      <p className="font-body text-[11.5px] text-stone-500 dark:text-stone-400 truncate">
+                        {t("recipe.traditionalRecipes", "Traditional Recipes")}
+                      </p>
+                    </div>
                   </div>
-                  {avgRating > 0 ? (
-                    <span className="text-[11px] text-stone-600 dark:text-stone-400 font-medium">
-                      {avgRating.toFixed(1)} ({recipe.ratings?.length ?? 0}{" "}
-                      {t("recipe.reviews", "reviews")})
-                    </span>
-                  ) : (
-                    <span className="text-[11px] text-stone-500 dark:text-stone-500 font-medium">
-                      {t("recipe.noReviewsYet", "No reviews yet")}
-                    </span>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <p className="text-sm text-stone-500 dark:text-stone-400">
-                {t("recipe.nammaSamayalKitchen", "Namma Samayal Kitchen")}
-              </p>
-            )}
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-0.5 text-amber-500">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-3.5 w-3.5 ${
+                            i < Math.round(avgRating)
+                              ? "fill-current"
+                              : "opacity-30"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    {avgRating > 0 ? (
+                      <>
+                        <span className="font-body text-[12.5px] font-bold text-stone-800 dark:text-stone-100 tabular-nums">
+                          {avgRating.toFixed(1)}
+                        </span>
+                        <span className="font-body text-[11px] text-stone-500 dark:text-stone-400">
+                          ({recipe.ratings?.length ?? 0}{" "}
+                          {t("recipe.reviews", "reviews")})
+                        </span>
+                      </>
+                    ) : (
+                      <span className="font-body text-[11.5px] text-stone-500 dark:text-stone-400">
+                        {t("recipe.noReviewsYet", "No reviews yet")}
+                      </span>
+                    )}
+                  </div>
+                </>
+              );
+            })()}
           </div>
         </motion.section>
 
         {/* ─────────────────────────── Meta footer strip ─────────────────────────── */}
-        <div className="mt-6 rounded-[20px] paper-card border border-stone-200 dark:border-stone-700/60 p-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)]">
+        <div className="mt-10 md:mt-12 rounded-[20px] paper-card border border-stone-200 dark:border-white/[0.06] p-5 md:p-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 md:gap-6 shadow-[0_6px_20px_-12px_rgba(120,90,40,0.18)]">
           {recipe.category && (
             <div>
               <p className="text-[10px] font-black uppercase tracking-widest text-stone-500 dark:text-stone-400 mb-1">
                 {t("recipe.category", "Category")}
               </p>
-              <p className="text-sm font-semibold text-stone-800 dark:text-stone-200">
+              <p className="text-sm font-semibold text-stone-800 dark:text-stone-100">
                 {lf(recipe.category.name)}
               </p>
             </div>
@@ -2392,7 +2434,7 @@ export default function RecipeDetailPage() {
               <p className="text-[10px] font-black uppercase tracking-widest text-stone-500 dark:text-stone-400 mb-1">
                 {t("recipe.subCategory", "Sub Category")}
               </p>
-              <p className="text-sm font-semibold text-stone-800 dark:text-stone-200">
+              <p className="text-sm font-semibold text-stone-800 dark:text-stone-100">
                 {lf(recipe.subCategory.name)}
               </p>
             </div>
@@ -2402,7 +2444,7 @@ export default function RecipeDetailPage() {
               <p className="text-[10px] font-black uppercase tracking-widest text-stone-500 dark:text-stone-400 mb-1">
                 {t("recipe.region", "Region")}
               </p>
-              <p className="text-sm font-semibold text-stone-800 dark:text-stone-200">
+              <p className="text-sm font-semibold text-stone-800 dark:text-stone-100">
                 {recipe.location.region}
               </p>
             </div>
@@ -2414,7 +2456,7 @@ export default function RecipeDetailPage() {
               </p>
               <div className="flex items-center gap-2">
                 <User className="h-3.5 w-3.5 text-stone-500 dark:text-stone-400" />
-                <p className="text-sm font-semibold text-stone-800 dark:text-stone-200 truncate">
+                <p className="text-sm font-semibold text-stone-800 dark:text-stone-100 truncate">
                   {recipe.createdBy.firstName} {recipe.createdBy.lastName}
                 </p>
               </div>

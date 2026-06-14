@@ -1,7 +1,11 @@
 import { body, param, query } from "express-validator";
 
 export const ingredientIdValidation = [
-  param("id").isMongoId().withMessage("Invalid ingredient id"),
+  // :id can be either a Mongo ObjectId or a URL slug
+  param("id")
+    .isString()
+    .matches(/^([a-fA-F0-9]{24}|[a-z0-9][a-z0-9-]*[a-z0-9])$/)
+    .withMessage("Invalid ingredient id or slug"),
 ];
 
 export const createIngredientValidation = [

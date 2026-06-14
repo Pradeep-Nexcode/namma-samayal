@@ -7,6 +7,13 @@ export interface UserRecipe {
   imageUrl?: string;
 }
 
+export type CookingLevel =
+  | "beginner"
+  | "home-cook"
+  | "intermediate"
+  | "expert"
+  | "master";
+
 export interface User {
   _id: string;
   username: string;
@@ -17,6 +24,11 @@ export interface User {
   language: "en" | "ta";
   profileImage?: string | null;
   bio?: string | null;
+  /** Personal "Chef Identity" fields shown on the user profile page. */
+  favoriteCuisine?: string | null;
+  cookingLevel?: CookingLevel | null;
+  specialDish?: string | null;
+  location?: string | null;
   favoriteRecipes: Array<string | UserRecipe>;
   savedRecipes: Array<string | UserRecipe>;
   createdRecipes: Array<string | UserRecipe>;
@@ -63,4 +75,8 @@ export interface UpdateProfileInput {
   lastName?: string;
   bio?: string;
   profileImage?: string;
+  favoriteCuisine?: string;
+  cookingLevel?: CookingLevel | "";
+  specialDish?: string;
+  location?: string;
 }

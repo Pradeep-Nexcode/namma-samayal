@@ -51,12 +51,12 @@ async function seedRecipe() {
     await mongoose.connect(MONGODB_URI);
     console.log("Connected to MongoDB");
 
-    const slug = "dindigul-jaffer-veg-dum-biryani";
-    const existing = await Recipe.findOne({ slug });
-    if (existing) {
-      console.log(`Recipe with slug "${slug}" already exists. Skipping insert. _id=${existing._id}`);
-      return;
-    }
+    const slug = "dindigul-veg-dum-biryani";
+    const LEGACY_SLUGS = [
+      "dindigul-jaffer-veg-dum-biryani",
+      "dindigul-jaffer-veg-dum-biryani-wedding-style-vegetarian-mutton-style-base",
+    ];
+    const existing = await Recipe.findOne({ slug: { $in: [slug, ...LEGACY_SLUGS] } });
 
     const user = await User.findOne();
     if (!user) throw new Error("No user found");
@@ -92,20 +92,20 @@ async function seedRecipe() {
       });
     }
 
-    const newRecipe = new Recipe({
+    const recipePayload = {
       dishName: {
-        en: "Dindigul Jaffer Veg Dum Biryani (Wedding-Style Vegetarian, 'Mutton-Style' Base)",
-        ta: "திண்டுக்கல் ஜாஃபர் சைவ தம் பிரியாணி (கல்யாண பாணி, 'ஆட்டிறைச்சி-பாணி' அடிப்படை)",
+        en: "Dindigul Veg Dum Biryani (Wedding-Style Vegetarian, 'Mutton-Style' Base)",
+        ta: "திண்டுக்கல் சைவ தம் பிரியாணி (கல்யாண பாணி, 'ஆட்டிறைச்சி-பாணி' அடிப்படை)",
       },
-      title: "Dindigul Jaffer Veg Dum Biryani",
+      title: "Dindigul Veg Dum Biryani",
       slug,
       description: {
-        en: "The legendary vegetarian dum biryani from Dindigul Jaffer Catering (Professor Mr. Yasin) — built deliberately on the same intense, rich masala BASE as their famous mutton biryani so the dish has a deep, savory complexity instead of tasting like a generic vegetable pulao. Four uncompromising Jaffer signatures define it: (1) the 'mutton-style' base technique scaled to veg, (2) the 'color trick' where red chilli powder is added DIRECTLY into the hot oil right after mint + onion for that signature Dindigul deep reddish-brown color (no artificial colors), (3) the powdered whole spices — cinnamon, cardamom, cloves are pre-ground to a fine powder (NOT thrown in whole) so the aroma distributes evenly and diners never bite into them, and (4) the shallot-dominant 4:1 onion ratio (400g crushed small onions + 100g big onions) plus the deliberately LOW 100g tomato to avoid a 'tomato rice' taste. Finished on a 20-minute coal-and-weight dum on Seeraga Samba.",
-        ta: "திண்டுக்கல் ஜாஃபர் கேட்டரிங்கின் (பேராசிரியர் திரு. யாசின்) புகழ்பெற்ற சைவ தம் பிரியாணி — பொதுவான காய்கறி புலாவ் போல சுவைக்காமல், ஆழமான, செழுமையான சிக்கல் தர, தங்களின் புகழ்பெற்ற ஆட்டிறைச்சி பிரியாணியின் அதே தீவிர மசாலா அடிப்படையில் வேண்டுமென்றே கட்டப்பட்டுள்ளது. நான்கு கட்டாய ஜாஃபர் தனிச்சிறப்புகள்: (1) 'ஆட்டிறைச்சி-பாணி' அடிப்படை நுட்பம் சைவத்துக்கு பயன்படுத்தப்படுகிறது, (2) 'நிற ரகசியம்' — புதினா + வெங்காயம் வதக்கிய பிறகு, மிளகாய் தூள் சூடான எண்ணெயில் நேரடியாக சேர்க்கப்பட்டு, செயற்கை நிறம் இல்லாமலேயே தனிச்சிறப்பான திண்டுக்கல் ஆழமான சிவப்பு-பழுப்பு நிறம் வருகிறது, (3) அரைத்த முழு மசாலா — இலவங்கப்பட்டை, ஏலக்காய், கிராம்பு முன்பே மிருதுவான தூளாக அரைக்கப்படுகிறது (முழுதாக போடப்படவில்லை), இதனால் வாசனை சீராக பரவுகிறது மற்றும் சாப்பிடுபவர்கள் தவறுதலாக கடிக்க மாட்டார்கள், (4) சின்ன வெங்காய ஆதிக்க 4:1 வெங்காய விகிதம் (400 கிராம் நசுக்கிய சின்ன வெங்காயம் + 100 கிராம் பெரிய வெங்காயம்) மற்றும் 'தக்காளி சாதம்' சுவை வராமல் தடுக்க வேண்டுமென்றே குறைந்த 100 கிராம் தக்காளி. சீரக சம்பாவில் 20-நிமிட கரி-மற்றும்-பாரம் தம்மில் முடிக்கப்படுகிறது.",
+        en: "A wedding-style vegetarian dum biryani learned from hours of watching Dindigul's famous wedding caterers cook this on YouTube — distilled down into the techniques that actually matter. Built deliberately on the same intense, rich masala BASE as a Dindigul mutton biryani so the dish has a deep, savory complexity instead of tasting like a generic vegetable pulao. Four signatures define a real Dindigul wedding-veg biryani: (1) the 'mutton-style' base technique scaled to veg, (2) the 'color trick' where red chilli powder is added DIRECTLY into the hot oil right after mint + onion for that signature Dindigul deep reddish-brown color (no artificial colors), (3) the powdered whole spices — cinnamon, cardamom, cloves are pre-ground to a fine powder (NOT thrown in whole) so the aroma distributes evenly and diners never bite into them, and (4) the shallot-dominant 4:1 onion ratio (400g crushed small onions + 100g big onions) plus the deliberately LOW 100g tomato to avoid a 'tomato rice' taste. Finished on a 20-minute coal-and-weight dum on Seeraga Samba.",
+        ta: "திண்டுக்கல் கல்யாண சமையற்காரர்கள் YouTube-இல் இந்த பிரியாணியை சமைப்பதை மணிக்கணக்காக பார்த்து, உண்மையில் முக்கியமான நுட்பங்களை மட்டும் தேர்ந்தெடுத்து தயாரிக்கப்பட்ட கல்யாண பாணி சைவ தம் பிரியாணி. பொதுவான காய்கறி புலாவ் போல சுவைக்காமல், ஆழமான, செழுமையான சிக்கல் தர, திண்டுக்கல் ஆட்டிறைச்சி பிரியாணியின் அதே தீவிர மசாலா அடிப்படையில் வேண்டுமென்றே கட்டப்பட்டுள்ளது. உண்மையான திண்டுக்கல் கல்யாண சைவ பிரியாணியை வரையறுக்கும் நான்கு தனிச்சிறப்புகள்: (1) 'ஆட்டிறைச்சி-பாணி' அடிப்படை நுட்பம் சைவத்துக்கு பயன்படுத்தப்படுகிறது, (2) 'நிற ரகசியம்' — புதினா + வெங்காயம் வதக்கிய பிறகு, மிளகாய் தூள் சூடான எண்ணெயில் நேரடியாக சேர்க்கப்பட்டு, செயற்கை நிறம் இல்லாமலேயே தனிச்சிறப்பான திண்டுக்கல் ஆழமான சிவப்பு-பழுப்பு நிறம் வருகிறது, (3) அரைத்த முழு மசாலா — இலவங்கப்பட்டை, ஏலக்காய், கிராம்பு முன்பே மிருதுவான தூளாக அரைக்கப்படுகிறது (முழுதாக போடப்படவில்லை), இதனால் வாசனை சீராக பரவுகிறது மற்றும் சாப்பிடுபவர்கள் தவறுதலாக கடிக்க மாட்டார்கள், (4) சின்ன வெங்காய ஆதிக்க 4:1 வெங்காய விகிதம் (400 கிராம் நசுக்கிய சின்ன வெங்காயம் + 100 கிராம் பெரிய வெங்காயம்) மற்றும் 'தக்காளி சாதம்' சுவை வராமல் தடுக்க வேண்டுமென்றே குறைந்த 100 கிராம் தக்காளி. சீரக சம்பாவில் 20-நிமிட கரி-மற்றும்-பாரம் தம்மில் முடிக்கப்படுகிறது.",
       },
       speciality: {
-        en: "Four uncompromising Jaffer Catering signatures define this Dindigul Wedding-style Veg Dum Biryani: (1) The 'Mutton-Style' Base — most veg biryanis use a light pulao-style base; Jaffer Catering instead uses the EXACT same intense onion-garlic-ghee base as their famous mutton biryani, just with vegetables instead of meat. The result tastes deep, savory and complex, never light or sweet like a vegetable pulao. (2) The Color Trick in Oil — instead of artificial color or piling on tomatoes (which would make a 'tomato rice'), the chefs add 15g of red chilli powder DIRECTLY into the hot oil right after sautéing the mint and big onions. The oil instantly absorbs and magnifies the color, giving the entire biryani that signature deep Dindigul reddish-brown hue without overloading on acid. (3) The Powdered Whole Spices — unlike Chennai-style biryanis where cinnamon + cardamom + cloves are thrown into the oil whole, Dindigul grinds them dry into a fine spice powder BEFORE cooking. This stops diners from accidentally biting into a whole clove or cardamom pod AND distributes the aroma evenly across every grain. (4) The 4:1 Shallot Dominance + Low-Tomato Rule — 400g of coarsely crushed shallots (NOT finely ground) vs just 100g of big onions; and ONLY 100g of tomato (commercial Dindigul wisdom: more tomato = 'tomato rice' taste, less tomato = clean Seeraga Samba flavor). The shallot dominance gives the dish its rustic Kongu wedding-feast sweetness.",
-        ta: "இந்த திண்டுக்கல் கல்யாண பாணி சைவ தம் பிரியாணியின் நான்கு கட்டாய ஜாஃபர் கேட்டரிங் தனிச்சிறப்புகள்: (1) 'ஆட்டிறைச்சி-பாணி' அடிப்படை — பெரும்பாலான சைவ பிரியாணிகள் இலகுவான புலாவ்-பாணி அடிப்படை பயன்படுத்துகின்றன; ஜாஃபர் கேட்டரிங் தங்களின் புகழ்பெற்ற ஆட்டிறைச்சி பிரியாணியின் அதே தீவிர வெங்காயம்-பூண்டு-நெய் அடிப்படையை பயன்படுத்துகிறது, இறைச்சிக்கு பதிலாக காய்கறிகள் மட்டும். முடிவு: ஆழமான, சுவையான, சிக்கலான சுவை — இலகுவான அல்லது இனிமையான காய்கறி புலாவ் போல இல்லை. (2) எண்ணெயில் நிற ரகசியம் — செயற்கை நிறம் அல்லது அதிக தக்காளி ('தக்காளி சாதம்' சுவை) இல்லாமல், சமையற்காரர்கள் புதினா + பெரிய வெங்காயம் வதக்கிய பிறகு 15 கிராம் மிளகாய் தூளை சூடான எண்ணெயில் நேரடியாக சேர்க்கின்றனர். எண்ணெய் உடனடியாக நிறத்தை உள்ளீர்த்து பெரிதாக்குகிறது — அமிலத்தை அதிகரிக்காமல், முழு பிரியாணிக்கும் தனிச்சிறப்பான திண்டுக்கல் ஆழமான சிவப்பு-பழுப்பு நிறம் கொடுக்கிறது. (3) அரைத்த முழு மசாலாக்கள் — சென்னை-பாணி பிரியாணியில் இலவங்கப்பட்டை + ஏலக்காய் + கிராம்பு முழுதாக எண்ணெயில் போடப்படுகின்றன; திண்டுக்கல் சமைப்பதற்கு முன்பே வரண்டே மிருதுவான மசாலா தூளாக அரைக்கிறது. இது சாப்பிடுபவர்கள் கிராம்பு அல்லது ஏலக்காய் ஆகியவற்றை தவறுதலாக கடிக்காமல் தடுக்கிறது மற்றும் வாசனையை ஒவ்வொரு தானியத்திலும் சீராக பரப்புகிறது. (4) 4:1 சின்ன வெங்காய ஆதிக்கம் + குறைந்த தக்காளி விதி — 400 கிராம் கரகரப்பாக நசுக்கிய சின்ன வெங்காயம் (நன்கு அரைக்கப்படவில்லை) எதிராக வெறும் 100 கிராம் பெரிய வெங்காயம்; மற்றும் வெறும் 100 கிராம் தக்காளி (வணிக திண்டுக்கல் ஞானம்: அதிக தக்காளி = 'தக்காளி சாதம்' சுவை, குறைந்த தக்காளி = தூய சீரக சம்பா சுவை). சின்ன வெங்காய ஆதிக்கம் உணவுக்கு கிராமத்து கொங்கு கல்யாண-விருந்து இனிமையை தருகிறது.",
+        en: "Four signatures define a real Dindigul Wedding-style Veg Dum Biryani — these are the techniques we kept seeing again and again across the Dindigul wedding-cook videos we studied: (1) The 'Mutton-Style' Base — most veg biryanis use a light pulao-style base; the Dindigul wedding kitchens instead use the EXACT same intense onion-garlic-ghee base as their mutton biryani, just with vegetables instead of meat. The result tastes deep, savory and complex, never light or sweet like a vegetable pulao. (2) The Color Trick in Oil — instead of artificial color or piling on tomatoes (which would make a 'tomato rice'), the cooks add 15g of red chilli powder DIRECTLY into the hot oil right after sautéing the mint and big onions. The oil instantly absorbs and magnifies the color, giving the entire biryani that signature deep Dindigul reddish-brown hue without overloading on acid. (3) The Powdered Whole Spices — unlike Chennai-style biryanis where cinnamon + cardamom + cloves are thrown into the oil whole, Dindigul wedding cooks grind them dry into a fine spice powder BEFORE cooking. This stops diners from accidentally biting into a whole clove or cardamom pod AND distributes the aroma evenly across every grain. (4) The 4:1 Shallot Dominance + Low-Tomato Rule — 400g of coarsely crushed shallots (NOT finely ground) vs just 100g of big onions; and ONLY 100g of tomato (Dindigul commercial-kitchen wisdom: more tomato = 'tomato rice' taste, less tomato = clean Seeraga Samba flavor). The shallot dominance gives the dish its rustic Kongu wedding-feast sweetness.",
+        ta: "உண்மையான திண்டுக்கல் கல்யாண பாணி சைவ தம் பிரியாணியை வரையறுக்கும் நான்கு தனிச்சிறப்புகள் — நாங்கள் பார்த்த திண்டுக்கல் கல்யாண-சமையல் வீடியோக்களில் மீண்டும் மீண்டும் வரும் நுட்பங்கள்: (1) 'ஆட்டிறைச்சி-பாணி' அடிப்படை — பெரும்பாலான சைவ பிரியாணிகள் இலகுவான புலாவ்-பாணி அடிப்படை பயன்படுத்துகின்றன; திண்டுக்கல் கல்யாண சமையல் அறைகள் தங்கள் ஆட்டிறைச்சி பிரியாணியின் அதே தீவிர வெங்காயம்-பூண்டு-நெய் அடிப்படையை, இறைச்சிக்கு பதிலாக காய்கறிகள் மட்டும் சேர்த்து, பயன்படுத்துகின்றன. முடிவு: ஆழமான, சுவையான, சிக்கலான சுவை — இலகுவான அல்லது இனிமையான காய்கறி புலாவ் போல இல்லை. (2) எண்ணெயில் நிற ரகசியம் — செயற்கை நிறம் அல்லது அதிக தக்காளி ('தக்காளி சாதம்' சுவை) இல்லாமல், சமையற்காரர்கள் புதினா + பெரிய வெங்காயம் வதக்கிய பிறகு 15 கிராம் மிளகாய் தூளை சூடான எண்ணெயில் நேரடியாக சேர்க்கின்றனர். எண்ணெய் உடனடியாக நிறத்தை உள்ளீர்த்து பெரிதாக்குகிறது — அமிலத்தை அதிகரிக்காமல், முழு பிரியாணிக்கும் தனிச்சிறப்பான திண்டுக்கல் ஆழமான சிவப்பு-பழுப்பு நிறம் கொடுக்கிறது. (3) அரைத்த முழு மசாலாக்கள் — சென்னை-பாணி பிரியாணியில் இலவங்கப்பட்டை + ஏலக்காய் + கிராம்பு முழுதாக எண்ணெயில் போடப்படுகின்றன; திண்டுக்கல் கல்யாண சமையற்காரர்கள் சமைப்பதற்கு முன்பே வரண்டே மிருதுவான மசாலா தூளாக அரைக்கின்றனர். இது சாப்பிடுபவர்கள் கிராம்பு அல்லது ஏலக்காய் ஆகியவற்றை தவறுதலாக கடிக்காமல் தடுக்கிறது மற்றும் வாசனையை ஒவ்வொரு தானியத்திலும் சீராக பரப்புகிறது. (4) 4:1 சின்ன வெங்காய ஆதிக்கம் + குறைந்த தக்காளி விதி — 400 கிராம் கரகரப்பாக நசுக்கிய சின்ன வெங்காயம் (நன்கு அரைக்கப்படவில்லை) எதிராக வெறும் 100 கிராம் பெரிய வெங்காயம்; மற்றும் வெறும் 100 கிராம் தக்காளி (திண்டுக்கல் வணிக-சமையல் ஞானம்: அதிக தக்காளி = 'தக்காளி சாதம்' சுவை, குறைந்த தக்காளி = தூய சீரக சம்பா சுவை). சின்ன வெங்காய ஆதிக்கம் உணவுக்கு கிராமத்து கொங்கு கல்யாண-விருந்து இனிமையை தருகிறது.",
       },
       location: {
         country: "India",
@@ -128,8 +128,6 @@ async function seedRecipe() {
         "dindigul",
         "wedding-biryani",
         "kalyana-biryani",
-        "jaffer-catering",
-        "professor-yasin",
         "seeraga-samba",
         "mutton-style-veg",
         "color-trick",
@@ -140,21 +138,19 @@ async function seedRecipe() {
         "virundhu",
         "tamil-nadu",
         "iconic",
-        "commercial-recipe",
+        "wedding-style",
       ],
       searchKeywords: [
         "dindigul veg biryani",
         "dindigul vegetable biryani",
-        "jaffer veg biryani",
-        "professor yasin veg biryani",
+        "dindigul wedding veg biryani",
         "திண்டுக்கல் சைவ பிரியாணி",
-        "ஜாஃபர் சைவ பிரியாணி",
+        "திண்டுக்கல் கல்யாண சைவ பிரியாணி",
         "wedding veg biryani",
         "kalyana veetu veg biryani",
         "seeraga samba veg biryani",
         "mutton style veg biryani",
         "dindigul veg dum biryani",
-        "chef deena veg biryani",
         "vegetarian dum biryani recipe",
         "tamil nadu veg biryani",
       ],
@@ -227,8 +223,8 @@ async function seedRecipe() {
             {
               step: 8,
               description: {
-                en: "FLAVOR-FIRST SIGNATURE STEP: once the fat is hot, drop in the FULL handful of fresh mint leaves directly. Most biryanis add mint after the masala; Dindigul Jaffer adds it FIRST so its herbal oils saturate the fat layer right from the start — every later ingredient picks up the mint perfume.",
-                ta: "சுவை-முதல் தனிச்சிறப்பு படி: கொழுப்பு சூடாகும் போது, முழு கைப்பிடி புதினாவை நேரடியாக சேர்க்கவும். பெரும்பாலான பிரியாணிகள் மசாலாவுக்கு பிறகு புதினா சேர்க்கின்றன; திண்டுக்கல் ஜாஃபர் முதலில் சேர்க்கிறார்கள், இதனால் ஆரம்பத்திலிருந்தே மூலிகை எண்ணெய்கள் கொழுப்பு அடுக்கை நிறைக்கின்றன — பின் சேர்க்கப்படும் ஒவ்வொரு பொருளும் புதினா வாசனையை உள்ளீர்க்கின்றன.",
+                en: "FLAVOR-FIRST SIGNATURE STEP: once the fat is hot, drop in the FULL handful of fresh mint leaves directly. Most biryanis add mint after the masala; the Dindigul wedding-style approach is to add it FIRST so its herbal oils saturate the fat layer right from the start — every later ingredient picks up the mint perfume.",
+                ta: "சுவை-முதல் தனிச்சிறப்பு படி: கொழுப்பு சூடாகும் போது, முழு கைப்பிடி புதினாவை நேரடியாக சேர்க்கவும். பெரும்பாலான பிரியாணிகள் மசாலாவுக்கு பிறகு புதினா சேர்க்கின்றன; திண்டுக்கல் கல்யாண பாணி முதலில் சேர்ப்பது — ஆரம்பத்திலிருந்தே மூலிகை எண்ணெய்கள் கொழுப்பு அடுக்கை நிறைக்கின்றன — பின் சேர்க்கப்படும் ஒவ்வொரு பொருளும் புதினா வாசனையை உள்ளீர்க்கின்றன.",
               },
             },
             {
@@ -390,10 +386,17 @@ async function seedRecipe() {
           ],
         },
       ],
-    });
+    };
 
-    await newRecipe.save();
-    console.log(`Dindigul Veg Dum Biryani recipe created successfully! _id=${newRecipe._id}`);
+    if (existing) {
+      Object.assign(existing, recipePayload);
+      await existing.save();
+      console.log(`Dindigul Veg Dum Biryani recipe UPDATED. _id=${existing._id} (slug now: ${slug})`);
+    } else {
+      const newRecipe = new Recipe(recipePayload);
+      await newRecipe.save();
+      console.log(`Dindigul Veg Dum Biryani recipe CREATED. _id=${newRecipe._id}`);
+    }
   } catch (error) {
     console.error("Error seeding recipe:", error);
   } finally {

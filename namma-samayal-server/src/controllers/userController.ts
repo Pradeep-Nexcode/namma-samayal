@@ -27,6 +27,10 @@ interface UpdateProfileBody {
   lastName?: string;
   bio?: string;
   profileImage?: string;
+  favoriteCuisine?: string;
+  cookingLevel?: "beginner" | "home-cook" | "intermediate" | "expert" | "master";
+  specialDish?: string;
+  location?: string;
 }
 
 const jwtOptions: SignOptions = {
@@ -183,15 +187,19 @@ export const updateProfile = catchAsync(async (req: Request, res: Response) => {
     "lastName",
     "bio",
     "profileImage",
+    "favoriteCuisine",
+    "cookingLevel",
+    "specialDish",
+    "location",
   ];
 
   const payload = req.body as UpdateProfileBody;
 
-  const updateData = allowedFields.reduce<UpdateProfileBody>((acc, field) => {
-    if (payload[field] !== undefined) {
-      acc[field] = payload[field];
+  const updateData = allowedFields.reduce<Record<string, unknown>>((acc, field) => {
+    const value = payload[field];
+    if (value !== undefined) {
+      acc[field] = value;
     }
-
     return acc;
   }, {});
 

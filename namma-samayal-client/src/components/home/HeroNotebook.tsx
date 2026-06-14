@@ -316,13 +316,13 @@ function FeaturedPolaroid({
             />
           ) : (
             <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-amber-100 to-rose-100">
-              <ChefHat className="h-12 w-12 text-stone-400" />
+              <ChefHat className="h-12 w-12 text-stone-400 dark:text-stone-500" />
             </div>
           )}
         </div>
         <div className="absolute bottom-2 left-0 right-0 flex items-center justify-center gap-2 px-3">
           <p
-            className="font-note-hw text-[15px] md:text-[16px] text-stone-700 truncate"
+            className="font-note-hw text-[15px] md:text-[16px] text-stone-700 dark:text-stone-200 truncate"
             title={displayTitle}
           >
             {displayTitle}
@@ -476,7 +476,7 @@ export function HeroNotebook() {
                   type="button"
                   onClick={prev}
                   aria-label="Previous page"
-                  className="absolute top-1/2 -translate-y-1/2 -left-2 md:-left-4 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 dark:bg-stone-800/80 border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 hover:bg-white hover:text-[#e74c3c] hover:border-[#e74c3c] transition-colors shadow-md backdrop-blur-sm"
+                  className="absolute top-1/2 -translate-y-1/2 -left-2 md:-left-4 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 dark:bg-white/5 border border-stone-300 dark:border-white/10 text-stone-600 dark:text-stone-300 hover:bg-white hover:text-[#e74c3c] hover:border-[#e74c3c] transition-colors shadow-md backdrop-blur-sm"
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
@@ -484,7 +484,7 @@ export function HeroNotebook() {
                   type="button"
                   onClick={next}
                   aria-label="Next page"
-                  className="absolute top-1/2 -translate-y-1/2 -right-2 md:-right-4 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 dark:bg-stone-800/80 border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 hover:bg-white hover:text-[#e74c3c] hover:border-[#e74c3c] transition-colors shadow-md backdrop-blur-sm"
+                  className="absolute top-1/2 -translate-y-1/2 -right-2 md:-right-4 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 dark:bg-white/5 border border-stone-300 dark:border-white/10 text-stone-600 dark:text-stone-300 hover:bg-white hover:text-[#e74c3c] hover:border-[#e74c3c] transition-colors shadow-md backdrop-blur-sm"
                 >
                   <ChevronRight className="h-5 w-5" />
                 </button>
@@ -505,8 +505,7 @@ export function HeroNotebook() {
 
                 {/* ─── LEFT PAGE ─── */}
                 <div
-                  className="relative px-7 md:px-12 lg:pr-16 py-10 md:py-12 lg:pl-14"
-                  style={pageStyle()}
+                  className="np-page-margin relative px-7 md:px-12 lg:pr-16 py-10 md:py-12 lg:pl-14"
                 >
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -546,7 +545,7 @@ export function HeroNotebook() {
                           : ts("home.heroFallbackTitle", "Erode Arisi Paruppu Satham");
                         return (
                           <div className="relative inline-block">
-                            <h1 className="font-title-hw text-[34px] md:text-[44px] lg:text-[52px] font-bold leading-[1.05] text-stone-900 pr-8">
+                            <h1 className="font-title-hw text-[34px] md:text-[44px] lg:text-[52px] font-bold leading-[1.05] text-stone-900 dark:text-stone-50 pr-8">
                               {recipeTitle}
                             </h1>
                             {/* Red squiggle underline */}
@@ -568,7 +567,7 @@ export function HeroNotebook() {
                       })()}
 
                       {/* Handwritten tagline (the Namma Samayal heart line) */}
-                      <p className="font-note-hw text-[16px] md:text-[17px] text-stone-700 mt-3 italic">
+                      <p className="font-note-hw text-[16px] md:text-[17px] text-stone-700 dark:text-stone-200 mt-3 italic">
                         {ts(
                           "home.kitchenTagline",
                           "From our kitchen to your heart"
@@ -577,7 +576,7 @@ export function HeroNotebook() {
                       </p>
 
                       {/* Description */}
-                      <p className="font-body text-[14px] md:text-[15px] text-stone-700 leading-relaxed mt-4 max-w-md line-clamp-3">
+                      <p className="font-body text-[14px] md:text-[15px] text-stone-700 dark:text-stone-200 leading-relaxed mt-4 max-w-md line-clamp-3">
                         {featured
                           ? lf({
                               en:
@@ -599,7 +598,7 @@ export function HeroNotebook() {
                       </p>
 
                       {/* Meta chips — location / time / difficulty */}
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-5 font-body text-[13px] text-stone-700">
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-5 font-body text-[13px] text-stone-700 dark:text-stone-200">
                         {(featured?.location?.city ||
                           featured?.location?.region) && (
                           <span className="inline-flex items-center gap-1.5">
@@ -631,8 +630,8 @@ export function HeroNotebook() {
                       {/* CTA */}
                       <div className="mt-6">
                         <Link
-                          href={featured ? `/recipe/${featured._id}` : "/recipes"}
-                          className="inline-flex items-center gap-2 rounded-full bg-stone-900 dark:bg-stone-800 text-white px-6 py-3 font-title-hw text-[16px] font-bold hover:bg-stone-700 transition-colors shadow-[0_6px_14px_-6px_rgba(0,0,0,0.35)] active:translate-y-px"
+                          href={featured ? `/recipe/${featured.slug ?? featured._id}` : "/recipes"}
+                          className="inline-flex items-center gap-2 rounded-full bg-stone-900 dark:bg-[#e74c3c] text-white px-6 py-3 font-title-hw text-[16px] font-bold hover:bg-stone-700 dark:hover:bg-[#c0392b] transition-colors shadow-[0_6px_14px_-6px_rgba(0,0,0,0.35)] active:translate-y-px"
                         >
                           {featured
                             ? ts("home.viewThisRecipe", "View This Recipe")
@@ -646,8 +645,7 @@ export function HeroNotebook() {
 
                 {/* ─── RIGHT PAGE ─── */}
                 <div
-                  className="relative px-6 md:px-10 lg:pl-14 py-10 md:py-12 lg:pr-12"
-                  style={pageStyle()}
+                  className="np-page-margin relative px-6 md:px-10 lg:pl-14 py-10 md:py-12 lg:pr-12"
                 >
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -698,14 +696,14 @@ export function HeroNotebook() {
                               />
                             ) : (
                               <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-amber-100 to-rose-100">
-                                <ChefHat className="h-14 w-14 text-stone-400" />
+                                <ChefHat className="h-14 w-14 text-stone-400 dark:text-stone-500" />
                               </div>
                             )}
                           </div>
                           {/* Handwritten caption */}
                           <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-2 px-4">
                             <p
-                              className="font-note-hw text-[15px] md:text-[17px] text-stone-700 truncate"
+                              className="font-note-hw text-[15px] md:text-[17px] text-stone-700 dark:text-stone-200 truncate"
                               title={
                                 featured
                                   ? featured.seo?.title?.en ||
@@ -824,7 +822,7 @@ export function HeroNotebook() {
                   type="button"
                   onClick={prev}
                   aria-label="Previous"
-                  className="text-stone-400 hover:text-[#e74c3c] transition-colors"
+                  className="text-stone-400 dark:text-stone-500 hover:text-[#e74c3c] transition-colors"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
@@ -842,7 +840,7 @@ export function HeroNotebook() {
                     }`}
                   />
                 ))}
-                <span className="font-body text-[11px] text-stone-400 ml-1">
+                <span className="font-body text-[11px] text-stone-400 dark:text-stone-500 ml-1">
                   {index + 1} / {total}
                 </span>
               </div>
@@ -872,24 +870,24 @@ export function HeroNotebook() {
                 }}
               />
               <div className="flex items-center justify-center gap-1.5 mb-3 pt-1">
-                <h3 className="font-title-hw text-[18px] font-bold text-stone-800">
+                <h3 className="font-title-hw text-[18px] font-bold text-stone-800 dark:text-stone-100">
                   {ts("home.ourPromise", "Our Promise")}
                 </h3>
                 <span className="text-[#e74c3c] h-4 w-4">
                   <HeartDoodle className="h-full w-full" />
                 </span>
               </div>
-              <ul className="space-y-2.5 font-body text-[12.5px] text-stone-700">
+              <ul className="space-y-2.5 font-body text-[12.5px] text-stone-700 dark:text-stone-200">
                 <li className="flex items-center gap-2">
-                  <Shield className="h-3.5 w-3.5 text-stone-600 shrink-0" />
+                  <Shield className="h-3.5 w-3.5 text-stone-600 dark:text-stone-300 shrink-0" />
                   {ts("home.promise1", "Authentic Recipes")}
                 </li>
                 <li className="flex items-center gap-2">
-                  <Clock className="h-3.5 w-3.5 text-stone-600 shrink-0" />
+                  <Clock className="h-3.5 w-3.5 text-stone-600 dark:text-stone-300 shrink-0" />
                   {ts("home.promise2", "Tried & Tested")}
                 </li>
                 <li className="flex items-center gap-2">
-                  <Heart className="h-3.5 w-3.5 text-stone-600 shrink-0" />
+                  <Heart className="h-3.5 w-3.5 text-stone-600 dark:text-stone-300 shrink-0" />
                   {ts("home.promise3", "Made with Love")}
                 </li>
               </ul>
@@ -901,7 +899,7 @@ export function HeroNotebook() {
         <div className="mt-10 md:mt-14 flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Find by Category teaser */}
           <div className="flex items-center gap-3 min-w-0">
-            <h3 className="relative font-title-hw text-[24px] md:text-[28px] font-bold text-stone-900 inline-block">
+            <h3 className="relative font-title-hw text-[24px] md:text-[28px] font-bold text-stone-900 dark:text-stone-50 inline-block">
               {ts("home.findByCategory", "Find Recipes by Category")}
               <span
                 className="absolute left-0 right-4 -bottom-1 h-1 bg-[#e74c3c] rounded-full opacity-80"
@@ -919,7 +917,7 @@ export function HeroNotebook() {
               width="w-14"
             />
             <div
-              className="relative rounded-md border border-stone-200 shadow-[0_8px_20px_-8px_rgba(120,90,40,0.25)]"
+              className="relative rounded-md border border-stone-200 dark:border-white/[0.06] shadow-[0_8px_20px_-8px_rgba(120,90,40,0.25)]"
               style={{
                 backgroundColor: "rgba(255, 253, 246, 0.95)",
                 backgroundImage:
@@ -956,7 +954,7 @@ export function HeroNotebook() {
                     >
                       {s.icon}
                     </span>
-                    <p className="font-note-hw text-[14px] md:text-[15px] font-bold text-stone-800 leading-tight">
+                    <p className="font-note-hw text-[14px] md:text-[15px] font-bold text-stone-800 dark:text-stone-100 leading-tight">
                       {s.label}
                     </p>
                   </div>

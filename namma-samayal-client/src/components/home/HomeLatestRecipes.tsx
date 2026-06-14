@@ -18,7 +18,7 @@ export function HomeLatestRecipes({ recipes }: HomeLatestRecipesProps) {
   const others = recipes.slice(1, 4);
 
   return (
-    <section className="relative mx-auto w-full max-w-7xl px-6 py-20 lg:px-12 z-10 border-t border-slate-100 dark:border-white/10">
+    <section className="relative mx-auto w-full max-w-7xl px-6 py-20 lg:px-12 z-10 border-t border-slate-100 dark:border-white/[0.06]">
       <div className="mb-12 flex items-center justify-between">
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-[#fcedeb] dark:bg-[#e74c3c]/15 px-4 py-2 text-xs font-bold text-[#e74c3c] tracking-widest uppercase mb-4">
@@ -40,7 +40,7 @@ export function HomeLatestRecipes({ recipes }: HomeLatestRecipesProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {featured && (
           <Link
-            href={`/recipe/${featured._id}`}
+            href={`/recipe/${featured.slug ?? featured._id}`}
             className="group lg:col-span-7 relative flex flex-col justify-end overflow-hidden rounded-[2.5rem] bg-slate-900 aspect-[4/3] sm:aspect-auto sm:min-h-[500px]"
           >
             {featured.imageUrl ? (
@@ -91,7 +91,7 @@ export function HomeLatestRecipes({ recipes }: HomeLatestRecipesProps) {
           {others.map((recipe) => (
             <Link
               key={recipe._id}
-              href={`/recipe/${recipe._id}`}
+              href={`/recipe/${recipe.slug ?? recipe._id}`}
               className="group flex flex-row items-center gap-6 rounded-3xl p-4 transition-all duration-300 hover:bg-slate-50 dark:hover:bg-white/5 border border-transparent hover:border-slate-100 hover:shadow-lg hover:shadow-slate-200/50"
             >
               <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl bg-slate-100 dark:bg-white/5">

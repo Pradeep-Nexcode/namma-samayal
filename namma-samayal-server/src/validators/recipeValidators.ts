@@ -21,7 +21,11 @@ export const listRecipeValidation = [
 ];
 
 export const recipeIdValidation = [
-  param("id").isMongoId().withMessage("Invalid recipe id"),
+  // :id can be either a Mongo ObjectId or a URL slug
+  param("id")
+    .isString()
+    .matches(/^([a-fA-F0-9]{24}|[a-z0-9][a-z0-9-]*[a-z0-9])$/)
+    .withMessage("Invalid recipe id or slug"),
 ];
 
 export const createRecipeValidation = [

@@ -230,6 +230,62 @@
   );
 }
 
+/* ============================================
+   Notebook page surfaces — left (kraft) + right (lined cream)
+   Both switch to a warm dark "lamp-lit" tone in dark mode so the
+   notebook reads as a real dark theme, not a stuck cream island.
+   ============================================ */
+.np-page {
+  background-color: #fefcf5;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 32px,
+    rgba(120, 90, 40, 0.045) 32px,
+    rgba(120, 90, 40, 0.045) 33px
+  );
+}
+.dark .np-page {
+  background-color: #1d1a13;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 32px,
+    rgba(255, 220, 180, 0.06) 32px,
+    rgba(255, 220, 180, 0.06) 33px
+  );
+}
+
+.np-page-kraft {
+  background-color: #f3ecda;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(120, 90, 40, 0.04) 0 1px, transparent 1px 6px),
+    radial-gradient(rgba(120, 80, 30, 0.05) 1px, transparent 1px);
+  background-size: auto, 4px 4px;
+}
+.dark .np-page-kraft {
+  background-color: #251f16;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255, 220, 180, 0.04) 0 1px, transparent 1px 6px),
+    radial-gradient(rgba(255, 220, 180, 0.05) 1px, transparent 1px);
+  background-size: auto, 4px 4px;
+}
+
+/* Variant of np-page with a felt-pen red margin line — used by the
+   homepage hero notebook. Same warm-dark treatment as np-page. */
+.np-page-margin {
+  background-color: #fefcf5;
+  background-image:
+    linear-gradient(90deg, transparent 0 36px, rgba(220, 38, 38, 0.25) 36px 37px, transparent 37px),
+    repeating-linear-gradient(to bottom, transparent 0, transparent 32px, rgba(120, 90, 40, 0.05) 32px, rgba(120, 90, 40, 0.05) 33px);
+}
+.dark .np-page-margin {
+  background-color: #1d1a13;
+  background-image:
+    linear-gradient(90deg, transparent 0 36px, rgba(239, 68, 68, 0.4) 36px 37px, transparent 37px),
+    repeating-linear-gradient(to bottom, transparent 0, transparent 32px, rgba(255, 220, 180, 0.06) 32px, rgba(255, 220, 180, 0.06) 33px);
+}
+
 /* Print: drop decorative chrome for a clean recipe card output */
 @media print {
   body { background: #ffffff !important; }

@@ -40,7 +40,7 @@ export function LanguageSwitcher({ variant = "light" }: LanguageSwitcherProps) {
         onClick={() => setOpen(!open)}
         className={`flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
           isLight
-            ? "border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-white/20 hover:text-gray-900 dark:hover:text-white bg-white dark:bg-transparent"
+            ? "border border-gray-200 dark:border-white/[0.06] text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-white/20 hover:text-gray-900 dark:hover:text-white bg-white dark:bg-transparent"
             : "border border-white/10 text-gray-400 hover:border-white/20 hover:text-gray-200 bg-transparent"
         }`}
       >
@@ -52,7 +52,7 @@ export function LanguageSwitcher({ variant = "light" }: LanguageSwitcherProps) {
       {open && (
         <div className={`absolute right-0 top-full mt-2 w-44 rounded-2xl border shadow-xl py-1.5 z-50 ${
           isLight
-            ? "bg-white dark:bg-[#1a1a1a] border-gray-100 dark:border-white/10"
+            ? "bg-white dark:bg-[#1a1a1a] border-gray-100 dark:border-white/[0.06]"
             : "bg-[#1a1a1a] border-white/10"
         }`}>
           {LANGUAGES.map((language) => (

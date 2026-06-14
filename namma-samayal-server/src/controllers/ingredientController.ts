@@ -10,27 +10,31 @@ import { logger } from "../utils/logger.js";
 import { buildPaginationMeta, parsePagination } from "../utils/pagination.js";
 import { generateUniqueSlug } from "../utils/slug.js";
 
+type IText = { en?: string; ta?: string };
+type StrictText = { en: string; ta?: string };
+
 interface IngredientBody {
-  name?: {
-    en: string;
-    ta?: string;
-  };
+  name?: StrictText;
   slug?: string;
   category?: string;
   subCategory?: string;
-  description?: {
-    en: string;
-    ta?: string;
-  };
+  description?: StrictText;
   imageUrl?: string;
-  nutrition?: {
-    calories?: number;
-    protein?: number;
-    carbs?: number;
-    fat?: number;
-  };
-  tags?: string[];
+  nutrition?: unknown;
+  tags?: string[] | string;
   isActive?: boolean | string;
+
+  // Extended fields
+  origin?: unknown;
+  season?: unknown;
+  status?: string;
+  isPremium?: boolean | string;
+  whySpecial?: unknown;
+  chefTip?: unknown;
+  howToStore?: unknown;
+  quickBenefits?: unknown;
+  substitutes?: unknown;
+  substituteNotes?: unknown;
 }
 
 interface IngredientQuery {
@@ -40,6 +44,47 @@ interface IngredientQuery {
   includeInactive?: string;
   page?: string;
   limit?: string;
+}
+
+/** Parse a field that may arrive as a real object/array OR a JSON-stringified
+ *  multipart form value. Returns undefined if value is null/undefined/empty. */
+function parseMaybeJson<T>(value: unknown): T | undefined {
+  if (value === undefined || value === null || value === "") return undefined;
+  if (typeof value === "string") {
+    try {
+      return JSON.parse(value) as T;
+    } catch {
+      return undefined;
+    }
+  }
+  return value as T;
+}
+
+/** Coerce a boolean coming from JSON or multipart strings. */
+function parseBool(value: unknown): boolean | undefined {
+  if (value === undefined || value === null || value === "") return undefined;
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") return value === "true";
+  return Boolean(value);
+}
+
+/** Normalise tags: accepts an array or a JSON string of an array. */
+function parseTags(value: unknown): string[] | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (Array.isArray(value)) return value.map((v) => String(v));
+  if (typeof value === "string") {
+    try {
+      const arr = JSON.parse(value);
+      if (Array.isArray(arr)) return arr.map((v) => String(v));
+    } catch {
+      // Comma-separated fallback
+      return value
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+    }
+  }
+  return undefined;
 }
 
 const validateCategoryLink = async (
@@ -81,6 +126,54 @@ const validateCategoryLink = async (
   return true;
 };
 
+/** Build the extended-field payload from a request body. Each field is parsed
+ *  and only included if the caller actually sent something for it — so unset
+ *  fields don't clobber existing values on update. */
+function extractExtendedFields(payload: IngredientBody): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+
+  if (payload.origin !== undefined) {
+    out.origin = parseMaybeJson<{ country?: string; state?: string }>(payload.origin);
+  }
+  if (payload.season !== undefined) {
+    out.season = parseMaybeJson<{
+      availability?: "year-round" | "seasonal";
+      bestMonths?: number[];
+    }>(payload.season);
+  }
+  if (payload.status !== undefined) {
+    out.status = payload.status;
+  }
+  if (payload.isPremium !== undefined) {
+    out.isPremium = parseBool(payload.isPremium);
+  }
+  if (payload.whySpecial !== undefined) {
+    out.whySpecial = parseMaybeJson<IText>(payload.whySpecial);
+  }
+  if (payload.chefTip !== undefined) {
+    out.chefTip = parseMaybeJson<{ en?: string; ta?: string; attributedTo?: string }>(
+      payload.chefTip,
+    );
+  }
+  if (payload.howToStore !== undefined) {
+    out.howToStore = parseMaybeJson<IText>(payload.howToStore);
+  }
+  if (payload.quickBenefits !== undefined) {
+    out.quickBenefits = parseMaybeJson<IText[]>(payload.quickBenefits);
+  }
+  if (payload.substitutes !== undefined) {
+    out.substitutes = parseMaybeJson<string[]>(payload.substitutes);
+  }
+  if (payload.substituteNotes !== undefined) {
+    out.substituteNotes = parseMaybeJson<Record<string, unknown>>(payload.substituteNotes);
+  }
+  if (payload.nutrition !== undefined) {
+    out.nutrition = parseMaybeJson<Record<string, unknown>>(payload.nutrition);
+  }
+
+  return out;
+}
+
 export const createIngredient = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body as IngredientBody;
   const uploadedImageUrl = req.file?.path;
@@ -99,6 +192,8 @@ export const createIngredient = catchAsync(async (req: Request, res: Response, n
     return;
   }
 
+  const extended = extractExtendedFields(payload);
+
   const ingredient = await Ingredient.create({
     name: payload.name,
     slug: await generateUniqueSlug(Ingredient, payload.slug ?? payload.name.en),
@@ -106,13 +201,15 @@ export const createIngredient = catchAsync(async (req: Request, res: Response, n
     subCategory: payload.subCategory,
     description: payload.description,
     imageUrl: uploadedImageUrl ?? payload.imageUrl,
-    nutrition: payload.nutrition,
-    tags: payload.tags ?? [],
+    nutrition: extended.nutrition ?? payload.nutrition,
+    tags: parseTags(payload.tags) ?? [],
     isActive: true,
+    ...extended,
   });
 
   await ingredient.populate("category", "name slug parent level");
   await ingredient.populate("subCategory", "name slug parent level");
+  await ingredient.populate("substitutes", "name slug imageUrl category");
 
   logger.info("Ingredient created", {
     ingredientId: ingredient._id.toString(),
@@ -131,6 +228,7 @@ export const getAllIngredients = catchAsync(async (req: Request, res: Response) 
     status?: string;
     hasImage?: string;
     sort?: string;
+    isPremium?: string;
   };
 
   const { page, limit, skip } = parsePagination({
@@ -142,6 +240,8 @@ export const getAllIngredients = catchAsync(async (req: Request, res: Response) 
 
   if (query.category) filter.category = query.category;
   if (query.subCategory) filter.subCategory = query.subCategory;
+  if (query.isPremium === "true") filter.isPremium = true;
+  if (query.isPremium === "false") filter.isPremium = { $ne: true };
 
   // Status filter: "active" | "inactive" | "all" — overrides legacy includeInactive
   if (query.status === "active") {
@@ -213,9 +313,17 @@ export const getAllIngredients = catchAsync(async (req: Request, res: Response) 
 });
 
 export const getIngredientById = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const ingredient = await Ingredient.findById(req.params.id)
+  // Accept either a Mongo ObjectId or a slug in the same :id param,
+  // so /ingredients/:slug and /ingredients/:id both resolve to the same handler.
+  const idOrSlug = String(req.params.id);
+  const query = Types.ObjectId.isValid(idOrSlug)
+    ? Ingredient.findOne({ $or: [{ _id: idOrSlug }, { slug: idOrSlug }] })
+    : Ingredient.findOne({ slug: idOrSlug });
+
+  const ingredient = await query
     .populate("category", "name slug parent level")
-    .populate("subCategory", "name slug parent level");
+    .populate("subCategory", "name slug parent level")
+    .populate("substitutes", "name slug imageUrl category status");
 
   if (!ingredient) {
     return next(new AppError("Ingredient not found", 404));
@@ -273,21 +381,26 @@ export const updateIngredient = catchAsync(async (req: Request, res: Response, n
     ingredient.imageUrl = payload.imageUrl;
   }
 
-  if (payload.nutrition !== undefined) {
-    ingredient.nutrition = payload.nutrition;
+  // Extended fields — apply only when caller actually sent something
+  const extended = extractExtendedFields(payload);
+  for (const [key, value] of Object.entries(extended)) {
+    (ingredient as unknown as Record<string, unknown>)[key] = value;
   }
 
-  if (payload.tags !== undefined) {
-    ingredient.tags = payload.tags;
+  const parsedTags = parseTags(payload.tags);
+  if (parsedTags !== undefined) {
+    ingredient.tags = parsedTags;
   }
 
   if (payload.isActive !== undefined) {
-    ingredient.isActive = payload.isActive === true || payload.isActive === "true";
+    const v = parseBool(payload.isActive);
+    if (v !== undefined) ingredient.isActive = v;
   }
 
   await ingredient.save();
   await ingredient.populate("category", "name slug parent level");
   await ingredient.populate("subCategory", "name slug parent level");
+  await ingredient.populate("substitutes", "name slug imageUrl category status");
 
   logger.info("Ingredient updated", {
     ingredientId: ingredient._id.toString(),

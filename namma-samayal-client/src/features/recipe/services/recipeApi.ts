@@ -19,6 +19,9 @@ export type RecipeQueryParams = {
   state?: string;
   region?: string;
   search?: string;
+  /** Filter recipes that use this ingredient. Accepts a single id or a
+   *  comma-separated list of ids (server treats multiple as AND). */
+  ingredient?: string;
 };
 
 export type RecipesResult = {

@@ -203,7 +203,7 @@ function IngredientCard({
       </span>
 
       <Link
-        href={`/ingredient/${ingredient._id}`}
+        href={`/ingredient/${ingredient.slug ?? ingredient._id}`}
         className="group block focus:outline-none"
         aria-label={name}
       >
@@ -227,7 +227,7 @@ function IngredientCard({
             className={`absolute top-2 right-2 z-20 flex h-6 w-6 items-center justify-center rounded-md transition-colors ${
               saved
                 ? "bg-rose-100 text-rose-500"
-                : "bg-white/70 text-stone-500 hover:bg-white"
+                : "bg-white/70 dark:bg-white/5 text-stone-500 dark:text-stone-400 hover:bg-white"
             }`}
           >
             {saved ? (
@@ -256,11 +256,11 @@ function IngredientCard({
 
           {/* Name + category */}
           <div className="mt-3 px-1 text-center">
-            <h3 className="font-title-hw text-[18px] md:text-[19px] font-bold leading-tight text-stone-900 line-clamp-1">
+            <h3 className="font-title-hw text-[18px] md:text-[19px] font-bold leading-tight text-stone-900 dark:text-stone-50 line-clamp-1">
               {name}
             </h3>
             {categoryLabel && (
-              <p className="font-body text-[10.5px] font-bold uppercase tracking-[0.16em] text-stone-700 mt-1">
+              <p className="font-body text-[10.5px] font-bold uppercase tracking-[0.16em] text-stone-700 dark:text-stone-200 mt-1">
                 {categoryLabel}
               </p>
             )}
@@ -268,7 +268,7 @@ function IngredientCard({
 
           {/* Bottom row: characteristic + origin chip */}
           {(characteristic || ingredient.subCategory) && (
-            <div className="mt-3 pt-2 border-t border-stone-300/40 flex items-center justify-between gap-2 font-body text-[11px] text-stone-700">
+            <div className="mt-3 pt-2 border-t border-stone-300/40 flex items-center justify-between gap-2 font-body text-[11px] text-stone-700 dark:text-stone-200">
               {characteristic && (
                 <span className="inline-flex items-center gap-1 truncate">
                   <Leaf className="h-3 w-3 text-emerald-700 shrink-0" />
@@ -277,7 +277,7 @@ function IngredientCard({
               )}
               {ingredient.subCategory && (
                 <span className="inline-flex items-center gap-1 truncate">
-                  <MapPin className="h-3 w-3 text-stone-500 shrink-0" />
+                  <MapPin className="h-3 w-3 text-stone-500 dark:text-stone-400 shrink-0" />
                   {lf(ingredient.subCategory.name)}
                 </span>
               )}
@@ -331,10 +331,10 @@ function BrowseCategoryStrip({
                   {/* Use a leaf placeholder; in production this could be a category image */}
                   <Leaf className="h-12 w-12" />
                 </div>
-                <p className="font-title-hw text-[17px] md:text-[18px] font-bold text-stone-900 text-center leading-tight line-clamp-1">
+                <p className="font-title-hw text-[17px] md:text-[18px] font-bold text-stone-900 dark:text-stone-50 text-center leading-tight line-clamp-1">
                   {lf(cat.name)}
                 </p>
-                <p className="font-body text-[12px] text-stone-700 mt-1">
+                <p className="font-body text-[12px] text-stone-700 dark:text-stone-200 mt-1">
                   {PLACEHOLDER_COUNTS[i % PLACEHOLDER_COUNTS.length]} Ingredients
                 </p>
               </div>
@@ -345,7 +345,7 @@ function BrowseCategoryStrip({
 
       {/* Right scroll hint */}
       <div className="absolute right-0 top-0 bottom-0 hidden md:flex items-center pointer-events-none pl-8 bg-gradient-to-l from-[var(--ns-nav-bg,#fffdf6)] to-transparent w-12">
-        <ChevronRight className="h-5 w-5 text-stone-400" />
+        <ChevronRight className="h-5 w-5 text-stone-400 dark:text-stone-500" />
       </div>
     </div>
   );
@@ -375,7 +375,7 @@ function NotebookPagination({
           type="button"
           disabled={!hasPrev}
           onClick={() => onPageChange(currentPage - 1)}
-          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-title-hw text-[14px] font-bold text-stone-700 bg-white/70 border border-stone-300 hover:border-[#e74c3c] hover:text-[#e74c3c] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-title-hw text-[14px] font-bold text-stone-700 dark:text-stone-200 bg-white/70 dark:bg-white/5 border border-stone-300 dark:border-white/10 hover:border-[#e74c3c] hover:text-[#e74c3c] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           aria-label="Previous page"
         >
           <ChevronLeft className="h-3.5 w-3.5" />
@@ -385,7 +385,7 @@ function NotebookPagination({
         <div className="flex items-center gap-1">
           {pageNumbers.map((p, idx) =>
             p === "..." ? (
-              <span key={`e-${idx}`} className="px-1 font-body text-stone-500">
+              <span key={`e-${idx}`} className="px-1 font-body text-stone-500 dark:text-stone-400">
                 …
               </span>
             ) : (
@@ -396,7 +396,7 @@ function NotebookPagination({
                 className={`h-9 min-w-9 px-2.5 rounded-md font-title-hw text-[15px] font-bold transition-all ${
                   p === currentPage
                     ? "bg-[#e74c3c] text-white shadow-[1px_2px_0_rgba(120,40,40,0.25)]"
-                    : "text-stone-700 hover:bg-amber-100/70"
+                    : "text-stone-700 dark:text-stone-200 hover:bg-amber-100/70"
                 }`}
               >
                 {p}
@@ -409,7 +409,7 @@ function NotebookPagination({
           type="button"
           disabled={!hasNext}
           onClick={() => onPageChange(currentPage + 1)}
-          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-title-hw text-[14px] font-bold text-stone-700 bg-white/70 border border-stone-300 hover:border-[#e74c3c] hover:text-[#e74c3c] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-title-hw text-[14px] font-bold text-stone-700 dark:text-stone-200 bg-white/70 dark:bg-white/5 border border-stone-300 dark:border-white/10 hover:border-[#e74c3c] hover:text-[#e74c3c] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           aria-label="Next page"
         >
           {ts("recipes.next", "Next")}
@@ -417,13 +417,13 @@ function NotebookPagination({
         </button>
       </div>
 
-      <p className="font-body text-[13px] text-stone-600 text-center md:text-left md:ml-4">
+      <p className="font-body text-[13px] text-stone-600 dark:text-stone-300 text-center md:text-left md:ml-4">
         {ts("ingredients.showing", "Showing")}{" "}
-        <span className="font-bold text-stone-900">
+        <span className="font-bold text-stone-900 dark:text-stone-50">
           {from}–{to}
         </span>{" "}
         {ts("ingredients.of", "of")}{" "}
-        <span className="font-bold text-stone-900">{total}</span>{" "}
+        <span className="font-bold text-stone-900 dark:text-stone-50">{total}</span>{" "}
         {ts("ingredients.ingredients", "ingredients")}
       </p>
     </div>
@@ -593,7 +593,7 @@ export default function IngredientsPage() {
   };
 
   return (
-    <main className="paper-bg min-h-screen font-ui text-stone-900 dark:text-stone-100 pt-28 pb-16">
+    <main className="paper-bg min-h-screen font-ui text-stone-900 dark:text-stone-50 pt-28 pb-16">
       <div className="relative mx-auto w-full max-w-7xl px-4 lg:px-8">
         {/* ─── HERO ─── */}
         <section className="relative grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
@@ -611,7 +611,7 @@ export default function IngredientsPage() {
                 </span>
               </h1>
             </div>
-            <p className="font-body text-[14.5px] md:text-[15.5px] text-stone-700 dark:text-stone-300 leading-relaxed max-w-xl">
+            <p className="font-body text-[14.5px] md:text-[15.5px] text-stone-700 dark:text-stone-200 leading-relaxed max-w-xl">
               {ts(
                 "ingredients.heroDesc",
                 "Explore our curated collection of high-quality ingredients. From mountain-grown spices to locally sourced vegetables, find the building blocks for your next culinary adventure."
@@ -632,7 +632,7 @@ export default function IngredientsPage() {
               <button
                 type="button"
                 onClick={() => setIsCreateOpen(true)}
-                className="relative inline-flex items-center gap-2 px-5 py-3 font-title-hw text-[15.5px] font-bold text-stone-900 shadow-[0_6px_14px_-6px_rgba(180,140,0,0.4)] hover:-translate-y-0.5 active:translate-y-0 transition-transform"
+                className="relative inline-flex items-center gap-2 px-5 py-3 font-title-hw text-[15.5px] font-bold text-stone-900 dark:text-stone-50 shadow-[0_6px_14px_-6px_rgba(180,140,0,0.4)] hover:-translate-y-0.5 active:translate-y-0 transition-transform"
                 style={{
                   backgroundColor: "rgba(255, 243, 176, 0.95)",
                   backgroundImage:
@@ -659,7 +659,7 @@ export default function IngredientsPage() {
           <div className="grid gap-3 md:grid-cols-[1.6fr_1fr_1fr] items-stretch">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400 dark:text-stone-500" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -667,13 +667,13 @@ export default function IngredientsPage() {
                   "ingredients.searchPlaceholder",
                   "Search ingredients by name, category, or origin…"
                 )}
-                className="w-full rounded-lg bg-white/70 dark:bg-stone-800/40 border-2 border-stone-200 dark:border-stone-700 py-2.5 pl-10 pr-10 font-body text-[14px] font-medium text-stone-900 dark:text-stone-100 placeholder-stone-400 outline-none focus:border-[#e74c3c] transition-colors"
+                className="w-full rounded-lg bg-white/70 dark:bg-white/5 border-2 border-stone-200 dark:border-white/[0.06] py-2.5 pl-10 pr-10 font-body text-[14px] font-medium text-stone-900 dark:text-stone-50 placeholder-stone-400 outline-none focus:border-[#e74c3c] transition-colors"
               />
               {query && (
                 <button
                   type="button"
                   onClick={() => setQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-[#e74c3c] transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500 hover:text-[#e74c3c] transition-colors"
                 >
                   <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                     <path d="M18 6 6 18M6 6l12 12" />
@@ -687,7 +687,7 @@ export default function IngredientsPage() {
               <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-                className="w-full appearance-none rounded-lg bg-white/70 dark:bg-stone-800/40 border-2 border-stone-200 dark:border-stone-700 py-2.5 pl-3.5 pr-9 font-body text-[14px] font-medium text-stone-800 dark:text-stone-200 outline-none focus:border-[#e74c3c] transition-colors cursor-pointer"
+                className="w-full appearance-none rounded-lg bg-white/70 dark:bg-white/5 border-2 border-stone-200 dark:border-white/[0.06] py-2.5 pl-3.5 pr-9 font-body text-[14px] font-medium text-stone-800 dark:text-stone-100 outline-none focus:border-[#e74c3c] transition-colors cursor-pointer"
               >
                 <option value="All">{ts("ingredients.allCategories", "All Categories")}</option>
                 {categories.map((c) => (
@@ -696,7 +696,7 @@ export default function IngredientsPage() {
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-500 pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-500 dark:text-stone-400 pointer-events-none" />
             </div>
 
             {/* Subcategory */}
@@ -705,7 +705,7 @@ export default function IngredientsPage() {
                 value={subCategoryId}
                 onChange={(e) => setSubCategoryId(e.target.value)}
                 disabled={subCategories.length === 0}
-                className="w-full appearance-none rounded-lg bg-white/70 dark:bg-stone-800/40 border-2 border-stone-200 dark:border-stone-700 py-2.5 pl-3.5 pr-9 font-body text-[14px] font-medium text-stone-800 dark:text-stone-200 outline-none focus:border-[#e74c3c] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full appearance-none rounded-lg bg-white/70 dark:bg-white/5 border-2 border-stone-200 dark:border-white/[0.06] py-2.5 pl-3.5 pr-9 font-body text-[14px] font-medium text-stone-800 dark:text-stone-100 outline-none focus:border-[#e74c3c] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <option value="All">{ts("ingredients.allSubcategories", "All Subcategories")}</option>
                 {subCategories.map((c) => (
@@ -714,13 +714,13 @@ export default function IngredientsPage() {
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-500 pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-500 dark:text-stone-400 pointer-events-none" />
             </div>
           </div>
 
           {/* Popular searches */}
           <div className="mt-3.5 flex flex-wrap items-center gap-2">
-            <span className="font-body text-[12.5px] font-semibold text-stone-600">
+            <span className="font-body text-[12.5px] font-semibold text-stone-600 dark:text-stone-300">
               {ts("ingredients.popularSearches", "Popular Searches")}:
             </span>
             {POPULAR_SEARCHES.map((term) => (
@@ -728,7 +728,7 @@ export default function IngredientsPage() {
                 key={term}
                 type="button"
                 onClick={() => setQuery(term)}
-                className="inline-flex items-center gap-1 rounded-full bg-white/70 dark:bg-stone-800/40 border border-stone-200 dark:border-stone-700 px-2.5 py-1 font-body text-[11.5px] font-semibold text-stone-700 dark:text-stone-300 hover:border-[#e74c3c] hover:text-[#e74c3c] transition-colors"
+                className="inline-flex items-center gap-1 rounded-full bg-white/70 dark:bg-white/5 border border-stone-200 dark:border-white/[0.06] px-2.5 py-1 font-body text-[11.5px] font-semibold text-stone-700 dark:text-stone-200 hover:border-[#e74c3c] hover:text-[#e74c3c] transition-colors"
               >
                 <Sparkles className="h-3 w-3 text-amber-500" />
                 {term}
@@ -768,8 +768,8 @@ export default function IngredientsPage() {
 
         {/* ─── INGREDIENTS GRID HEADER ─── */}
         <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
-          <p className="font-body text-[14px] text-stone-700 dark:text-stone-300">
-            <span className="font-bold text-stone-900 dark:text-stone-100">
+          <p className="font-body text-[14px] text-stone-700 dark:text-stone-200">
+            <span className="font-bold text-stone-900 dark:text-stone-50">
               {pagination?.total ?? items.length}
             </span>{" "}
             {ts("ingredients.found", "ingredients found")}
@@ -777,7 +777,7 @@ export default function IngredientsPage() {
 
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <span className="font-body text-[13px] text-stone-600">
+              <span className="font-body text-[13px] text-stone-600 dark:text-stone-300">
                 {ts("ingredients.sortBy", "Sort by")}:
               </span>
               <div className="relative">
@@ -786,7 +786,7 @@ export default function IngredientsPage() {
                   onChange={(e) =>
                     setSortBy(e.target.value as "popular" | "az" | "newest")
                   }
-                  className="appearance-none rounded-md border border-stone-200 bg-white/70 px-3 pr-8 py-1.5 font-body text-[13px] font-semibold text-stone-800 outline-none cursor-pointer hover:border-[#e74c3c] transition-colors"
+                  className="appearance-none rounded-md border border-stone-200 dark:border-white/[0.06] bg-white/70 dark:bg-white/5 px-3 pr-8 py-1.5 font-body text-[13px] font-semibold text-stone-800 dark:text-stone-100 outline-none cursor-pointer hover:border-[#e74c3c] transition-colors"
                 >
                   <option value="popular">
                     {ts("ingredients.sortPopular", "Popular")}
@@ -798,12 +798,12 @@ export default function IngredientsPage() {
                     {ts("ingredients.sortNewest", "Newest")}
                   </option>
                 </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-500 pointer-events-none" />
+                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-500 dark:text-stone-400 pointer-events-none" />
               </div>
             </div>
 
             {/* View toggle */}
-            <div className="flex items-center gap-1 rounded-md border border-stone-200 bg-white/70 p-0.5">
+            <div className="flex items-center gap-1 rounded-md border border-stone-200 dark:border-white/[0.06] bg-white/70 dark:bg-white/5 p-0.5">
               <button
                 type="button"
                 onClick={() => setViewMode("grid")}
@@ -811,7 +811,7 @@ export default function IngredientsPage() {
                 className={`h-7 w-7 flex items-center justify-center rounded transition-colors ${
                   viewMode === "grid"
                     ? "bg-[#e74c3c]/15 text-[#e74c3c]"
-                    : "text-stone-500 hover:text-stone-800"
+                    : "text-stone-500 dark:text-stone-400 hover:text-stone-800"
                 }`}
               >
                 <LayoutGrid className="h-4 w-4" />
@@ -823,7 +823,7 @@ export default function IngredientsPage() {
                 className={`h-7 w-7 flex items-center justify-center rounded transition-colors ${
                   viewMode === "list"
                     ? "bg-[#e74c3c]/15 text-[#e74c3c]"
-                    : "text-stone-500 hover:text-stone-800"
+                    : "text-stone-500 dark:text-stone-400 hover:text-stone-800"
                 }`}
               >
                 <List className="h-4 w-4" />
@@ -859,20 +859,20 @@ export default function IngredientsPage() {
             </div>
           ) : error ? (
             <div
-              className="text-center py-12 rounded-2xl border border-rose-200 bg-rose-50 font-body text-rose-700"
+              className="text-center py-12 rounded-2xl border border-rose-200 dark:border-rose-500/40 bg-rose-50 dark:bg-rose-500/15 font-body text-rose-700 dark:text-rose-300"
             >
               <Filter className="h-8 w-8 mx-auto mb-2 opacity-60" />
               {error}
             </div>
           ) : displayedItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="h-16 w-16 rounded-full bg-stone-100 flex items-center justify-center mb-4">
-                <Search className="h-6 w-6 text-stone-400" />
+              <div className="h-16 w-16 rounded-full bg-stone-100 dark:bg-white/5 flex items-center justify-center mb-4">
+                <Search className="h-6 w-6 text-stone-400 dark:text-stone-500" />
               </div>
-              <h3 className="font-title-hw text-[22px] font-bold mb-2 text-stone-800">
+              <h3 className="font-title-hw text-[22px] font-bold mb-2 text-stone-800 dark:text-stone-100">
                 {ts("ingredients.noResults", "No ingredients found")}
               </h3>
-              <p className="font-body text-stone-500 max-w-xs">
+              <p className="font-body text-stone-500 dark:text-stone-400 max-w-xs">
                 {ts(
                   "ingredients.noResultsMsg",
                   "Try a different search query or filter."
@@ -994,7 +994,7 @@ export default function IngredientsPage() {
                 },
                 {
                   icon: <Sparkles className="h-5 w-5" />,
-                  tint: "bg-rose-100 text-rose-600",
+                  tint: "bg-rose-100 text-rose-600 dark:text-rose-400",
                   title: ts(
                     "ingredients.trustQualityTitle",
                     "Quality Guaranteed"
@@ -1010,10 +1010,10 @@ export default function IngredientsPage() {
                     {b.icon}
                   </span>
                   <div className="min-w-0">
-                    <p className="font-title-hw text-[15.5px] md:text-[16px] font-bold leading-tight text-stone-900 dark:text-stone-100 truncate">
+                    <p className="font-title-hw text-[15.5px] md:text-[16px] font-bold leading-tight text-stone-900 dark:text-stone-50 truncate">
                       {b.title}
                     </p>
-                    <p className="font-body text-[12px] text-stone-600 dark:text-stone-400 truncate mt-0.5">
+                    <p className="font-body text-[12px] text-stone-600 dark:text-stone-300 truncate mt-0.5">
                       {b.sub}
                     </p>
                   </div>

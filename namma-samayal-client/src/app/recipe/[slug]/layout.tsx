@@ -139,10 +139,10 @@ function buildRecipeJsonLd(recipe: Recipe, canonicalUrl: string): Record<string,
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
-  const recipe = await fetchRecipeForMetadata(id);
+  const { slug } = await params;
+  const recipe = await fetchRecipeForMetadata(slug);
 
   if (!recipe) {
     return {
@@ -177,7 +177,7 @@ export async function generateMetadata({
       images: recipe.imageUrl ? [recipe.imageUrl] : undefined,
     },
     alternates: {
-      canonical: `/recipe/${id}`,
+      canonical: `/recipe/${slug}`,
     },
   };
 }
@@ -187,12 +187,12 @@ export default async function RecipeLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
-  const recipe = await fetchRecipeForMetadata(id);
+  const { slug } = await params;
+  const recipe = await fetchRecipeForMetadata(slug);
 
-  const jsonLd = recipe ? buildRecipeJsonLd(recipe, `/recipe/${id}`) : null;
+  const jsonLd = recipe ? buildRecipeJsonLd(recipe, `/recipe/${slug}`) : null;
 
   return (
     <>

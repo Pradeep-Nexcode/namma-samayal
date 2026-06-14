@@ -82,7 +82,7 @@ export function HomePageContent() {
           <div className="mt-20 flex justify-center">
             <a
               href="/recipes"
-              className="group flex items-center justify-center gap-2 rounded-2xl bg-white dark:bg-[var(--color-card)] border border-slate-200 dark:border-white/10 px-8 py-4 font-bold text-slate-700 dark:text-gray-200 transition-all hover:border-[#e74c3c] hover:text-[#e74c3c] hover:shadow-[0_10px_30px_rgba(231,76,60,0.1)] active:scale-95"
+              className="group flex items-center justify-center gap-2 rounded-2xl bg-white dark:bg-[var(--color-card)] border border-slate-200 dark:border-white/[0.06] px-8 py-4 font-bold text-slate-700 dark:text-gray-200 transition-all hover:border-[#e74c3c] hover:text-[#e74c3c] hover:shadow-[0_10px_30px_rgba(231,76,60,0.1)] active:scale-95"
             >
               {t("home.viewArchive")}
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-1"><path d="M5 12h14M12 5l7 7-7 7" /></svg>

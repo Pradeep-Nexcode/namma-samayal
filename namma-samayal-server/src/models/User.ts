@@ -11,6 +11,11 @@ export interface IUser {
   language: "en" | "ta";
   profileImage?: string | null;
   bio?: string;
+  /** Personal "Chef Identity" fields shown on the user profile page. */
+  favoriteCuisine?: string;
+  cookingLevel?: "beginner" | "home-cook" | "intermediate" | "expert" | "master";
+  specialDish?: string;
+  location?: string;
   favoriteRecipes: Types.ObjectId[];
   savedRecipes: Types.ObjectId[];
   createdRecipes: Types.ObjectId[];
@@ -79,6 +84,25 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     bio: {
       type: String,
       maxlength: 200,
+    },
+    favoriteCuisine: {
+      type: String,
+      trim: true,
+      maxlength: 100,
+    },
+    cookingLevel: {
+      type: String,
+      enum: ["beginner", "home-cook", "intermediate", "expert", "master"],
+    },
+    specialDish: {
+      type: String,
+      trim: true,
+      maxlength: 100,
+    },
+    location: {
+      type: String,
+      trim: true,
+      maxlength: 100,
     },
     favoriteRecipes: [
       {

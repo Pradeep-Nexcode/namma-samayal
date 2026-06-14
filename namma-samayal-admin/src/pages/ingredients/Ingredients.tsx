@@ -21,10 +21,26 @@ interface Ingredient {
   subCategory?: Category;
   description?: { en?: string; ta?: string };
   imageUrl?: string;
-  nutrition?: { calories?: number; protein?: number; carbs?: number; fat?: number };
+  nutrition?: {
+    calories?: number; protein?: number; carbs?: number; fat?: number;
+    fiber?: number; iron?: number; calcium?: number;
+    vitaminA?: number; vitaminC?: number;
+    dailyValue?: { iron?: number; calcium?: number; vitaminA?: number; vitaminC?: number };
+  };
   tags: string[];
   isActive: boolean;
   createdAt: string;
+
+  // Extended fields (all optional)
+  origin?: { country?: string; state?: string };
+  season?: { availability?: "year-round" | "seasonal"; bestMonths?: number[] };
+  status?: "fresh-available" | "seasonal" | "limited" | "out-of-stock";
+  isPremium?: boolean;
+  whySpecial?: { en?: string; ta?: string };
+  chefTip?: { en?: string; ta?: string; attributedTo?: string };
+  howToStore?: { en?: string; ta?: string };
+  quickBenefits?: { en?: string; ta?: string }[];
+  substitutes?: Array<{ _id: string; name: { en: string; ta?: string }; imageUrl?: string }>;
 }
 
 interface Pagination {
@@ -40,7 +56,18 @@ const EMPTY_FORM = {
   categoryId: "", subCategoryId: "",
   tags: "",
   calories: "", protein: "", carbs: "", fat: "",
+  fiber: "", iron: "", calcium: "", vitaminA: "", vitaminC: "",
+  dvIron: "", dvCalcium: "", dvVitaminA: "", dvVitaminC: "",
+  // Extended
+  originCountry: "", originState: "",
+  seasonAvailability: "year-round" as "year-round" | "seasonal",
+  status: "fresh-available" as "fresh-available" | "seasonal" | "limited" | "out-of-stock",
+  whySpecialEn: "", whySpecialTa: "",
+  chefTipEn: "", chefTipTa: "", chefTipBy: "",
+  howToStoreEn: "", howToStoreTa: "",
+  quickBenefits: "", // one benefit per line (en strings)
 };
+const MONTH_LABELS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 const Ingredients = () => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -154,8 +181,13 @@ const Ingredients = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({ ...EMPTY_FORM });
   const [formIsActive, setFormIsActive] = useState(true);
+  const [formIsPremium, setFormIsPremium] = useState(false);
+  const [formBestMonths, setFormBestMonths] = useState<number[]>([]);
+  const [formSubstituteIds, setFormSubstituteIds] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
+  // All ingredients (small slim list) for the Substitutes picker
+  const [allIngredients, setAllIngredients] = useState<Array<{ _id: string; name: { en: string; ta?: string }; imageUrl?: string }>>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEscapeKey(isModalOpen, () => setIsModalOpen(false));
@@ -232,6 +264,9 @@ const Ingredients = () => {
         ? ingredient.subCategory
         : ingredient.subCategory?._id || "";
 
+    const numStr = (v: number | undefined) => (v != null ? String(v) : "");
+    const dv = ingredient.nutrition?.dailyValue;
+
     setEditingId(ingredient._id);
     setForm({
       nameEn: ingredient.name?.en || "",
@@ -241,22 +276,64 @@ const Ingredients = () => {
       categoryId: catId,
       subCategoryId: subCatId,
       tags: (ingredient.tags || []).join(", "),
-      calories: ingredient.nutrition?.calories != null ? String(ingredient.nutrition.calories) : "",
-      protein: ingredient.nutrition?.protein != null ? String(ingredient.nutrition.protein) : "",
-      carbs: ingredient.nutrition?.carbs != null ? String(ingredient.nutrition.carbs) : "",
-      fat: ingredient.nutrition?.fat != null ? String(ingredient.nutrition.fat) : "",
+      calories: numStr(ingredient.nutrition?.calories),
+      protein: numStr(ingredient.nutrition?.protein),
+      carbs: numStr(ingredient.nutrition?.carbs),
+      fat: numStr(ingredient.nutrition?.fat),
+      fiber: numStr(ingredient.nutrition?.fiber),
+      iron: numStr(ingredient.nutrition?.iron),
+      calcium: numStr(ingredient.nutrition?.calcium),
+      vitaminA: numStr(ingredient.nutrition?.vitaminA),
+      vitaminC: numStr(ingredient.nutrition?.vitaminC),
+      dvIron: numStr(dv?.iron),
+      dvCalcium: numStr(dv?.calcium),
+      dvVitaminA: numStr(dv?.vitaminA),
+      dvVitaminC: numStr(dv?.vitaminC),
+      originCountry: ingredient.origin?.country || "",
+      originState: ingredient.origin?.state || "",
+      seasonAvailability: (ingredient.season?.availability || "year-round") as "year-round" | "seasonal",
+      status: (ingredient.status || "fresh-available") as "fresh-available" | "seasonal" | "limited" | "out-of-stock",
+      whySpecialEn: ingredient.whySpecial?.en || "",
+      whySpecialTa: ingredient.whySpecial?.ta || "",
+      chefTipEn: ingredient.chefTip?.en || "",
+      chefTipTa: ingredient.chefTip?.ta || "",
+      chefTipBy: ingredient.chefTip?.attributedTo || "",
+      howToStoreEn: ingredient.howToStore?.en || "",
+      howToStoreTa: ingredient.howToStore?.ta || "",
+      quickBenefits: (ingredient.quickBenefits || []).map((b) => b.en || "").filter(Boolean).join("\n"),
     });
     setFormIsActive(ingredient.isActive);
+    setFormIsPremium(ingredient.isPremium === true);
+    setFormBestMonths(Array.isArray(ingredient.season?.bestMonths) ? [...ingredient.season!.bestMonths!] : []);
+    setFormSubstituteIds((ingredient.substitutes || []).map((s) => s._id));
     setImagePreview(ingredient.imageUrl || "");
   };
 
+  // Lazy-load the slim list of all ingredients (used by the Substitutes picker)
+  const loadAllIngredients = useCallback(async () => {
+    if (allIngredients.length > 0) return;
+    try {
+      const res = await axiosInstance.get("/ingredients", {
+        params: { status: "all", limit: 500, sort: "name-asc" },
+      });
+      const list = (res.data?.data || []) as Array<{ _id: string; name: { en: string; ta?: string }; imageUrl?: string }>;
+      setAllIngredients(list);
+    } catch (err) {
+      console.warn("Failed to load ingredient list for substitutes picker", err);
+    }
+  }, [allIngredients.length]);
+
   const openModal = async (ingredient?: Ingredient) => {
     setImageFile(null);
+    loadAllIngredients();
     if (!ingredient) {
       // Add mode — clear everything.
       setEditingId(null);
       setForm({ ...EMPTY_FORM });
       setFormIsActive(true);
+      setFormIsPremium(false);
+      setFormBestMonths([]);
+      setFormSubstituteIds([]);
       setImagePreview("");
       setIsModalOpen(true);
       return;
@@ -301,10 +378,79 @@ const Ingredients = () => {
       if (form.subCategoryId) formData.append("subCategory", form.subCategoryId);
       const tagArr = form.tags.split(",").map(t => t.trim()).filter(Boolean);
       tagArr.forEach(tag => formData.append("tags[]", tag));
-      if (form.calories) formData.append("nutrition[calories]", form.calories);
-      if (form.protein) formData.append("nutrition[protein]", form.protein);
-      if (form.carbs) formData.append("nutrition[carbs]", form.carbs);
-      if (form.fat) formData.append("nutrition[fat]", form.fat);
+      // Build a single nutrition JSON object so optional fields stay grouped
+      const num = (v: string) => (v !== "" ? Number(v) : undefined);
+      const nutrition: Record<string, number | Record<string, number>> = {};
+      const addNum = (key: string, v: string) => {
+        const n = num(v);
+        if (n !== undefined && !Number.isNaN(n)) nutrition[key] = n;
+      };
+      addNum("calories", form.calories);
+      addNum("protein", form.protein);
+      addNum("carbs", form.carbs);
+      addNum("fat", form.fat);
+      addNum("fiber", form.fiber);
+      addNum("iron", form.iron);
+      addNum("calcium", form.calcium);
+      addNum("vitaminA", form.vitaminA);
+      addNum("vitaminC", form.vitaminC);
+      const dv: Record<string, number> = {};
+      [
+        ["iron", form.dvIron],
+        ["calcium", form.dvCalcium],
+        ["vitaminA", form.dvVitaminA],
+        ["vitaminC", form.dvVitaminC],
+      ].forEach(([k, v]) => {
+        const n = num(v);
+        if (n !== undefined && !Number.isNaN(n)) dv[k] = n;
+      });
+      if (Object.keys(dv).length) nutrition.dailyValue = dv;
+      if (Object.keys(nutrition).length) {
+        formData.append("nutrition", JSON.stringify(nutrition));
+      }
+
+      // Extended fields — sent as JSON strings; server parses them via parseMaybeJson
+      const origin: Record<string, string> = {};
+      if (form.originCountry) origin.country = form.originCountry.trim();
+      if (form.originState) origin.state = form.originState.trim();
+      if (Object.keys(origin).length) formData.append("origin", JSON.stringify(origin));
+
+      formData.append(
+        "season",
+        JSON.stringify({
+          availability: form.seasonAvailability,
+          bestMonths: formBestMonths.slice().sort((a, b) => a - b),
+        })
+      );
+
+      formData.append("status", form.status);
+      formData.append("isPremium", String(formIsPremium));
+
+      const whySpecial: Record<string, string> = {};
+      if (form.whySpecialEn) whySpecial.en = form.whySpecialEn.trim();
+      if (form.whySpecialTa) whySpecial.ta = form.whySpecialTa.trim();
+      formData.append("whySpecial", JSON.stringify(whySpecial));
+
+      const chefTip: Record<string, string> = {};
+      if (form.chefTipEn) chefTip.en = form.chefTipEn.trim();
+      if (form.chefTipTa) chefTip.ta = form.chefTipTa.trim();
+      if (form.chefTipBy) chefTip.attributedTo = form.chefTipBy.trim();
+      formData.append("chefTip", JSON.stringify(chefTip));
+
+      const howToStore: Record<string, string> = {};
+      if (form.howToStoreEn) howToStore.en = form.howToStoreEn.trim();
+      if (form.howToStoreTa) howToStore.ta = form.howToStoreTa.trim();
+      formData.append("howToStore", JSON.stringify(howToStore));
+
+      const benefits = form.quickBenefits
+        .split("\n")
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .map((en) => ({ en }));
+      formData.append("quickBenefits", JSON.stringify(benefits));
+
+      formData.append("substitutes", JSON.stringify(formSubstituteIds));
+
       if (imageFile) formData.append("image", imageFile);
       if (editingId) formData.append("isActive", String(formIsActive));
 
@@ -709,24 +855,263 @@ const Ingredients = () => {
               {/* Nutrition */}
               <div>
                 <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-2">Nutrition <span className="text-gray-600 normal-case font-medium tracking-normal">(per 100g)</span></label>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
                   {[
                     { key: "calories" as const, label: "Calories", unit: "kcal" },
                     { key: "protein" as const, label: "Protein", unit: "g" },
                     { key: "carbs" as const, label: "Carbs", unit: "g" },
                     { key: "fat" as const, label: "Fat", unit: "g" },
+                    { key: "fiber" as const, label: "Fiber", unit: "g" },
+                    { key: "iron" as const, label: "Iron", unit: "mg" },
+                    { key: "calcium" as const, label: "Calcium", unit: "mg" },
+                    { key: "vitaminA" as const, label: "Vit A", unit: "µg" },
+                    { key: "vitaminC" as const, label: "Vit C", unit: "mg" },
                   ].map(({ key, label, unit }) => (
                     <div key={key}>
                       <label className="block text-[10px] text-gray-500 mb-1 font-medium">{label} <span className="text-gray-600">({unit})</span></label>
                       <input
-                        type="number" min="0" value={form[key]} onChange={f(key)}
+                        type="number" min="0" step="0.1" value={form[key]} onChange={f(key)}
                         className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all"
                         placeholder="0"
                       />
                     </div>
                   ))}
                 </div>
+                <div className="mt-3">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">% Daily Value <span className="text-gray-600 normal-case font-medium tracking-normal">(for the rich nutrition card)</span></p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {[
+                      { key: "dvIron" as const, label: "Iron" },
+                      { key: "dvCalcium" as const, label: "Calcium" },
+                      { key: "dvVitaminA" as const, label: "Vit A" },
+                      { key: "dvVitaminC" as const, label: "Vit C" },
+                    ].map(({ key, label }) => (
+                      <div key={key}>
+                        <label className="block text-[10px] text-gray-500 mb-1 font-medium">{label}</label>
+                        <div className="relative">
+                          <input
+                            type="number" min="0" max="500" value={form[key]} onChange={f(key)}
+                            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 pr-6 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all"
+                            placeholder="0"
+                          />
+                          <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-500">%</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
+
+              {/* ─────── Extended fields for the rich detail page ─────── */}
+              <details className="rounded-lg border border-white/[0.08] bg-white/[0.02]" open>
+                <summary className="cursor-pointer select-none px-4 py-3 text-[11px] font-black uppercase tracking-[0.18em] text-gray-300 hover:text-white">
+                  Rich detail-page fields
+                  <span className="ml-2 text-gray-500 normal-case font-medium tracking-normal text-[11px]">— shown on the user-facing ingredient page</span>
+                </summary>
+                <div className="px-4 pb-5 pt-1 space-y-5">
+
+                  {/* Origin + Status + Premium */}
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Origin Country</label>
+                      <input
+                        type="text" value={form.originCountry} onChange={f("originCountry")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all"
+                        placeholder="India"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Origin State</label>
+                      <input
+                        type="text" value={form.originState} onChange={f("originState")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all"
+                        placeholder="(optional)"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Status</label>
+                      <select
+                        value={form.status} onChange={f("status")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all"
+                      >
+                        <option value="fresh-available" className="bg-[#141414]">Fresh &amp; Available</option>
+                        <option value="seasonal" className="bg-[#141414]">Seasonal</option>
+                        <option value="limited" className="bg-[#141414]">Limited</option>
+                        <option value="out-of-stock" className="bg-[#141414]">Out of Stock</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Premium</label>
+                      <div className="flex items-center gap-2 py-2">
+                        <Toggle checked={formIsPremium} onChange={setFormIsPremium} />
+                        <span className="text-xs text-gray-400">{formIsPremium ? "Marked Premium" : "Regular"}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Season — availability + best-months toggle row */}
+                  <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-3 items-start">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Season Availability</label>
+                      <select
+                        value={form.seasonAvailability} onChange={f("seasonAvailability")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all"
+                      >
+                        <option value="year-round" className="bg-[#141414]">Year Round</option>
+                        <option value="seasonal" className="bg-[#141414]">Seasonal</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Best Months <span className="text-gray-600 normal-case font-medium tracking-normal">(toggle the months this is at peak)</span></label>
+                      <div className="grid grid-cols-6 md:grid-cols-12 gap-1.5">
+                        {MONTH_LABELS.map((label, idx) => {
+                          const monthNum = idx + 1;
+                          const active = formBestMonths.includes(monthNum);
+                          return (
+                            <button
+                              key={label}
+                              type="button"
+                              onClick={() => {
+                                setFormBestMonths((prev) =>
+                                  active ? prev.filter((m) => m !== monthNum) : [...prev, monthNum]
+                                );
+                              }}
+                              className={`rounded-md py-1.5 text-[11px] font-bold uppercase tracking-wider transition-all ${
+                                active
+                                  ? "bg-emerald-500/25 text-emerald-200 border border-emerald-500/40"
+                                  : "bg-white/[0.02] text-gray-500 border border-white/[0.08] hover:text-gray-300 hover:border-white/[0.18]"
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Why it's special */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Why It's Special (EN)</label>
+                      <textarea
+                        rows={2} value={form.whySpecialEn} onChange={f("whySpecialEn")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all resize-y"
+                        placeholder="A 1-2 sentence highlight shown in the green sticky note."
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Why It's Special (TA)</label>
+                      <textarea
+                        rows={2} value={form.whySpecialTa} onChange={f("whySpecialTa")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all resize-y"
+                        placeholder="(optional)"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Chef's Tip */}
+                  <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_180px] gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Chef's Tip (EN)</label>
+                      <textarea
+                        rows={2} value={form.chefTipEn} onChange={f("chefTipEn")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all resize-y"
+                        placeholder="Quote shown in the Chef's Tip card."
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Chef's Tip (TA)</label>
+                      <textarea
+                        rows={2} value={form.chefTipTa} onChange={f("chefTipTa")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all resize-y"
+                        placeholder="(optional)"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Attributed to</label>
+                      <input
+                        type="text" value={form.chefTipBy} onChange={f("chefTipBy")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all"
+                        placeholder="Namma Samayal Chef"
+                      />
+                    </div>
+                  </div>
+
+                  {/* How to Store */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">How to Store (EN)</label>
+                      <textarea
+                        rows={2} value={form.howToStoreEn} onChange={f("howToStoreEn")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all resize-y"
+                        placeholder="Storage instructions shown in the How to Store card."
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">How to Store (TA)</label>
+                      <textarea
+                        rows={2} value={form.howToStoreTa} onChange={f("howToStoreTa")}
+                        className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all resize-y"
+                        placeholder="(optional)"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Quick benefits — one per line */}
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">Quick Benefits <span className="text-gray-600 normal-case font-medium tracking-normal">(one per line — shown on the pink sticky note)</span></label>
+                    <textarea
+                      rows={3} value={form.quickBenefits} onChange={f("quickBenefits")}
+                      className="w-full rounded-lg border border-white/[0.08] bg-white/[0.02] px-3 py-2 text-sm text-white placeholder:text-gray-700 outline-none focus:border-[#e74c3c]/45 focus:bg-white/[0.04] transition-all font-mono"
+                      placeholder={"Rich in iron\nSupports immunity\nGood for eye health"}
+                    />
+                  </div>
+
+                  {/* Substitutes picker */}
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-1.5">
+                      Substitutes
+                      <span className="text-gray-600 normal-case font-medium tracking-normal"> ({formSubstituteIds.length} selected{allIngredients.length ? ` of ${allIngredients.length}` : ""})</span>
+                    </label>
+                    <div className="rounded-lg border border-white/[0.08] bg-white/[0.02] p-2 max-h-48 overflow-y-auto">
+                      {allIngredients.length === 0 ? (
+                        <p className="text-xs text-gray-500 p-2">Loading ingredient list…</p>
+                      ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
+                          {allIngredients
+                            .filter((i) => i._id !== editingId)
+                            .map((i) => {
+                              const checked = formSubstituteIds.includes(i._id);
+                              return (
+                                <label
+                                  key={i._id}
+                                  className={`flex items-center gap-2 px-2 py-1 rounded cursor-pointer text-xs transition-colors ${
+                                    checked
+                                      ? "bg-emerald-500/15 text-emerald-200"
+                                      : "text-gray-300 hover:bg-white/[0.04]"
+                                  }`}
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={checked}
+                                    onChange={() => {
+                                      setFormSubstituteIds((prev) =>
+                                        checked ? prev.filter((id) => id !== i._id) : [...prev, i._id]
+                                      );
+                                    }}
+                                    className="accent-emerald-500"
+                                  />
+                                  <span className="truncate">{i.name?.en}</span>
+                                </label>
+                              );
+                            })}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </details>
 
               {/* Tags */}
               <div>

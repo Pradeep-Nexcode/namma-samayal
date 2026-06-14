@@ -33,7 +33,7 @@ export default function AuthModal({ mode }: AuthModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm sm:p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/55 p-3 backdrop-blur-md sm:p-6"
       onClick={handleClose}
     >
       <div className="relative" onClick={(event) => event.stopPropagation()}>
@@ -41,15 +41,16 @@ export default function AuthModal({ mode }: AuthModalProps) {
           type="button"
           aria-label={`Close ${mode} modal`}
           onClick={handleClose}
-          className="absolute right-4 top-4 z-20 rounded-full bg-black/45 p-2 text-white/80 transition hover:bg-black/70 hover:text-white"
+          className="absolute -top-3 -right-3 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 border border-stone-300 hover:bg-stone-100 hover:text-stone-900 transition-colors shadow-md"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
-            className="h-5 w-5"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            className="h-4 w-4"
           >
             <path d="M18 6L6 18" />
             <path d="M6 6l12 12" />

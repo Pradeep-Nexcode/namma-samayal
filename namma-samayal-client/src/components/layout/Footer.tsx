@@ -174,7 +174,7 @@ function NavLink({
         className={`relative font-semibold ${
           active
             ? "text-[#e74c3c]"
-            : "text-stone-700 dark:text-stone-300 group-hover:text-[#e74c3c] dark:group-hover:text-[#e74c3c]"
+            : "text-stone-700 dark:text-stone-200 group-hover:text-[#e74c3c] dark:group-hover:text-[#e74c3c]"
         }`}
       >
         {children}
@@ -233,7 +233,7 @@ export function Footer() {
 
         {/* Main paper card */}
         <div
-          className="relative rounded-[20px] border border-stone-200/80 dark:border-stone-700/60 shadow-[0_10px_30px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)] overflow-hidden"
+          className="relative rounded-[20px] border border-stone-200/80 dark:border-white/[0.06] shadow-[0_10px_30px_-12px_rgba(120,90,40,0.18)] dark:shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)] overflow-hidden"
           style={{
             backgroundColor: "var(--ns-nav-bg, #fffdf6)",
             backgroundImage:
@@ -245,7 +245,7 @@ export function Footer() {
             {Array.from({ length: 15 }).map((_, i) => (
               <span
                 key={i}
-                className="block h-3 w-3 rounded-full bg-stone-200 dark:bg-stone-700 ring-2 ring-stone-300/70 dark:ring-stone-600/70 shadow-inner"
+                className="block h-3 w-3 rounded-full bg-stone-200 ring-2 ring-stone-300/70 dark:ring-stone-600/70 shadow-inner"
               />
             ))}
           </div>
@@ -275,7 +275,7 @@ export function Footer() {
                   </span>
                 </Link>
 
-                <p className="font-note-hw text-[15px] text-stone-600 dark:text-stone-400 -mt-2">
+                <p className="font-note-hw text-[15px] text-stone-600 dark:text-stone-300 -mt-2">
                   Namma veetu samayal, ungal veetukku{" "}
                   <span className="text-rose-500">❤</span>
                 </p>
@@ -288,7 +288,7 @@ export function Footer() {
                 </p>
 
                 {/* Dashed separator */}
-                <div className="border-t border-dashed border-stone-300 dark:border-stone-700 my-1" />
+                <div className="border-t border-dashed border-stone-300 dark:border-white/10 my-1" />
 
                 {/* Language */}
                 <div>
@@ -421,7 +421,7 @@ export function Footer() {
                         "footer.emailPlaceholder",
                         "Enter your email"
                       )}
-                      className="w-full rounded-lg border-2 border-stone-200 dark:border-stone-700 bg-white/70 dark:bg-stone-800/40 py-2.5 pl-10 pr-3 font-body text-sm font-medium text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 outline-none focus:border-[#e74c3c] transition-colors"
+                      className="w-full rounded-lg border-2 border-stone-200 dark:border-white/[0.06] bg-white/70 dark:bg-white/5 py-2.5 pl-10 pr-3 font-body text-sm font-medium text-stone-900 dark:text-stone-50 placeholder-stone-400 outline-none focus:border-[#e74c3c] transition-colors"
                     />
                   </div>
                   <button
@@ -602,7 +602,7 @@ export function Footer() {
 
           {/* Kraft-paper torn bottom strip */}
           <div
-            className="relative px-6 md:px-10 py-4 border-t border-stone-300/60 dark:border-stone-700/60"
+            className="relative px-6 md:px-10 py-4 border-t border-stone-300/60"
             style={{
               backgroundColor: "#e9d9b8",
               backgroundImage:
@@ -622,8 +622,8 @@ export function Footer() {
             />
 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="flex items-center gap-2 text-stone-700">
-                <CookingPot className="h-4 w-4 text-stone-700" />
+              <div className="flex items-center gap-2 text-stone-700 dark:text-stone-200">
+                <CookingPot className="h-4 w-4 text-stone-700 dark:text-stone-200" />
                 <p className="font-body text-[13.5px] font-semibold">
                   © {year} Namma Samayal.{" "}
                   {ts("footer.allRights", "All rights reserved.")}
@@ -632,34 +632,34 @@ export function Footer() {
               <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
                 <Link
                   href="#"
-                  className="font-title-hw text-[14.5px] font-bold text-stone-800 hover:text-[#e74c3c] transition-colors"
+                  className="font-title-hw text-[14.5px] font-bold text-stone-800 dark:text-stone-100 hover:text-[#e74c3c] transition-colors"
                 >
                   {ts("footer.privacy", "Privacy Policy")}
                 </Link>
-                <span className="text-stone-500" aria-hidden>
+                <span className="text-stone-500 dark:text-stone-400" aria-hidden>
                   |
                 </span>
                 <Link
                   href="#"
-                  className="font-title-hw text-[14.5px] font-bold text-stone-800 hover:text-[#e74c3c] transition-colors"
+                  className="font-title-hw text-[14.5px] font-bold text-stone-800 dark:text-stone-100 hover:text-[#e74c3c] transition-colors"
                 >
                   {ts("footer.terms", "Terms of Service")}
                 </Link>
-                <span className="text-stone-500" aria-hidden>
+                <span className="text-stone-500 dark:text-stone-400" aria-hidden>
                   |
                 </span>
                 <Link
                   href="#"
-                  className="font-title-hw text-[14.5px] font-bold text-stone-800 hover:text-[#e74c3c] transition-colors"
+                  className="font-title-hw text-[14.5px] font-bold text-stone-800 dark:text-stone-100 hover:text-[#e74c3c] transition-colors"
                 >
                   {ts("footer.cookies", "Cookies")}
                 </Link>
-                <span className="text-stone-500" aria-hidden>
+                <span className="text-stone-500 dark:text-stone-400" aria-hidden>
                   |
                 </span>
                 <Link
                   href="#"
-                  className="font-title-hw text-[14.5px] font-bold text-stone-800 hover:text-[#e74c3c] transition-colors"
+                  className="font-title-hw text-[14.5px] font-bold text-stone-800 dark:text-stone-100 hover:text-[#e74c3c] transition-colors"
                 >
                   {ts("footer.sitemap", "Sitemap")}
                 </Link>
