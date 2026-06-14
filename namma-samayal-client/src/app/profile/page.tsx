@@ -333,7 +333,7 @@ export default function ProfilePage() {
         </div>
         <Link
           href="/auth/login"
-          className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#e74c3c] text-white px-6 py-2.5 font-title-hw text-[15px] font-bold hover:bg-[#c0392b] transition-colors"
+          className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#c0392b] text-white px-6 py-2.5 font-title-hw text-[15px] font-bold hover:bg-[#a02b1f] transition-colors"
         >
           Go to Login
         </Link>
@@ -848,7 +848,7 @@ function EditProfileTab({
         <button
           type="submit"
           disabled={isSaving}
-          className="inline-flex items-center gap-2 rounded-lg bg-[#e74c3c] text-white px-5 py-2.5 font-title-hw text-[15px] font-bold hover:bg-[#c0392b] transition-colors shadow-[0_6px_14px_-6px_rgba(231,76,60,0.5)] active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-2 rounded-lg bg-[#c0392b] text-white px-5 py-2.5 font-title-hw text-[15px] font-bold hover:bg-[#a02b1f] transition-colors shadow-[0_6px_14px_-6px_rgba(231,76,60,0.5)] active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed"
         >
           <Heart className="h-4 w-4 fill-current" />
           {isSaving ? "Saving…" : "Save Changes"}

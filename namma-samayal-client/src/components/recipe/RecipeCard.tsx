@@ -29,7 +29,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent opacity-60" />
 
         <div className="absolute top-4 right-4 flex gap-2">
-          <div className="rounded-full bg-white/95 backdrop-blur shadow-sm px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#e74c3c]">
+          <div className="rounded-full bg-white/95 backdrop-blur shadow-sm px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#c0392b]">
             {recipe.difficulty}
           </div>
         </div>
@@ -42,17 +42,19 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
           </h2>
         </div>
 
-        <p className="text-sm text-slate-500 dark:text-gray-400 font-medium line-clamp-2 leading-relaxed h-10">
+        <p className="text-sm text-slate-600 dark:text-gray-300 font-medium line-clamp-2 leading-relaxed h-10">
           {lf(recipe.seo?.description) || lf(recipe.description) || t("home.recipeCardFallback")}
         </p>
 
-        <div className="flex items-center gap-4 text-[11px] font-bold text-slate-400 dark:text-gray-500 object-none uppercase tracking-widest mt-auto pt-4 border-t border-slate-100 dark:border-white/[0.06]">
+        <div className="flex items-center gap-4 text-[11px] font-bold text-slate-600 dark:text-gray-300 object-none uppercase tracking-widest mt-auto pt-4 border-t border-slate-100 dark:border-white/[0.06]">
+          {(recipe.totalTime || recipe.cookingTime) ? (
+            <div className="flex items-center gap-1.5">
+              <Clock className="h-3.5 w-3.5 text-slate-500 dark:text-gray-400" />
+              {recipe.totalTime || recipe.cookingTime}m
+            </div>
+          ) : null}
           <div className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5 text-slate-300" />
-            {recipe.totalTime || recipe.cookingTime || "--"}m
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-slate-300" />
+            <Sparkles className="h-3.5 w-3.5 text-slate-500 dark:text-gray-400" />
             {recipe.ingredients?.length || 0} {t("recipe.items")}
           </div>
         </div>

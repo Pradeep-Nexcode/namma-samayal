@@ -1,16 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { ErrorMessage } from "@/components/common/ErrorMessage";
 import { Loader } from "@/components/common/Loader";
-import { HeroNotebook } from "@/components/home/HeroNotebook";
-import { HomeCategories } from "@/components/home/HomeCategories";
 import { HomeLatestRecipes } from "@/components/home/HomeLatestRecipes";
 import { HomeCTA } from "@/components/home/HomeCTA";
 import { RecipeCard } from "@/components/recipe/RecipeCard";
 import { getRecipes } from "@/features/recipe/services/recipeApi";
 import type { Recipe } from "@/types/recipe";
 import { useLang } from "@/contexts/LanguageContext";
+
+// HeroNotebook pulls in framer-motion (the heaviest visual lib in the bundle).
+// Split it into its own chunk so the shared app bundle shrinks. SSR stays on
+// so the hero HTML still renders server-side — LCP and SEO are unaffected.
+const HeroNotebook = dynamic(
+  () => import("@/components/home/HeroNotebook").then((m) => m.HeroNotebook),
+  { ssr: true },
+);
+
+// HomeCategories also uses framer-motion. Lives below the fold, so splitting
+// it costs nothing visually but shrinks the shared bundle.
+const HomeCategories = dynamic(
+  () => import("@/components/home/HomeCategories").then((m) => m.HomeCategories),
+  { ssr: true },
+);
 
 export function HomePageContent() {
   const { t } = useLang();
@@ -43,7 +57,7 @@ export function HomePageContent() {
         <HomeLatestRecipes recipes={recipes.slice(0, 4)} />
 
         <div className="mb-16 mt-24 text-center max-w-2xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#fcedeb] dark:bg-[#e74c3c]/15 px-4 py-2 text-xs font-bold text-[#e74c3c] tracking-widest uppercase">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#fcedeb] dark:bg-[#e74c3c]/15 px-4 py-2 text-xs font-bold text-[#c0392b] dark:text-rose-300 tracking-widest uppercase">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#e74c3c] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#e74c3c]"></span>

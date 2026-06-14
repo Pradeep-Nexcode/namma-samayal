@@ -426,7 +426,7 @@ export function Footer() {
                   </div>
                   <button
                     type="button"
-                    className="relative inline-flex items-center justify-center rounded-lg bg-[#e74c3c] px-4 py-2.5 font-title-hw text-[16px] font-bold text-white border-2 border-[#c0392b]/40 hover:bg-[#c0392b] transition-colors shadow-[1px_2px_0_rgba(120,40,40,0.25)] active:translate-y-px active:shadow-none"
+                    className="relative inline-flex items-center justify-center rounded-lg bg-[#c0392b] px-4 py-2.5 font-title-hw text-[16px] font-bold text-white border-2 border-[#c0392b]/40 hover:bg-[#a02b1f] transition-colors shadow-[1px_2px_0_rgba(120,40,40,0.25)] active:translate-y-px active:shadow-none"
                   >
                     {ts("footer.subscribe", "Subscribe")}
                     {/* Heart doodle on the right of button */}

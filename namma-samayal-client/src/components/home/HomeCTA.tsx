@@ -33,7 +33,7 @@ export function HomeCTA() {
           <div className="shrink-0">
             <Link
               href="/recipes/create"
-              className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full bg-[#e74c3c] px-10 py-5 text-lg font-bold text-white shadow-[0_0_40px_rgba(231,76,60,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_60px_rgba(231,76,60,0.6)] active:scale-95"
+              className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full bg-[#c0392b] px-10 py-5 text-lg font-bold text-white shadow-[0_0_40px_rgba(231,76,60,0.4)] transition-all hover:scale-105 hover:bg-[#a02b1f] hover:shadow-[0_0_60px_rgba(231,76,60,0.6)] active:scale-95"
             >
               <div className="absolute inset-0 bg-white dark:bg-[var(--color-card)] opacity-0 transition-opacity duration-300 group-hover:opacity-20" />
               <ChefHat className="h-6 w-6" />

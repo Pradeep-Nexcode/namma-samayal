@@ -503,7 +503,7 @@ export default function IngredientDetailPage() {
               <div className="space-y-2.5">
                 <a
                   href={`/recipes?ingredient=${ingredient._id}`}
-                  className="inline-flex items-center justify-center gap-2 w-full rounded-lg bg-[#e74c3c] hover:bg-[#c0392b] text-white px-4 py-2.5 font-title-hw text-[15px] font-bold transition-colors shadow-[1px_2px_0_rgba(120,40,40,0.25)] active:translate-y-px active:shadow-none"
+                  className="inline-flex items-center justify-center gap-2 w-full rounded-lg bg-[#c0392b] hover:bg-[#a02b1f] text-white px-4 py-2.5 font-title-hw text-[15px] font-bold transition-colors shadow-[1px_2px_0_rgba(120,40,40,0.25)] active:translate-y-px active:shadow-none"
                 >
                   <Utensils className="h-4 w-4" />
                   {ts("ingredient.findRecipes", "Find Recipes with this")}

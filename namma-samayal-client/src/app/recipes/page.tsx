@@ -376,7 +376,7 @@ function FeaturedRecipe({
 
           <Link
             href={`/recipe/${recipe.slug ?? recipe._id}`}
-            className="inline-flex items-center gap-1.5 mt-3 rounded-lg bg-[#e74c3c] text-white font-title-hw text-[15px] font-bold px-5 py-2 border-2 border-[#c0392b]/40 hover:bg-[#c0392b] transition-colors shadow-[1px_2px_0_rgba(120,40,40,0.25)] active:translate-y-px active:shadow-none"
+            className="inline-flex items-center gap-1.5 mt-3 rounded-lg bg-[#c0392b] text-white font-title-hw text-[15px] font-bold px-5 py-2 border-2 border-[#c0392b]/40 hover:bg-[#a02b1f] transition-colors shadow-[1px_2px_0_rgba(120,40,40,0.25)] active:translate-y-px active:shadow-none"
           >
             {t("recipes.viewRecipe", "View Recipe")}
           </Link>
@@ -525,7 +525,7 @@ function NotebookPagination({
                   onClick={() => onPageChange(p)}
                   className={`h-9 min-w-9 px-2.5 rounded-md font-title-hw text-[15px] font-bold transition-all ${
                     p === currentPage
-                      ? "bg-[#e74c3c] text-white shadow-[1px_2px_0_rgba(120,40,40,0.25)]"
+                      ? "bg-[#c0392b] text-white shadow-[1px_2px_0_rgba(120,40,40,0.25)]"
                       : "text-stone-700 dark:text-stone-200 hover:bg-amber-100/70"
                   }`}
                 >
@@ -743,7 +743,7 @@ function RecipesPageContent() {
             </div>
             <Link
               href="/recipes/create"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-[#e74c3c] text-white font-title-hw text-[14.5px] font-bold px-4 py-2.5 border-2 border-[#c0392b]/40 hover:bg-[#c0392b] transition-colors shadow-[1px_2px_0_rgba(120,40,40,0.25)] active:translate-y-px active:shadow-none shrink-0"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-[#c0392b] text-white font-title-hw text-[14.5px] font-bold px-4 py-2.5 border-2 border-[#c0392b]/40 hover:bg-[#a02b1f] transition-colors shadow-[1px_2px_0_rgba(120,40,40,0.25)] active:translate-y-px active:shadow-none shrink-0"
             >
               <Plus className="h-4 w-4" />
               <span className="hidden sm:inline">{t("recipes.create", "Create")}</span>
@@ -767,7 +767,7 @@ function RecipesPageContent() {
                 }
                 className={`inline-flex items-center gap-1.5 rounded-lg px-4 py-2 font-title-hw text-[14px] font-bold border-2 transition-all shrink-0 ${
                   isActive
-                    ? "bg-[#e74c3c] text-white border-[#c0392b]/40 shadow-[1px_2px_0_rgba(120,40,40,0.25)]"
+                    ? "bg-[#c0392b] text-white border-[#c0392b]/40 shadow-[1px_2px_0_rgba(120,40,40,0.25)]"
                     : "bg-white/80 dark:bg-white/5 text-stone-700 dark:text-stone-200 border-stone-200 dark:border-white/[0.06] hover:border-[#e74c3c] hover:text-[#e74c3c]"
                 }`}
               >

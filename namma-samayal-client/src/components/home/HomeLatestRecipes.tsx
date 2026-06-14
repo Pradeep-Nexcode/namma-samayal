@@ -21,7 +21,7 @@ export function HomeLatestRecipes({ recipes }: HomeLatestRecipesProps) {
     <section className="relative mx-auto w-full max-w-7xl px-6 py-20 lg:px-12 z-10 border-t border-slate-100 dark:border-white/[0.06]">
       <div className="mb-12 flex items-center justify-between">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#fcedeb] dark:bg-[#e74c3c]/15 px-4 py-2 text-xs font-bold text-[#e74c3c] tracking-widest uppercase mb-4">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#fcedeb] dark:bg-[#e74c3c]/15 px-4 py-2 text-xs font-bold text-[#c0392b] dark:text-rose-300 tracking-widest uppercase mb-4">
             <Sparkles className="h-4 w-4" />
             {t("home.freshArrivals")}
           </div>
@@ -31,7 +31,7 @@ export function HomeLatestRecipes({ recipes }: HomeLatestRecipesProps) {
         </div>
         <Link
           href="/recipes"
-          className="hidden md:flex items-center justify-center h-12 w-12 rounded-full bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-gray-400 hover:bg-[#e74c3c] hover:text-white transition-colors"
+          className="hidden md:flex items-center justify-center h-12 w-12 rounded-full bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-gray-400 hover:bg-[#a02b1f] hover:text-white transition-colors"
         >
           <ArrowRight className="h-5 w-5" />
         </Link>
@@ -81,7 +81,7 @@ export function HomeLatestRecipes({ recipes }: HomeLatestRecipesProps) {
               </div>
             </div>
 
-            <div className="absolute top-8 right-8 flex h-14 w-14 translate-x-10 -translate-y-10 items-center justify-center rounded-full bg-[#e74c3c] text-white opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100 shadow-[0_0_30px_rgba(231,76,60,0.5)]">
+            <div className="absolute top-8 right-8 flex h-14 w-14 translate-x-10 -translate-y-10 items-center justify-center rounded-full bg-[#c0392b] text-white opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100 shadow-[0_0_30px_rgba(231,76,60,0.5)]">
               <ArrowRight className="h-6 w-6 -rotate-45" />
             </div>
           </Link>

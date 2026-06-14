@@ -494,7 +494,7 @@ export default function CreateRecipePage() {
                     type="button"
                     onClick={onPublish}
                     disabled={isSubmitting || loadingOptions}
-                    className="inline-flex items-center gap-2 rounded-lg bg-[#e74c3c] text-white px-4 py-2.5 font-title-hw text-[14px] font-bold hover:bg-[#c0392b] transition-colors shadow-[0_6px_14px_-6px_rgba(231,76,60,0.5)] active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[#c0392b] text-white px-4 py-2.5 font-title-hw text-[14px] font-bold hover:bg-[#a02b1f] transition-colors shadow-[0_6px_14px_-6px_rgba(231,76,60,0.5)] active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     <Send className="h-4 w-4" />
                     {isSubmitting ? "Publishing…" : "Publish Recipe"}
@@ -806,7 +806,7 @@ export default function CreateRecipePage() {
                   <button
                     type="button"
                     onClick={goNext}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#e74c3c] text-white px-4 py-2 font-title-hw text-[14px] font-bold hover:bg-[#c0392b] transition-colors shadow-[0_4px_10px_-4px_rgba(231,76,60,0.5)] active:translate-y-px"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#c0392b] text-white px-4 py-2 font-title-hw text-[14px] font-bold hover:bg-[#a02b1f] transition-colors shadow-[0_4px_10px_-4px_rgba(231,76,60,0.5)] active:translate-y-px"
                   >
                     Next: {STEPS[stepIndex + 1].label}
                     <ArrowRight className="h-3.5 w-3.5" />
@@ -816,7 +816,7 @@ export default function CreateRecipePage() {
                     type="button"
                     onClick={onPublish}
                     disabled={isSubmitting || loadingOptions}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#e74c3c] text-white px-5 py-2 font-title-hw text-[14px] font-bold hover:bg-[#c0392b] transition-colors shadow-[0_4px_10px_-4px_rgba(231,76,60,0.5)] active:translate-y-px disabled:opacity-60"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#c0392b] text-white px-5 py-2 font-title-hw text-[14px] font-bold hover:bg-[#a02b1f] transition-colors shadow-[0_4px_10px_-4px_rgba(231,76,60,0.5)] active:translate-y-px disabled:opacity-60"
                   >
                     <Send className="h-3.5 w-3.5" />
                     {isSubmitting ? "Publishing…" : "Publish Recipe"}
@@ -1192,7 +1192,7 @@ function StepsStep(props: {
             className="relative rounded-xl bg-white/70 dark:bg-white/5 border border-stone-200 dark:border-white/[0.06] shadow-[0_4px_14px_-8px_rgba(120,90,40,0.25)] p-4 pl-12"
           >
             {/* Step number circle */}
-            <div className="absolute top-4 left-3 h-7 w-7 rounded-full bg-[#e74c3c] text-white flex items-center justify-center font-title-hw text-[14px] font-bold">
+            <div className="absolute top-4 left-3 h-7 w-7 rounded-full bg-[#c0392b] text-white flex items-center justify-center font-title-hw text-[14px] font-bold">
               {idx + 1}
             </div>
             <div className="flex items-center justify-between mb-2 gap-2">
@@ -1428,7 +1428,7 @@ function PreviewStep(props: {
             type="button"
             onClick={props.onPublish}
             disabled={props.isSubmitting}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#e74c3c] text-white px-6 py-3 font-title-hw text-[16px] font-bold hover:bg-[#c0392b] transition-colors shadow-[0_6px_14px_-6px_rgba(231,76,60,0.5)] active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#c0392b] text-white px-6 py-3 font-title-hw text-[16px] font-bold hover:bg-[#a02b1f] transition-colors shadow-[0_6px_14px_-6px_rgba(231,76,60,0.5)] active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <Send className="h-4 w-4" />
             {props.isSubmitting ? "Publishing…" : "Publish Recipe"}

@@ -601,7 +601,7 @@ export function AuthFormLayout({ mode }: AuthFormLayoutProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="relative w-full rounded-lg bg-[#e74c3c] hover:bg-[#c0392b] py-3 font-title-hw text-[17px] font-bold text-white transition-colors shadow-[0_6px_14px_-6px_rgba(231,76,60,0.5)] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60"
+                className="relative w-full rounded-lg bg-[#c0392b] hover:bg-[#a02b1f] py-3 font-title-hw text-[17px] font-bold text-white transition-colors shadow-[0_6px_14px_-6px_rgba(231,76,60,0.5)] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSubmitting
                   ? "Please wait…"

@@ -631,7 +631,7 @@ export function HeroNotebook() {
                       <div className="mt-6">
                         <Link
                           href={featured ? `/recipe/${featured.slug ?? featured._id}` : "/recipes"}
-                          className="inline-flex items-center gap-2 rounded-full bg-stone-900 dark:bg-[#e74c3c] text-white px-6 py-3 font-title-hw text-[16px] font-bold hover:bg-stone-700 dark:hover:bg-[#c0392b] transition-colors shadow-[0_6px_14px_-6px_rgba(0,0,0,0.35)] active:translate-y-px"
+                          className="inline-flex items-center gap-2 rounded-full bg-stone-900 dark:bg-[#c0392b] text-white px-6 py-3 font-title-hw text-[16px] font-bold hover:bg-stone-700 dark:hover:bg-[#a02b1f] transition-colors shadow-[0_6px_14px_-6px_rgba(0,0,0,0.35)] active:translate-y-px"
                         >
                           {featured
                             ? ts("home.viewThisRecipe", "View This Recipe")

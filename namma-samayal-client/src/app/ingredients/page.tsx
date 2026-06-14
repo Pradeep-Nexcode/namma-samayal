@@ -395,7 +395,7 @@ function NotebookPagination({
                 onClick={() => onPageChange(p)}
                 className={`h-9 min-w-9 px-2.5 rounded-md font-title-hw text-[15px] font-bold transition-all ${
                   p === currentPage
-                    ? "bg-[#e74c3c] text-white shadow-[1px_2px_0_rgba(120,40,40,0.25)]"
+                    ? "bg-[#c0392b] text-white shadow-[1px_2px_0_rgba(120,40,40,0.25)]"
                     : "text-stone-700 dark:text-stone-200 hover:bg-amber-100/70"
                 }`}
               >

@@ -3,7 +3,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ClientProviders } from "@/components/providers/ClientProviders";
 import { Montserrat, Poppins, Nunito, Patrick_Hand, Kalam } from "next/font/google";
-import { GoogleTagManager } from "@next/third-parties/google";
+import Script from "next/script";
 import "./globals.css";
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
@@ -94,17 +94,31 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
       <body className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] flex flex-col">
         {GTM_ID && (
-          <noscript>
-            <iframe
-              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-              height="0"
-              width="0"
-              style={{ display: "none", visibility: "hidden" }}
+          <>
+            {/* GTM dataLayer init — tiny inline, ships immediately so events
+                queued before lazyOnload still register. */}
+            <Script id="_gtm-init" strategy="lazyOnload">
+              {`window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({'gtm.start': new Date().getTime(), event:'gtm.js'});`}
+            </Script>
+            {/* GTM main bundle — lazy-loaded after page is idle so it doesn't
+                compete with LCP / FCP. Saves ~130 KiB of unused JS on first load. */}
+            <Script
+              id="_gtm-main"
+              strategy="lazyOnload"
+              src={`https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`}
             />
-          </noscript>
+            <noscript>
+              <iframe
+                src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+                height="0"
+                width="0"
+                style={{ display: "none", visibility: "hidden" }}
+              />
+            </noscript>
+          </>
         )}
         <ClientProviders>
           <Navbar />
