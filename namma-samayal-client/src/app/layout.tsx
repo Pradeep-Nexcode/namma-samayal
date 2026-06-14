@@ -3,7 +3,10 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ClientProviders } from "@/components/providers/ClientProviders";
 import { Montserrat, Poppins, Nunito, Patrick_Hand, Kalam } from "next/font/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
+
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 // Legacy default — body still falls back to Montserrat in globals.css for now.
 const montserrat = Montserrat({
@@ -91,7 +94,18 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
+      {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
       <body className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] flex flex-col">
+        {GTM_ID && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        )}
         <ClientProviders>
           <Navbar />
           <main className="flex-1 flex flex-col">{children}</main>
