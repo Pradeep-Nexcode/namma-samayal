@@ -109,18 +109,20 @@ export function HomeLatestRecipes({ recipes }: HomeLatestRecipesProps) {
               </div>
 
               <div className="flex flex-col justify-center flex-1 py-2">
-                <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-[#e74c3c]">
+                <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-[#c0392b]">
                   {recipe.category?.name ? lf(recipe.category.name) : ""}
                 </div>
-                <h3 className="font-bold text-lg text-slate-800 dark:text-gray-100 line-clamp-2 leading-snug group-hover:text-[#e74c3c] transition-colors">
+                <h3 className="font-bold text-lg text-slate-800 dark:text-gray-100 line-clamp-2 leading-snug group-hover:text-[#c0392b] transition-colors">
                   {lf(recipe.seo?.title) || recipe.title || lf(recipe.dishName)}
                 </h3>
-                <div className="mt-3 flex items-center gap-3 text-xs font-semibold text-slate-400 dark:text-gray-500">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-3.5 w-3.5" />
-                    {recipe.totalTime || recipe.cookingTime || "--"}m
+                {(recipe.totalTime || recipe.cookingTime) ? (
+                  <div className="mt-3 flex items-center gap-3 text-xs font-semibold text-slate-600 dark:text-gray-300">
+                    <div className="flex items-center gap-1">
+                      <Clock className="h-3.5 w-3.5" />
+                      {recipe.totalTime || recipe.cookingTime}m
+                    </div>
                   </div>
-                </div>
+                ) : null}
               </div>
             </Link>
           ))}

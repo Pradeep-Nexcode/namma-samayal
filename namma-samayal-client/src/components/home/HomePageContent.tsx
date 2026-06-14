@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ErrorMessage } from "@/components/common/ErrorMessage";
 import { Loader } from "@/components/common/Loader";
+// HeroNotebook is the LCP element on this page — keep it eager so it hydrates
+// without waiting for a separate chunk (was hurting Lighthouse LCP).
+import { HeroNotebook } from "@/components/home/HeroNotebook";
 import { HomeLatestRecipes } from "@/components/home/HomeLatestRecipes";
 import { HomeCTA } from "@/components/home/HomeCTA";
 import { RecipeCard } from "@/components/recipe/RecipeCard";
@@ -11,16 +14,8 @@ import { getRecipes } from "@/features/recipe/services/recipeApi";
 import type { Recipe } from "@/types/recipe";
 import { useLang } from "@/contexts/LanguageContext";
 
-// HeroNotebook pulls in framer-motion (the heaviest visual lib in the bundle).
-// Split it into its own chunk so the shared app bundle shrinks. SSR stays on
-// so the hero HTML still renders server-side — LCP and SEO are unaffected.
-const HeroNotebook = dynamic(
-  () => import("@/components/home/HeroNotebook").then((m) => m.HeroNotebook),
-  { ssr: true },
-);
-
-// HomeCategories also uses framer-motion. Lives below the fold, so splitting
-// it costs nothing visually but shrinks the shared bundle.
+// HomeCategories uses framer-motion and lives below the fold, so splitting it
+// out of the shared bundle is safe — initial paint isn't blocked on it.
 const HomeCategories = dynamic(
   () => import("@/components/home/HomeCategories").then((m) => m.HomeCategories),
   { ssr: true },
