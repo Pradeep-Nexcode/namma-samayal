@@ -92,7 +92,13 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {/* Theme-init script — runs before paint to set the right dark/light
+            class on <html> from localStorage / system preference, preventing a
+            theme flash. `beforeInteractive` executes before React hydrates;
+            placing it inside <head> keeps the HTML structure valid. */}
+        <Script id="theme-init" strategy="beforeInteractive">
+          {themeInitScript}
+        </Script>
         {/* Preconnect to Cloudinary — every recipe / ingredient image is served
             from there. Saves the TCP+TLS round-trip when the first image loads. */}
         <link rel="preconnect" href="https://res.cloudinary.com" />

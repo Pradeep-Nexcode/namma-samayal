@@ -11,15 +11,9 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         // Auth-gated and account pages should never be indexed
-        disallow: [
-          "/profile",
-          "/auth/",
-          "/recipes/create",
-          "/api/",
-        ],
+        disallow: ["/profile", "/auth/", "/recipes/create", "/api/"],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
   };
 }
