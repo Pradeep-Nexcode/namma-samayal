@@ -1,0 +1,14 @@
+name: Keep Render Awake
+
+on:
+  schedule:
+    - cron: "*/10 * * * *" # every 10 mins
+  workflow_dispatch: # manual run button
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping server
+        run: curl https://namma-samayal-server.onrender.com
