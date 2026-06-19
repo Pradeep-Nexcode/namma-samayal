@@ -35,6 +35,7 @@ import {
 import { ErrorMessage } from "@/components/common/ErrorMessage";
 import { Loader } from "@/components/common/Loader";
 import { getRecipeById } from "@/features/recipe/services/recipeApi";
+import { KitchenTalk } from "@/components/comments/KitchenTalk";
 import { useLang } from "@/contexts/LanguageContext";
 import type { Recipe, RecipeStep } from "@/types/recipe";
 
@@ -2473,6 +2474,12 @@ export default function RecipeDetailPage() {
             </div>
           )}
         </div>
+
+        {/* Kitchen Talk — community comments */}
+        <KitchenTalk
+          recipeId={recipe._id}
+          recipeAuthorId={recipe.createdBy?._id}
+        />
       </div>
 
       {/* Learn Recipe Modal */}
