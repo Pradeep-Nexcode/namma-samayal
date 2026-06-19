@@ -1,7 +1,7 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
+import { THEME_SWITCHER_ENABLED, useTheme } from "@/contexts/ThemeContext";
 
 interface ThemeToggleProps {
   variant?: "light" | "dark" | "auto";
@@ -10,6 +10,10 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ variant = "auto", className = "" }: ThemeToggleProps) {
   const { theme, toggle } = useTheme();
+
+  // Theme switching is temporarily disabled — hide the button entirely.
+  if (!THEME_SWITCHER_ENABLED) return null;
+
   const isDark = theme === "dark";
 
   const baseClasses =

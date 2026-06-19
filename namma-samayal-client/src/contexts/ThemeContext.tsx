@@ -5,6 +5,13 @@ import { createContext, useContext, useEffect, useState, useCallback } from "rea
 export type Theme = "light" | "dark";
 type ThemePref = Theme | "system";
 
+/**
+ * Master switch for the dark theme + theme toggle. Temporarily OFF — the site
+ * is light-only for now. Flip to `true` to bring back dark mode and the toggle
+ * button (no other changes needed; the dark CSS and toggle code are intact).
+ */
+export const THEME_SWITCHER_ENABLED = false;
+
 interface ThemeContextValue {
   theme: Theme;
   preference: ThemePref;
@@ -22,6 +29,8 @@ const ThemeContext = createContext<ThemeContextValue>({
 const STORAGE_KEY = "ns_theme";
 
 function resolveTheme(pref: ThemePref): Theme {
+  // Dark theme disabled — always resolve to light regardless of stored/system pref.
+  if (!THEME_SWITCHER_ENABLED) return "light";
   if (pref === "system") {
     if (typeof window === "undefined") return "light";
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -77,6 +86,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const toggle = useCallback(() => {
+    if (!THEME_SWITCHER_ENABLED) return;
     const next: Theme = theme === "dark" ? "light" : "dark";
     setPreference(next);
   }, [theme, setPreference]);

@@ -58,22 +58,24 @@ export const metadata: Metadata = {
 };
 
 // Runs BEFORE React hydrates so theme is applied before any paint — prevents flash.
+// NOTE: dark theme is temporarily disabled — force light everywhere. To re-enable,
+// restore the commented logic below (and flip THEME_SWITCHER_ENABLED in ThemeContext).
 const themeInitScript = `
 (function() {
   try {
-    var stored = localStorage.getItem('ns_theme');
-    var pref = stored === 'dark' || stored === 'light' || stored === 'system' ? stored : 'system';
-    var resolved = pref === 'system'
-      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-      : pref;
     var root = document.documentElement;
-    if (resolved === 'dark') {
-      root.classList.add('dark');
-      root.style.colorScheme = 'dark';
-    } else {
-      root.style.colorScheme = 'light';
-    }
-    root.setAttribute('data-theme', resolved);
+    root.classList.remove('dark');
+    root.style.colorScheme = 'light';
+    root.setAttribute('data-theme', 'light');
+    // --- dark theme disabled for now; original logic preserved for later ---
+    // var stored = localStorage.getItem('ns_theme');
+    // var pref = stored === 'dark' || stored === 'light' || stored === 'system' ? stored : 'system';
+    // var resolved = pref === 'system'
+    //   ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    //   : pref;
+    // if (resolved === 'dark') { root.classList.add('dark'); root.style.colorScheme = 'dark'; }
+    // else { root.style.colorScheme = 'light'; }
+    // root.setAttribute('data-theme', resolved);
   } catch (e) {}
 })();
 `;
