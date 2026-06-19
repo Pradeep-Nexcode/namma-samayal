@@ -9,8 +9,13 @@ import {
   ArrowRight,
   Check,
   ChefHat,
+  MailCheck,
 } from "lucide-react";
-import { loginUser, registerUser } from "@/features/auth/services/authApi";
+import {
+  loginUser,
+  registerUser,
+  resendVerification,
+} from "@/features/auth/services/authApi";
 
 type AuthMode = "register" | "login";
 
@@ -246,6 +251,9 @@ export function AuthFormLayout({ mode }: AuthFormLayoutProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState<string | null>(null);
+  const [resendMsg, setResendMsg] = useState("");
+  const [isResending, setIsResending] = useState(false);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -281,12 +289,15 @@ export function AuthFormLayout({ mode }: AuthFormLayoutProps) {
           email: form.email.trim(),
           password: form.password,
         });
-      } else {
-        await loginUser({
-          email: form.email.trim(),
-          password: form.password,
-        });
+        // No auto-login — user must verify their email first.
+        setPendingEmail(form.email.trim());
+        return;
       }
+
+      await loginUser({
+        email: form.email.trim(),
+        password: form.password,
+      });
       window.location.href = "/";
     } catch (submitError) {
       setError(
@@ -294,6 +305,24 @@ export function AuthFormLayout({ mode }: AuthFormLayoutProps) {
       );
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (!pendingEmail) return;
+    setResendMsg("");
+    try {
+      setIsResending(true);
+      const message = await resendVerification(pendingEmail);
+      setResendMsg(message);
+    } catch (resendError) {
+      setResendMsg(
+        resendError instanceof Error
+          ? resendError.message
+          : "Failed to resend. Try again."
+      );
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -464,7 +493,11 @@ export function AuthFormLayout({ mode }: AuthFormLayoutProps) {
           {/* Title with heart doodle */}
           <div className="flex items-center gap-2 mb-1">
             <h1 className="font-title-hw text-[36px] md:text-[42px] font-bold leading-tight text-stone-900 dark:text-stone-50">
-              {isRegister ? "Create Account" : "Welcome Back"}
+              {pendingEmail
+                ? "Check your email"
+                : isRegister
+                ? "Create Account"
+                : "Welcome Back"}
             </h1>
             <span className="h-6 w-7 text-[#e74c3c]" aria-hidden>
               <HeartDoodle className="h-full w-full" />
@@ -472,19 +505,29 @@ export function AuthFormLayout({ mode }: AuthFormLayoutProps) {
           </div>
 
           {/* Subtitle with red squiggle underline on "Namma Samayal" */}
-          <p className="font-body text-[14px] md:text-[15px] text-stone-700 dark:text-stone-200 mb-6">
-            {isRegister ? "Start your " : "Sign in to continue your "}
-            <span className="relative inline-block font-semibold">
-              Namma Samayal
-              <span
-                className="absolute left-0 right-0 -bottom-0.5 h-1.5 text-[#e74c3c]"
-                aria-hidden
-              >
-                <TitleSquiggle className="h-full w-full" />
+          {pendingEmail ? (
+            <p className="font-body text-[14px] md:text-[15px] text-stone-700 dark:text-stone-200 mb-6">
+              We&apos;ve sent a verification link to{" "}
+              <span className="font-semibold text-stone-900 dark:text-stone-50">
+                {pendingEmail}
               </span>
-            </span>
-            {isRegister ? " journey today." : " journey."}
-          </p>
+              . Click it to activate your account.
+            </p>
+          ) : (
+            <p className="font-body text-[14px] md:text-[15px] text-stone-700 dark:text-stone-200 mb-6">
+              {isRegister ? "Start your " : "Sign in to continue your "}
+              <span className="relative inline-block font-semibold">
+                Namma Samayal
+                <span
+                  className="absolute left-0 right-0 -bottom-0.5 h-1.5 text-[#e74c3c]"
+                  aria-hidden
+                >
+                  <TitleSquiggle className="h-full w-full" />
+                </span>
+              </span>
+              {isRegister ? " journey today." : " journey."}
+            </p>
+          )}
 
           {/* Decorative leaf top-right */}
           <div
@@ -495,7 +538,41 @@ export function AuthFormLayout({ mode }: AuthFormLayoutProps) {
             <LeafSprig className="h-full w-full" />
           </div>
 
-          {/* Form */}
+          {/* Check-email panel (after register) */}
+          {pendingEmail ? (
+            <div className="relative space-y-4">
+              <div className="flex items-start gap-3 rounded-lg border-2 border-stone-200 bg-white/70 p-4">
+                <MailCheck className="h-7 w-7 shrink-0 text-emerald-600" />
+                <p className="font-body text-[13.5px] text-stone-700 dark:text-stone-200">
+                  Didn&apos;t get it? Check your spam folder, or resend the link
+                  below. It expires in 24 hours.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleResend}
+                disabled={isResending}
+                className="relative w-full rounded-lg bg-[#c0392b] hover:bg-[#a02b1f] py-3 font-title-hw text-[17px] font-bold text-white transition-colors shadow-[0_6px_14px_-6px_rgba(231,76,60,0.5)] active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isResending ? "Sending…" : "Resend verification email"}
+              </button>
+
+              {resendMsg && (
+                <p className="font-body text-[13px] text-stone-700 dark:text-stone-200 font-semibold">
+                  {resendMsg}
+                </p>
+              )}
+
+              <Link
+                href="/auth/login"
+                className="block text-center font-title-hw font-bold text-[#e74c3c] hover:text-[#c0392b] transition-colors"
+              >
+                Go to Sign In
+              </Link>
+            </div>
+          ) : (
+          /* Form */
           <form className="space-y-4 relative" onSubmit={handleSubmit}>
             {isRegister && (
               <div className="grid grid-cols-2 gap-3">
@@ -588,7 +665,7 @@ export function AuthFormLayout({ mode }: AuthFormLayoutProps) {
                   Remember me
                 </label>
                 <Link
-                  href="#"
+                  href="/auth/forgot-password"
                   className="font-title-hw font-bold text-[#e74c3c] hover:text-[#c0392b] transition-colors"
                 >
                   Forgot password?
@@ -624,6 +701,7 @@ export function AuthFormLayout({ mode }: AuthFormLayoutProps) {
               </p>
             )}
           </form>
+          )}
 
           {/* Footer link */}
           <p className="mt-5 font-body text-[14px] text-stone-700 dark:text-stone-200">

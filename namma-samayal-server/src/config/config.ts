@@ -9,6 +9,17 @@ export interface AppConfig {
   nodeEnv: NodeEnv;
   jwtSecret: string;
   jwtExpire: string;
+  jwtRefreshSecret: string;
+  jwtAccessExpire: string;
+  jwtRefreshExpire: string;
+  cookieSecure: boolean;
+  resendApiKey: string;
+  emailFrom: string;
+  emailHeroUrl: string;
+  emailWaveUrl: string;
+  emailWatermarkUrl: string;
+  emailFooterArtLeftUrl: string;
+  emailFooterArtRightUrl: string;
   frontendUrls: string[];
   adminUrls: string[];
   allowedOrigins: string[];
@@ -65,6 +76,22 @@ const config: AppConfig = {
       : "dev-jwt-secret-change-this-in-production",
   ),
   jwtExpire: process.env.JWT_EXPIRE ?? "7d",
+  jwtRefreshSecret: getRequiredEnv(
+    "JWT_REFRESH_SECRET",
+    nodeEnv === "production"
+      ? undefined
+      : "dev-jwt-refresh-secret-change-this-in-production",
+  ),
+  jwtAccessExpire: process.env.JWT_ACCESS_EXPIRE ?? "15m",
+  jwtRefreshExpire: process.env.JWT_REFRESH_EXPIRE ?? "7d",
+  cookieSecure: nodeEnv === "production",
+  resendApiKey: process.env.RESEND_API_KEY ?? "",
+  emailFrom: process.env.EMAIL_FROM ?? "Namma Samayal <onboarding@resend.dev>",
+  emailHeroUrl: process.env.EMAIL_HERO_URL ?? "",
+  emailWaveUrl: process.env.EMAIL_WAVE_URL ?? "",
+  emailWatermarkUrl: process.env.EMAIL_WATERMARK_URL ?? "",
+  emailFooterArtLeftUrl: process.env.EMAIL_FOOTER_ART_LEFT_URL ?? "",
+  emailFooterArtRightUrl: process.env.EMAIL_FOOTER_ART_RIGHT_URL ?? "",
   frontendUrls,
   adminUrls,
   allowedOrigins,

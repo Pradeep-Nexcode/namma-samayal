@@ -5,9 +5,18 @@ import { Types } from "mongoose";
 
 import config from "../config/config.js";
 import User from "../models/User.js";
+import {
+  sendPasswordResetEmail,
+  sendVerificationEmail,
+  sendWelcomeEmail,
+} from "../services/emailService.js";
 import { AppError } from "../utils/appError.js";
 import { catchAsync } from "../utils/catchAsync.js";
+import { createHashedToken, hashToken } from "../utils/cryptoToken.js";
 import { logger } from "../utils/logger.js";
+
+const VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+const PASSWORD_RESET_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 interface RegisterBody {
   username: string;
@@ -86,24 +95,103 @@ export const register = catchAsync(async (req: Request, res: Response, next: Nex
     return next(new AppError("User already exists", 400));
   }
 
+  const { rawToken, hashedToken } = createHashedToken();
+
   const user = await User.create({
     username,
     email,
     password,
     firstName,
     lastName,
+    verificationToken: hashedToken,
+    verificationTokenExpires: new Date(Date.now() + VERIFICATION_TOKEN_TTL_MS),
   });
 
-  const token = generateToken(user._id.toString());
+  await sendVerificationEmail(user.email, rawToken);
 
-  logger.info("User registered", { userId: user._id.toString() });
+  logger.info("User registered (pending verification)", { userId: user._id.toString() });
 
   res.status(201).json({
     success: true,
-    message: "User registered successfully",
-    data: { user, token },
+    message:
+      "Registration successful. Please check your email to verify your account.",
   });
 });
+
+export const verifyEmail = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return next(new AppError("Invalid verification request", 400));
+    }
+
+    const { token } = req.body as { token: string };
+    const hashedToken = hashToken(token);
+
+    const user = await User.findOneAndUpdate(
+      {
+        verificationToken: hashedToken,
+        verificationTokenExpires: { $gt: new Date() },
+      },
+      {
+        $set: { isVerified: true },
+        $unset: { verificationToken: "", verificationTokenExpires: "" },
+      },
+      { new: true },
+    );
+
+    if (!user) {
+      return next(
+        new AppError("Verification link is invalid or has expired.", 400),
+      );
+    }
+
+    await sendWelcomeEmail(user.email, user.firstName);
+
+    res.status(200).json({
+      success: true,
+      message: "Email verified successfully. You can now log in.",
+    });
+  },
+);
+
+export const resendVerification = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return next(new AppError("Validation failed", 400));
+    }
+
+    const { email } = req.body as { email: string };
+    const user = await User.findOne({ email });
+
+    // Only act for an existing, still-unverified account. Always return the
+    // same generic response to avoid leaking which emails are registered.
+    if (user && !user.isVerified) {
+      const { rawToken, hashedToken } = createHashedToken();
+
+      await User.updateOne(
+        { _id: user._id },
+        {
+          $set: {
+            verificationToken: hashedToken,
+            verificationTokenExpires: new Date(Date.now() + VERIFICATION_TOKEN_TTL_MS),
+          },
+        },
+      );
+
+      await sendVerificationEmail(user.email, rawToken);
+    }
+
+    res.status(200).json({
+      success: true,
+      message:
+        "If an unverified account exists for that email, a new verification link has been sent.",
+    });
+  },
+);
 
 export const login = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
@@ -122,6 +210,12 @@ export const login = catchAsync(async (req: Request, res: Response, next: NextFu
 
   if (!user.isActive) {
     return next(new AppError("Account is deactivated", 401));
+  }
+
+  if (!user.isVerified) {
+    return next(
+      new AppError("Please verify your email before logging in.", 403),
+    );
   }
 
   user.lastLogin = new Date();
@@ -284,3 +378,72 @@ export const unsaveRecipe = catchAsync(async (req: Request, res: Response) => {
     message: "Recipe removed from saved list",
   });
 });
+
+export const forgotPassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return next(new AppError("Validation failed", 400));
+    }
+
+    const { email } = req.body as { email: string };
+    const user = await User.findOne({ email });
+
+    // Generic response regardless of whether the account exists (no enumeration).
+    if (user) {
+      const { rawToken, hashedToken } = createHashedToken();
+
+      await User.updateOne(
+        { _id: user._id },
+        {
+          $set: {
+            passwordResetToken: hashedToken,
+            passwordResetExpires: new Date(Date.now() + PASSWORD_RESET_TTL_MS),
+          },
+        },
+      );
+
+      await sendPasswordResetEmail(user.email, rawToken);
+    }
+
+    res.status(200).json({
+      success: true,
+      message:
+        "If an account exists for that email, a password reset link has been sent.",
+    });
+  },
+);
+
+export const resetPassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return next(new AppError("Validation failed", 400));
+    }
+
+    const { token, password } = req.body as { token: string; password: string };
+    const hashedToken = hashToken(token);
+
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: new Date() },
+    }).select("+passwordResetToken +passwordResetExpires");
+
+    if (!user) {
+      return next(new AppError("Reset link is invalid or has expired.", 400));
+    }
+
+    // Assigning password triggers the pre-save hook which re-hashes it.
+    user.password = password;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password reset successful. You can now log in.",
+    });
+  },
+);

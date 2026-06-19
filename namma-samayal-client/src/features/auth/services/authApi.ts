@@ -18,11 +18,66 @@ function extractApiErrorMessage(error: unknown): string {
   return message || "Request failed. Please try again.";
 }
 
-export const registerUser = async (payload: RegisterInput): Promise<User> => {
+export const registerUser = async (
+  payload: RegisterInput,
+): Promise<string> => {
   try {
-    const response = await api.post<AuthSuccessResponse>("/users/register", payload);
-    setAuthToken(response.data.data.token);
-    return response.data.data.user;
+    // Registration no longer logs the user in — it sends a verification email.
+    const response = await api.post<UserMessageResponse>(
+      "/users/register",
+      payload,
+    );
+    return response.data.message;
+  } catch (error) {
+    throw new Error(extractApiErrorMessage(error));
+  }
+};
+
+export const verifyEmail = async (token: string): Promise<string> => {
+  try {
+    const response = await api.post<UserMessageResponse>("/users/verify-email", {
+      token,
+    });
+    return response.data.message;
+  } catch (error) {
+    throw new Error(extractApiErrorMessage(error));
+  }
+};
+
+export const resendVerification = async (email: string): Promise<string> => {
+  try {
+    const response = await api.post<UserMessageResponse>(
+      "/users/resend-verification",
+      { email },
+    );
+    return response.data.message;
+  } catch (error) {
+    throw new Error(extractApiErrorMessage(error));
+  }
+};
+
+export const forgotPassword = async (email: string): Promise<string> => {
+  try {
+    const response = await api.post<UserMessageResponse>(
+      "/users/forgot-password",
+      { email },
+    );
+    return response.data.message;
+  } catch (error) {
+    throw new Error(extractApiErrorMessage(error));
+  }
+};
+
+export const resetPassword = async (
+  token: string,
+  password: string,
+): Promise<string> => {
+  try {
+    const response = await api.post<UserMessageResponse>(
+      "/users/reset-password",
+      { token, password },
+    );
+    return response.data.message;
   } catch (error) {
     throw new Error(extractApiErrorMessage(error));
   }

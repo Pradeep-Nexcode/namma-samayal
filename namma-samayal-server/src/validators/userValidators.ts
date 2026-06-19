@@ -44,3 +44,22 @@ export const updateProfileValidation = [
 export const recipeParamValidation = [
   param("recipeId").isMongoId().withMessage("Invalid recipe id"),
 ];
+
+export const verifyEmailValidation = [
+  body("token").trim().notEmpty().withMessage("Verification token is required"),
+];
+
+export const resendVerificationValidation = [
+  body("email").trim().isEmail().withMessage("Please provide a valid email"),
+];
+
+export const forgotPasswordValidation = [
+  body("email").trim().isEmail().withMessage("Please provide a valid email"),
+];
+
+export const resetPasswordValidation = [
+  body("token").trim().notEmpty().withMessage("Reset token is required"),
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters"),
+];

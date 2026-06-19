@@ -1,4 +1,5 @@
 import express, { Application, NextFunction, Request, Response } from "express";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -44,6 +45,7 @@ const apiLimiter = rateLimit({
 app.use("/api", apiLimiter);
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use((req: Request, _res: Response, next: NextFunction) => {
   logger.info("Incoming request", {

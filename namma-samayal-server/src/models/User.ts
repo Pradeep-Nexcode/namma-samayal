@@ -8,6 +8,12 @@ export interface IUser {
   firstName: string;
   lastName: string;
   role: "user" | "admin";
+  authProvider: "email" | "google";
+  isVerified: boolean;
+  verificationToken?: string;
+  verificationTokenExpires?: Date;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
   language: "en" | "ta";
   profileImage?: string | null;
   bio?: string;
@@ -72,6 +78,31 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
       enum: ["user", "admin"],
       default: "user",
     },
+    authProvider: {
+      type: String,
+      enum: ["email", "google"],
+      default: "email",
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      select: false,
+    },
+    verificationTokenExpires: {
+      type: Date,
+      select: false,
+    },
+    passwordResetToken: {
+      type: String,
+      select: false,
+    },
+    passwordResetExpires: {
+      type: Date,
+      select: false,
+    },
     language: {
       type: String,
       enum: ["en", "ta"],
@@ -135,6 +166,10 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     toJSON: {
       transform: (_doc, ret: Record<string, unknown>) => {
         delete ret.password;
+        delete ret.verificationToken;
+        delete ret.verificationTokenExpires;
+        delete ret.passwordResetToken;
+        delete ret.passwordResetExpires;
         return ret;
       },
     },
