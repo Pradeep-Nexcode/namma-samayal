@@ -5,6 +5,7 @@ import { Types } from "mongoose";
 
 import config from "../config/config.js";
 import User from "../models/User.js";
+import UserSession from "../models/UserSession.js";
 import {
   sendPasswordResetEmail,
   sendVerificationEmail,
@@ -17,6 +18,8 @@ import { logger } from "../utils/logger.js";
 
 const VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 const PASSWORD_RESET_TTL_MS = 60 * 60 * 1000; // 1 hour
+const REFRESH_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const REFRESH_COOKIE = "nsRefreshToken";
 
 interface RegisterBody {
   username: string;
@@ -43,11 +46,44 @@ interface UpdateProfileBody {
 }
 
 const jwtOptions: SignOptions = {
-  expiresIn: config.jwtExpire as SignOptions["expiresIn"],
+  expiresIn: config.jwtAccessExpire as SignOptions["expiresIn"],
 };
 
+/** Short-lived access token (default 15m). */
 const generateToken = (userId: string): string => {
   return jwt.sign({ id: userId }, config.jwtSecret, jwtOptions);
+};
+
+const refreshCookieOptions = () => ({
+  httpOnly: true,
+  secure: config.cookieSecure,
+  sameSite: (config.cookieSecure ? "none" : "lax") as "none" | "lax",
+  maxAge: REFRESH_TOKEN_TTL_MS,
+  path: "/api/users",
+});
+
+/**
+ * Issue an access token (returned in JSON) + a refresh token (stored hashed as
+ * a UserSession and set as an httpOnly cookie). Returns the access token.
+ */
+const issueTokens = async (
+  userId: string,
+  req: Request,
+  res: Response,
+): Promise<string> => {
+  const accessToken = generateToken(userId);
+  const { rawToken, hashedToken } = createHashedToken();
+
+  await UserSession.create({
+    user: userId,
+    tokenHash: hashedToken,
+    userAgent: req.headers["user-agent"] ?? "unknown",
+    expiresAt: new Date(Date.now() + REFRESH_TOKEN_TTL_MS),
+  });
+
+  res.cookie(REFRESH_COOKIE, rawToken, refreshCookieOptions());
+
+  return accessToken;
 };
 
 const getAuthenticatedUserId = (req: Request): string => {
@@ -107,7 +143,23 @@ export const register = catchAsync(async (req: Request, res: Response, next: Nex
     verificationTokenExpires: new Date(Date.now() + VERIFICATION_TOKEN_TTL_MS),
   });
 
-  await sendVerificationEmail(user.email, rawToken);
+  // If the email can't be sent, roll back the just-created user so we don't
+  // leave a dead, unverifiable account behind, and surface a clear error.
+  try {
+    await sendVerificationEmail(user.email, rawToken);
+  } catch (emailError) {
+    await User.findByIdAndDelete(user._id);
+    logger.error("Verification email failed; rolled back registration", {
+      userId: user._id.toString(),
+      error: emailError instanceof Error ? emailError.message : String(emailError),
+    });
+    return next(
+      new AppError(
+        "We couldn't send your verification email. Please try again in a moment.",
+        502,
+      ),
+    );
+  }
 
   logger.info("User registered (pending verification)", { userId: user._id.toString() });
 
@@ -221,12 +273,63 @@ export const login = catchAsync(async (req: Request, res: Response, next: NextFu
   user.lastLogin = new Date();
   await user.save();
 
-  const token = generateToken(user._id.toString());
+  const token = await issueTokens(user._id.toString(), req, res);
 
   res.status(200).json({
     success: true,
     message: "Login successful",
     data: { user, token },
+  });
+});
+
+export const refresh = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const rawToken = req.cookies?.[REFRESH_COOKIE] as string | undefined;
+
+    if (!rawToken) {
+      return next(new AppError("Not authenticated", 401));
+    }
+
+    const session = await UserSession.findOne({ tokenHash: hashToken(rawToken) });
+
+    // No matching session → token is invalid, already rotated, or revoked.
+    if (!session || session.expiresAt < new Date()) {
+      if (session) await session.deleteOne();
+      res.clearCookie(REFRESH_COOKIE, refreshCookieOptions());
+      return next(new AppError("Session expired. Please log in again.", 401));
+    }
+
+    const user = await User.findById(session.user).select("_id isActive");
+
+    if (!user || !user.isActive) {
+      await session.deleteOne();
+      res.clearCookie(REFRESH_COOKIE, refreshCookieOptions());
+      return next(new AppError("User not found or inactive.", 401));
+    }
+
+    // Rotate: invalidate the used refresh token and issue a fresh pair.
+    await session.deleteOne();
+    const token = await issueTokens(user._id.toString(), req, res);
+
+    res.status(200).json({
+      success: true,
+      data: { token },
+    });
+  },
+);
+
+export const logout = catchAsync(async (req: Request, res: Response) => {
+  const rawToken = req.cookies?.[REFRESH_COOKIE] as string | undefined;
+
+  if (rawToken) {
+    await UserSession.deleteOne({ tokenHash: hashToken(rawToken) });
+  }
+
+  res.clearCookie(REFRESH_COOKIE, refreshCookieOptions());
+
+  res.status(200).json({
+    success: true,
+    message: "Logged out",
   });
 });
 

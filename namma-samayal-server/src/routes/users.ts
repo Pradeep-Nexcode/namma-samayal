@@ -6,6 +6,8 @@ import {
   forgotPassword,
   getProfile,
   login,
+  logout,
+  refresh,
   register,
   removeFromFavorites,
   resendVerification,
@@ -70,6 +72,10 @@ router.post(
   validateRequest,
   resetPassword,
 );
+
+// Refresh runs often (every ~15m) and uses the httpOnly cookie — no authLimiter.
+router.post("/refresh", refresh);
+router.post("/logout", logout);
 
 router.get("/profile", auth, getProfile);
 router.put("/profile", auth, updateProfileValidation, validateRequest, updateProfile);

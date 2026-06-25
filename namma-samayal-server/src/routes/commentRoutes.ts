@@ -4,9 +4,12 @@ import {
   createComment,
   deleteComment,
   getRecipeComments,
+  likeComment,
+  unlikeComment,
   updateComment,
 } from "../controllers/commentController.js";
 import auth from "../middleware/auth.js";
+import optionalAuth from "../middleware/optionalAuth.js";
 import { validateRequest } from "../middleware/validate.js";
 import {
   commentIdValidation,
@@ -17,9 +20,11 @@ import {
 
 const router = Router();
 
-// Public: read the Kitchen Talk thread for a recipe.
+// Public: read the Kitchen Talk thread for a recipe. optionalAuth lets us flag
+// `likedByMe` when a logged-in user's token is present.
 router.get(
   "/recipe/:recipeId",
+  optionalAuth,
   recipeCommentsValidation,
   validateRequest,
   getRecipeComments,
@@ -41,6 +46,16 @@ router.delete(
   commentIdValidation,
   validateRequest,
   deleteComment,
+);
+
+// Likes.
+router.post("/:id/like", auth, commentIdValidation, validateRequest, likeComment);
+router.delete(
+  "/:id/like",
+  auth,
+  commentIdValidation,
+  validateRequest,
+  unlikeComment,
 );
 
 export default router;

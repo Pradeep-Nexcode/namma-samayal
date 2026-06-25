@@ -13,6 +13,8 @@ export interface Comment {
   /** Display name this reply @mentions (when replying to another reply). */
   replyToName: string | null;
   likesCount: number;
+  /** Whether the current user has liked this comment. */
+  likedByMe: boolean;
   repliesCount: number;
   isEdited: boolean;
   isDeleted: boolean;

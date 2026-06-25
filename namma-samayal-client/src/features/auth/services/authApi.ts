@@ -93,7 +93,13 @@ export const loginUser = async (payload: LoginInput): Promise<User> => {
   }
 };
 
-export const logoutUser = (): void => {
+export const logoutUser = async (): Promise<void> => {
+  try {
+    // Revoke the server-side refresh session + clear the httpOnly cookie.
+    await api.post("/users/logout");
+  } catch {
+    // Ignore — clear local state regardless of the server response.
+  }
   clearAuthToken();
 };
 

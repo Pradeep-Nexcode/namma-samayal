@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import { Types } from "mongoose";
 
 import Comment from "../models/Comment.js";
+import CommentLike from "../models/CommentLike.js";
 import Recipe from "../models/Recipe.js";
 import { AppError } from "../utils/appError.js";
 import {
@@ -116,9 +117,28 @@ export const getRecipeComments = catchAsync(
           .lean()
       : [];
 
+    // If the requester is logged in, flag which of these comments they liked.
+    let likedSet: Set<string> | undefined;
+    if (req.user?.id) {
+      const allIds = [
+        ...topLevel.map((c) => c._id),
+        ...replies.map((c) => c._id),
+      ];
+      if (allIds.length) {
+        const likes = await CommentLike.find({
+          user: req.user.id,
+          comment: { $in: allIds },
+        })
+          .select("comment")
+          .lean();
+        likedSet = new Set(likes.map((l) => String(l.comment)));
+      }
+    }
+
     const tree = buildCommentTree(
       topLevel as unknown as RawComment[],
       replies as unknown as RawComment[],
+      likedSet,
     );
 
     res.status(200).json({
@@ -158,10 +178,78 @@ export const updateComment = catchAsync(
       { path: "replyTo", select: "username firstName lastName" },
     ]);
 
+    const liked = await CommentLike.exists({ comment: comment._id, user: userId });
+    const likedSet = liked ? new Set([String(comment._id)]) : undefined;
+
     res.status(200).json({
       success: true,
       message: "Comment updated",
-      data: serializeComment(comment.toObject() as unknown as RawComment),
+      data: serializeComment(
+        comment.toObject() as unknown as RawComment,
+        likedSet,
+      ),
+    });
+  },
+);
+
+export const likeComment = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = getAuthenticatedUserId(req);
+
+    const comment = await Comment.findById(req.params.id).select(
+      "_id isDeleted",
+    );
+    if (!comment || comment.isDeleted) {
+      return next(new AppError("Comment not found", 404));
+    }
+
+    try {
+      await CommentLike.create({ comment: comment._id, user: userId });
+      // Only increment when a NEW like row was actually created.
+      await Comment.updateOne({ _id: comment._id }, { $inc: { likesCount: 1 } });
+    } catch (err) {
+      // Duplicate key = already liked → idempotent no-op. Rethrow anything else.
+      if ((err as { code?: number })?.code !== 11000) {
+        throw err;
+      }
+    }
+
+    const updated = await Comment.findById(comment._id).select("likesCount");
+
+    res.status(200).json({
+      success: true,
+      data: { likesCount: updated?.likesCount ?? 0, liked: true },
+    });
+  },
+);
+
+export const unlikeComment = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = getAuthenticatedUserId(req);
+
+    const comment = await Comment.findById(req.params.id).select("_id");
+    if (!comment) {
+      return next(new AppError("Comment not found", 404));
+    }
+
+    const result = await CommentLike.deleteOne({
+      comment: comment._id,
+      user: userId,
+    });
+
+    // Only decrement when a like row was actually removed.
+    if (result.deletedCount === 1) {
+      await Comment.updateOne(
+        { _id: comment._id, likesCount: { $gt: 0 } },
+        { $inc: { likesCount: -1 } },
+      );
+    }
+
+    const updated = await Comment.findById(comment._id).select("likesCount");
+
+    res.status(200).json({
+      success: true,
+      data: { likesCount: updated?.likesCount ?? 0, liked: false },
     });
   },
 );

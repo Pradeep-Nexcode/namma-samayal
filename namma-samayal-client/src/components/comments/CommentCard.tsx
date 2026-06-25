@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import type { Comment } from "@/types/comment";
+import { likeComment, unlikeComment } from "@/features/comment/services/commentApi";
 import { timeAgo } from "@/utils/timeAgo";
 import { CommentAvatar, CommentComposer } from "./CommentComposer";
 
@@ -49,8 +50,9 @@ export function CommentCard({
   const [editText, setEditText] = useState(comment.content);
   const [busy, setBusy] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(comment.likedByMe);
   const [likeCount, setLikeCount] = useState(comment.likesCount);
+  const [likeBusy, setLikeBusy] = useState(false);
   const [showReplies, setShowReplies] = useState(
     (comment.replies?.length ?? 0) <= 2,
   );
@@ -63,11 +65,29 @@ export function CommentCard({
       comment.user.username
     : "Unknown";
 
-  const toggleLike = () => {
-    setLiked((prev) => {
-      setLikeCount((c) => c + (prev ? -1 : 1));
-      return !prev;
-    });
+  const toggleLike = async () => {
+    if (!currentUserId || likeBusy) return; // must be signed in
+    const next = !liked;
+
+    // Optimistic update.
+    setLiked(next);
+    setLikeCount((c) => Math.max(0, c + (next ? 1 : -1)));
+    setLikeBusy(true);
+
+    try {
+      const result = next
+        ? await likeComment(comment._id)
+        : await unlikeComment(comment._id);
+      // Reconcile with the server's authoritative count.
+      setLiked(result.liked);
+      setLikeCount(result.likesCount);
+    } catch {
+      // Revert on failure.
+      setLiked(!next);
+      setLikeCount((c) => Math.max(0, c + (next ? -1 : 1)));
+    } finally {
+      setLikeBusy(false);
+    }
   };
 
   const submitReply = async () => {
@@ -194,10 +214,11 @@ export function CommentCard({
               <button
                 type="button"
                 onClick={toggleLike}
-                className="flex items-center gap-1.5 font-ui text-[13px] text-stone-500 hover:text-[#c0392b] transition-colors"
+                disabled={likeBusy}
+                className="flex items-center gap-1.5 font-ui text-[13px] text-stone-500 hover:text-[#c0392b] transition-colors disabled:opacity-60"
               >
                 <Heart
-                  className={`h-[15px] w-[15px] ${
+                  className={`h-[15px] w-[15px] transition-colors ${
                     liked ? "fill-[#c0392b] text-[#c0392b]" : ""
                   }`}
                 />

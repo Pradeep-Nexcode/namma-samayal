@@ -386,6 +386,12 @@ export function KitchenTalk({ recipeId, recipeAuthorId }: KitchenTalkProps) {
               desc="Talk about the recipe please!"
             />
           </ul>
+          <Link
+            href="/community-guidelines"
+            className="mt-4 inline-block font-title-hw text-[13.5px] font-bold text-[#c0392b] hover:text-[#a02b1f] transition-colors"
+          >
+            Read full guidelines →
+          </Link>
         </aside>
       </div>
     </section>

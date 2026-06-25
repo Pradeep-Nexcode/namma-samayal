@@ -59,3 +59,26 @@ export const deleteComment = async (id: string): Promise<void> => {
     throw new Error(extractApiErrorMessage(error));
   }
 };
+
+export interface LikeResult {
+  likesCount: number;
+  liked: boolean;
+}
+
+export const likeComment = async (id: string): Promise<LikeResult> => {
+  try {
+    const response = await api.post<{ data: LikeResult }>(`/comments/${id}/like`);
+    return response.data.data;
+  } catch (error) {
+    throw new Error(extractApiErrorMessage(error));
+  }
+};
+
+export const unlikeComment = async (id: string): Promise<LikeResult> => {
+  try {
+    const response = await api.delete<{ data: LikeResult }>(`/comments/${id}/like`);
+    return response.data.data;
+  } catch (error) {
+    throw new Error(extractApiErrorMessage(error));
+  }
+};

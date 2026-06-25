@@ -1,6 +1,14 @@
 "use client";
 
-import { ImageIcon, Smile } from "lucide-react";
+import { useRef, useState } from "react";
+import { Smile } from "lucide-react";
+
+/** Curated reaction + Tamil-food emojis for the quick picker. */
+const QUICK_EMOJIS = [
+  "😋", "😍", "🤤", "👌", "🔥", "❤️", "👍", "🙏",
+  "😂", "🥰", "✨", "💯", "🌶️", "🍛", "🍚", "🍗",
+  "🥘", "🧅", "🍅", "🥥", "☕", "👨‍🍳", "🍲", "🌿",
+];
 
 /* ─── Avatar with initials fallback ─── */
 export function CommentAvatar({
@@ -77,6 +85,26 @@ export function CommentComposer({
   const over = value.length > maxLength;
   const canSubmit = value.trim().length > 0 && !over && !submitting;
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [showEmoji, setShowEmoji] = useState(false);
+
+  const insertEmoji = (emoji: string) => {
+    const el = textareaRef.current;
+    const start = el?.selectionStart ?? value.length;
+    const end = el?.selectionEnd ?? value.length;
+    const next = value.slice(0, start) + emoji + value.slice(end);
+    if (next.length > maxLength) return;
+    onChange(next);
+    setShowEmoji(false);
+    requestAnimationFrame(() => {
+      if (el) {
+        el.focus();
+        const pos = start + emoji.length;
+        el.setSelectionRange(pos, pos);
+      }
+    });
+  };
+
   return (
     <div
       className={`rounded-2xl border-2 border-stone-200 bg-white ${
@@ -91,6 +119,7 @@ export function CommentComposer({
         />
         <div className="flex-1">
           <textarea
+            ref={textareaRef}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
@@ -101,22 +130,41 @@ export function CommentComposer({
           <div className="mt-2 flex items-center justify-between border-t border-stone-100 pt-2.5">
             <div className="flex items-center gap-1.5">
               {!compact && (
-                <>
-                  <button
-                    type="button"
-                    title="Add a photo (coming soon)"
-                    className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-100 hover:text-stone-600 transition-colors"
-                  >
-                    <ImageIcon className="h-[18px] w-[18px]" />
-                  </button>
-                  <button
-                    type="button"
-                    title="Add an emoji (coming soon)"
-                    className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 hover:bg-stone-100 hover:text-stone-600 transition-colors"
-                  >
-                    <Smile className="h-[18px] w-[18px]" />
-                  </button>
-                </>
+                <div className="relative">
+                    <button
+                      type="button"
+                      title="Add an emoji"
+                      onClick={() => setShowEmoji((s) => !s)}
+                      className={`flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-stone-100 ${
+                        showEmoji ? "text-[#c0392b]" : "text-stone-400 hover:text-stone-600"
+                      }`}
+                    >
+                      <Smile className="h-[18px] w-[18px]" />
+                    </button>
+                    {showEmoji && (
+                      <>
+                        <button
+                          type="button"
+                          className="fixed inset-0 z-10 cursor-default"
+                          onClick={() => setShowEmoji(false)}
+                          aria-hidden
+                          tabIndex={-1}
+                        />
+                        <div className="absolute bottom-10 left-0 z-20 grid w-[228px] grid-cols-8 gap-0.5 rounded-xl border border-stone-200 bg-white p-2 shadow-lg">
+                          {QUICK_EMOJIS.map((emoji) => (
+                            <button
+                              key={emoji}
+                              type="button"
+                              onClick={() => insertEmoji(emoji)}
+                              className="flex h-7 w-7 items-center justify-center rounded-md text-[17px] hover:bg-stone-100"
+                            >
+                              {emoji}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                </div>
               )}
             </div>
 
