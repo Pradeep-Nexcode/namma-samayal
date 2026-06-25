@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Clock, Sparkles, ChefHat, Heart } from "lucide-react";
+import { Clock, Sparkles, Heart } from "lucide-react";
 import type { Recipe } from "@/types/recipe";
 import { useLang } from "@/contexts/LanguageContext";
+import { RecipePlaceholder } from "@/components/recipe/RecipePlaceholder";
 
 interface RecipeCardProps {
   recipe: Recipe;
@@ -54,9 +55,7 @@ export function RecipeCard({ recipe }: RecipeCardProps) {
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-amber-100 to-rose-100 dark:from-amber-500/20 dark:to-rose-500/20">
-            <ChefHat className="h-14 w-14 text-stone-400" />
-          </div>
+          <RecipePlaceholder recipe={recipe} />
         )}
 
         {/* Subtle dark gradient at bottom for legibility of the difficulty pill */}

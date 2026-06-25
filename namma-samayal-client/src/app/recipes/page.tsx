@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { ErrorMessage } from "@/components/common/ErrorMessage";
 import { Loader } from "@/components/common/Loader";
+import { RecipePlaceholder } from "@/components/recipe/RecipePlaceholder";
 import { getRecipes } from "@/features/recipe/services/recipeApi";
 import type { Recipe, RecipePaginationMeta } from "@/types/recipe";
 import { useLang } from "@/contexts/LanguageContext";
@@ -233,9 +234,7 @@ function RecipeCard({ recipe, index, lf }: {
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
             ) : (
-              <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-amber-100 to-rose-100">
-                <ChefHat className="h-12 w-12 text-stone-400 dark:text-stone-500" />
-              </div>
+              <RecipePlaceholder recipe={recipe} />
             )}
           </div>
 
